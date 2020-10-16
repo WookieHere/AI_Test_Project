@@ -7,9 +7,14 @@
 //
 
 #include <iostream>
+#include "Mesh_Construction.hpp"
+#include "Unit_Testing.hpp"
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+int main(int argc, const char * argv[])
+{
+    Cost_mesh* test_mesh = create_cost_mesh(10, 10);
+    print_mesh(test_mesh);
+    
+    
     return 0;
 }

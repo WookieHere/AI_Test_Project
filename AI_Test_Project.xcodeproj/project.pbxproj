@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E77E8F34251A890200E48190 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77E8F33251A890200E48190 /* main.cpp */; };
+		E77E8F3E251A8F7B00E48190 /* Mesh_Construction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77E8F3D251A8F7B00E48190 /* Mesh_Construction.cpp */; };
+		E7AD2F2C253955D600B4B9A8 /* Unit_Testing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AD2F2A253955D600B4B9A8 /* Unit_Testing.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,12 @@
 /* Begin PBXFileReference section */
 		E77E8F30251A890200E48190 /* AI_Test_Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AI_Test_Project; sourceTree = BUILT_PRODUCTS_DIR; };
 		E77E8F33251A890200E48190 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		E77E8F3A251A899E00E48190 /* Player.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Player.hpp; sourceTree = "<group>"; };
+		E77E8F3B251A89F300E48190 /* Route_Constructor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Route_Constructor.hpp; sourceTree = "<group>"; };
+		E77E8F3C251A8AE800E48190 /* Mesh_Construction.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Mesh_Construction.hpp; sourceTree = "<group>"; };
+		E77E8F3D251A8F7B00E48190 /* Mesh_Construction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Mesh_Construction.cpp; sourceTree = "<group>"; };
+		E7AD2F2A253955D600B4B9A8 /* Unit_Testing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Unit_Testing.cpp; sourceTree = "<group>"; };
+		E7AD2F2B253955D600B4B9A8 /* Unit_Testing.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Unit_Testing.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +66,12 @@
 			isa = PBXGroup;
 			children = (
 				E77E8F33251A890200E48190 /* main.cpp */,
+				E77E8F3A251A899E00E48190 /* Player.hpp */,
+				E77E8F3B251A89F300E48190 /* Route_Constructor.hpp */,
+				E77E8F3C251A8AE800E48190 /* Mesh_Construction.hpp */,
+				E77E8F3D251A8F7B00E48190 /* Mesh_Construction.cpp */,
+				E7AD2F2A253955D600B4B9A8 /* Unit_Testing.cpp */,
+				E7AD2F2B253955D600B4B9A8 /* Unit_Testing.hpp */,
 			);
 			path = AI_Test_Project;
 			sourceTree = "<group>";
@@ -120,6 +134,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E77E8F34251A890200E48190 /* main.cpp in Sources */,
+				E77E8F3E251A8F7B00E48190 /* Mesh_Construction.cpp in Sources */,
+				E7AD2F2C253955D600B4B9A8 /* Unit_Testing.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
