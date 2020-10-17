@@ -14,7 +14,7 @@
 struct data
 {
     int x;
-    int y;
+    int y;  //this should have real coordinates, as well as a pointer for wind etc.
 };
 
 struct mesh_node
