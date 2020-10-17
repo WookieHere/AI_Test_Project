@@ -10,11 +10,13 @@
 #define Mesh_Construction_hpp
 #include <stdlib.h>
 #include <stdio.h>
+#include "Player.hpp"
 
 struct data
 {
     int x;
     int y;  //this should have real coordinates, as well as a pointer for wind etc.
+    vector* wind_vector; //This will be left as NULL until the Player chooses the node.
 };
 
 struct mesh_node
