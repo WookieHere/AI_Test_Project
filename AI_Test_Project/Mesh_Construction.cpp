@@ -107,3 +107,5 @@ mesh_node* get_node(Cost_mesh* used_mesh, int x, int y)
     }
     return node_pointer;
 }
+
+

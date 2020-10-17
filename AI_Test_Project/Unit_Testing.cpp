@@ -10,9 +10,10 @@
 
 void print_mesh(Cost_mesh* used_mesh)
 {
-    printf("|");
+    
     for(int i = 0; i < used_mesh->y_width; i++)
     {
+        printf("|");
         for(int j = 0; j < used_mesh->x_width; j++)
         {
             print_data(get_node(used_mesh, j, i)->data);

@@ -6,12 +6,14 @@
 //  Copyright © 2020 Luke Nasby. All rights reserved.
 //
 
-#ifndef Route_Constructor_h
-#define Route_Constructor_h
+#ifndef Route_Constructor_hpp
+#define Route_Constructor_hpp
 
-typedef struct Heightmap
+struct Heightmap
 {
     FILE* heightmap_img;
 }
+
+
 
 #endif /* Route_Constructor_h */

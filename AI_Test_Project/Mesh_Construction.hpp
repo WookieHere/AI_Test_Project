@@ -6,8 +6,8 @@
 //  Copyright © 2020 Luke Nasby. All rights reserved.
 //
 
-#ifndef Mesh_Construction_h
-#define Mesh_Construction_h
+#ifndef Mesh_Construction_hpp
+#define Mesh_Construction_hpp
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -28,9 +28,9 @@ struct mesh_node
 
 struct Cost_mesh
 {
-    int x_width;    //this will be a rotated selection based on the plane's current trajectory from the image.
+    int x_width;
     int y_width;    //rectangular stretched based on current velocity
-    struct mesh_node* origin;   //the 0,0 of the grid
+    struct mesh_node* origin;   //the 0,0 of the grid (top-left)
 };
 
 Cost_mesh*  create_cost_mesh(int x_size, int y_size);
