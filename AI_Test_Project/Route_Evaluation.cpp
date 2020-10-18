@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include "Route_Constructor.hpp"
+#include "Output_Handler.hpp"
 //#include "Player.hpp"
 //#include "Mesh_Construction.hpp"
 
@@ -15,4 +16,10 @@ void Evaluate_node(data* node, Player_data* Player_data)
 {
     //do not evaluate using turbulence of mesh node.
     //Leave for Zach...
+}
+
+statistics* Evaluate_route(Coordinate_head* route, int average_velocity)
+{
+    //figure this out later...
+    return NULL;
 }

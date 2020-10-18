@@ -108,4 +108,21 @@ mesh_node* get_node(Cost_mesh* used_mesh, int x, int y)
     return node_pointer;
 }
 
-
+void doMesh(void(*func)(Cost_mesh*, mesh_node*), Cost_mesh* mesh)
+{
+    mesh_node* column_holder = mesh->origin;
+    mesh_node* traversal_node = mesh->origin;
+    for(int i = 0; i < mesh->y_width; i++)
+    {
+        for(int j = 0; j < mesh->x_width; j++)
+        {
+            func(mesh, traversal_node);
+            traversal_node = traversal_node->west_coord;
+        }//goes through a row left to right
+        column_holder = column_holder->south_coord;
+        traversal_node = column_holder;
+    }
+}//This does whatever function is sent to it to the whole mesh
+ //Player will have a mesh around it's reference frame, and the
+ //cost evaluation function will run for each node in the mesh,
+ //then the minimum will be found

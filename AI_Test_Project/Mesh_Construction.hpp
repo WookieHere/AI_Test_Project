@@ -39,7 +39,8 @@ Cost_mesh*  create_cost_mesh(int x_size, int y_size);
 mesh_node*  create_mesh_node();
 data*       create_data();
 data*       set_data(int x, int y);
-mesh_node* get_node(Cost_mesh*, int x, int y);
+mesh_node*  get_node(Cost_mesh*, int x, int y);
+void        doMesh(void(*func)(Cost_mesh*, mesh_node*), Cost_mesh*);
 
 
 
