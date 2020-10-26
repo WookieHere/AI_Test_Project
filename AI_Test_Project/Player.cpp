@@ -27,14 +27,25 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     this->Player_data->travel_direction->X = 0;
     this->Player_data->travel_direction->Y = 0;
     this->Player_data->travel_direction->Z = 0;
+    this->Player_data->Player_position = Input_Console->getOrigin();
+    this->Player_data->Player_Destination = Input_Console->getDestination();
     this->distance_to_destination = 0;      //placeholder for updateData();
     this->Player_data->wind_vector = 0;     //for updateData();
 }
 
+double Player::getDistance(Coordinate A, Coordinate B)
+{
+    double result = sqrt(pow(A.X - B.X, 2) + pow(A.Y - B.Y, 2));
+    return result;
+}
+
 void Player::updateData()
 {
-    this->Player_data->Player_Destination = Input_Console->getDestination();
-    this->distance_to_destination = sqrt(pow((double)this->Player_data->Player_Destination->X, 2) + pow((double)this->Player_data->Player_Destination->Y, 2));
-    this->Player_data->wind_vector = this->Input_Console->getVector(Player_data->Player_position); //This will not work with current implementation (it will always check 0,0 at first)
+    this->distance_to_destination = this->getDistance(*Player_data->Player_position, *Player_data->Player_Destination);
+    this->Player_data->wind_vector = this->Input_Console->getVector(Player_data->Player_position);
+    //update current velocity
+    //update fuel use
     
 }
+
+

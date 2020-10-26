@@ -60,3 +60,28 @@ void addNodeCoordinate(Coordinate_head* head, Coordinate* data)
     head->length++;
 }//This adds a Coordinate to the linked list and updates the head;
 
+Range_node* createNodeRange()
+{
+    Range_node* new_node = (Range_node*)malloc(sizeof(Range_node));
+    return new_node;
+}//probably never called directly in class etc. Use setNode
+
+Range_node* setNodeRange(Range_tuple* new_data)
+{
+    Range_node* new_node = createNodeRange();
+    new_node->Range_tuple = new_data;
+    return new_node;
+}
+
+void addNodeRange(Range_head* head, Range_tuple* data)
+{
+    Range_node* temp_pointer = head->next_node;
+    Range_node* new_node = setNodeRange(data);
+    for(int i = 0; i < head->length; i++)
+    {
+        temp_pointer = temp_pointer->next_node;
+    }
+    temp_pointer->next_node = new_node;
+    //new_node->next_node = NULL; //just making sure?
+    head->length++;
+}//This adds a Coordinate to the linked list and updates the head;

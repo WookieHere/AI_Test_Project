@@ -14,29 +14,36 @@
 
 struct vector
 {
-    int X : 8;
-    int Y : 8;
-    int Z : 8;
+    signed int X : 8;
+    signed int Y : 8;
+    signed int Z : 8;
     //This means 8 bits used for each direction, since it is pulled from a 8 bit RGB value.
+    //the max value of a direction is (255-1)/2 * 37 (km/h)
+};
+
+struct unit_vector
+{
+    double X;
+    double Y;
+    double Z;
 };
 #include "Mesh_Construction.hpp"
 
 struct Coordinate
 {
-    int X;
-    int Y;
+    double X;
+    double Y;
 };
-
-
 
 struct Genetics
 {
-    int time_weight;    //(work*time/distance + velocity/distance)^-1 AKA how long it took to get there
-    int distance_weight;//change in distance to destination
-    int height_weight;    //sin(change_in_height/distance)*Fuel_mileage_const
-    int translation_weight; //(F-(F.dr))Fuel_mileage_const
-    int accuracy_weight;    //guessed_work/real_work
-    int turning_rate;       //last velocity vector vs current
+    double time_weight;    //(work*time/distance + velocity/distance)^-1 AKA how long it took to get there
+    double distance_weight;//change in distance to destination
+    double height_weight;    //sin(change_in_height/distance)*Fuel_mileage_const
+    double translation_weight; //(F-(F.dr))Fuel_mileage_const
+    double accuracy_weight;    //guessed_work/real_work
+    double turning_rate;       //last velocity vector vs current
+    double change_constant;     //generate key coordinate ranges via input console
 };
 
 struct Player_data
@@ -45,7 +52,7 @@ struct Player_data
     int current_velocity;   //running current velocity. dropping below a constant will result in fuel use
     int fuel_use;    //running total of force against vector
     vector* wind_vector;
-    vector* travel_direction;
+    unit_vector* travel_direction;   //unit vector of player direction
     Coordinate* Player_position;
     Coordinate* Player_Destination;
     //filled in with constants and everything later
@@ -56,6 +63,7 @@ struct Coordinate_node
     Coordinate* Coordinate;
     Coordinate_node* next_node;        //this is a linked list that will be stored per-player
 };
+
 struct Coordinate_head
 {
     int length;
@@ -66,8 +74,8 @@ struct Coordinate_head
 class Player
 {
     struct Player_data* Player_data;
-    int distance_to_destination;    //Instead of calculating it every time, this will be an easier lookup
-    int average_velocity;
+    double distance_to_destination;    //Instead of calculating it every time, this will be an easier lookup
+    double average_velocity;
                                     //The rest of the analysis for cost will be done at each node
                                     //With the results being calculated by the Output_handler
     struct Cost_mesh* reference_frame;
@@ -80,10 +88,14 @@ public:
     ~Player();
     struct Player_data getPlayerData(); //This retrieves a copy of the current data
     void updateData();          //Uses the Input Handler to update position, vector, distance, etc.
+    double getDistance(Coordinate, Coordinate); //outputs the distance between two coords
+    double getWork(Coordinate distance, vector* wind);
     
 private:
     void generateReferenceFrame();
-    
+    void modifyCost(mesh_node*);
+    double getWork(Coordinate distance, vector* wind);
+    unit_vector* toUnitVector(vector*);
 };
 
 
