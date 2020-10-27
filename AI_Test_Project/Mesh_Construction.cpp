@@ -7,7 +7,7 @@
 //
 
 #include "Mesh_Construction.hpp"
-
+#include "Player.hpp"
 data* create_data()
 {
     data* allocated_memory = (data*)malloc(sizeof(data));
@@ -19,8 +19,8 @@ data* set_data(int x, int y)
     data* result_data = create_data();
     //result_data->x = (int*)malloc(sizeof(int));
     //result_data->y = (int*)malloc(sizeof(int));
-    result_data->x = x;
-    result_data->y = y;
+    result_data->Coord->X = x;
+    result_data->Coord->Y = y;
     return result_data;
 }
 
@@ -108,7 +108,7 @@ mesh_node* get_node(Cost_mesh* used_mesh, int x, int y)
     return node_pointer;
 }
 
-void doMesh(void(*func)(Cost_mesh*, mesh_node*), Cost_mesh* mesh)
+void doMesh(void(*func)(mesh_node*), Cost_mesh* mesh)
 {
     mesh_node* column_holder = mesh->origin;
     mesh_node* traversal_node = mesh->origin;
@@ -116,7 +116,7 @@ void doMesh(void(*func)(Cost_mesh*, mesh_node*), Cost_mesh* mesh)
     {
         for(int j = 0; j < mesh->x_width; j++)
         {
-            func(mesh, traversal_node);
+            func(traversal_node);
             traversal_node = traversal_node->west_coord;
         }//goes through a row left to right
         column_holder = column_holder->south_coord;

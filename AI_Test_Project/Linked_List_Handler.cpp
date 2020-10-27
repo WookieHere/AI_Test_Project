@@ -69,7 +69,7 @@ Range_node* createNodeRange()
 Range_node* setNodeRange(Range_tuple* new_data)
 {
     Range_node* new_node = createNodeRange();
-    new_node->Range_tuple = new_data;
+    new_node->Range = new_data;
     return new_node;
 }
 

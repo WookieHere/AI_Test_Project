@@ -25,5 +25,5 @@ void print_mesh(Cost_mesh* used_mesh)
 
 void print_data(data* used_data)
 {
-    printf("%d,%d", used_data->x, used_data->y);
+    printf("%d,%d", (int)used_data->Coord->X, (int)used_data->Coord->Y);
 }

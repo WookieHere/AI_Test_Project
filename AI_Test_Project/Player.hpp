@@ -89,13 +89,18 @@ public:
     struct Player_data getPlayerData(); //This retrieves a copy of the current data
     void updateData();          //Uses the Input Handler to update position, vector, distance, etc.
     double getDistance(Coordinate, Coordinate); //outputs the distance between two coords
-    double getWork(Coordinate distance, vector* wind);
+    //double getWork(Coordinate distance, vector* wind);
     
 private:
     void generateReferenceFrame();
-    void modifyCost(mesh_node*);
-    double getWork(Coordinate distance, vector* wind);
+    void modifyCost(struct mesh_node*);
+    double getWork(Coordinate*, vector*);
     unit_vector* toUnitVector(vector*);
+    double getForce(int, Config*);
+    double getLostWork(double, double, Config*);
+    Coordinate* subCoordinates(Coordinate*, Coordinate*);
+    double getTimeAdded(double, double);
+    double getTurnRate(unit_vector*, unit_vector*);
 };
 
 

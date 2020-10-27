@@ -83,6 +83,7 @@
 				E77E8F33251A890200E48190 /* main.cpp */,
 				E7A7892A253BFB7700B385D7 /* Player.cpp */,
 				E77E8F3A251A899E00E48190 /* Player.hpp */,
+				E75FAF9325474E960033E312 /* Player_Travel.cpp */,
 				E77E8F3D251A8F7B00E48190 /* Mesh_Construction.cpp */,
 				E77E8F3C251A8AE800E48190 /* Mesh_Construction.hpp */,
 				E7A78927253BF06800B385D7 /* Linked_List_Handler.cpp */,
@@ -95,7 +96,6 @@
 				E7A7892D253C03C500B385D7 /* Output_Handler.hpp */,
 				E7A7892F253C03DB00B385D7 /* Input_Handler.cpp */,
 				E7A78930253C03DB00B385D7 /* Input_Handler.hpp */,
-				E75FAF9325474E960033E312 /* Player_Travel.cpp */,
 			);
 			path = AI_Test_Project;
 			sourceTree = "<group>";
