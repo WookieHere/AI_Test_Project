@@ -100,9 +100,10 @@ void Player::modifyCost(mesh_node* current_node)
     direction_vector->Y = current_node->data->Coord->Y * parameters.roughness;
     direction_vector->Z = 0;
     unit_vector* unit_dir = toUnitVector(direction_vector);
-    //double turn_rate = this->getTurnRate(this->Player_data->travel_direction, subCoordinates(&new_loc, this->Player_data->travel_direction))
-    
-    
+    //double turn_rate = this->getTurnRate(this->Player_data->travel_direction, subCoordinates(&new_loc, this->Player_data->travel_direction));
+    //int key_change = getKeyChanges(&new_loc, this->Player_data->Player_position);
+    //double Node_Cost = interactGenetics(new_dist_destination, distance_traveled, Lost_work, time_taken, turn_rate, key_change);
+    //current_node->data->Cost = Node_Cost;
     
 }
 

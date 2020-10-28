@@ -14,6 +14,7 @@
 
 struct data
 {
+    double Cost;
     struct Coordinate* Coord;//this should have real coordinates, as well as a pointer for wind etc.
     struct vector* wind_vector; //This will be left as NULL until the Player chooses the node.
 };

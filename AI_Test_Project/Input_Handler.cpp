@@ -35,7 +35,7 @@ vector* Input_handler::getVector(Coordinate* coord)
     //This will scan an image found in the config for teh RGB value at that pixel...
 
     ImageRGB image;
-    load_ppm(image, "USA_TM.ppm", coord.X, coord.Y);
+    load_ppm(image, "USA_TM.ppm", coord->X, coord->Y);
     printf("\nTarget Pixel: [%u, %u, %u]\n", image.pixel.r, image.pixel.g, image.pixel.b); //for testing purposes
     return NULL;
 }

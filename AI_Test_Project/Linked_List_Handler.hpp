@@ -25,7 +25,7 @@ Coordinate_node* setNodeCoordinate(Coordinate* new_data);
 void addNodeCoordinate(Coordinate_head* head, Coordinate_node* data);   //This one is a stack
 
 Range_node* createNodeRange();
-Range_node* setNoderange(Range_tuple* new_data);
+Range_node* setNodeRange(Range_tuple* new_data);
 void addNodeRange(Range_head* head, Range_node* data);  //This one is a Queue
 //Technically these functions could be universal with just variations in the
  //void* version of a data*, but these functions could be placed into a class for
