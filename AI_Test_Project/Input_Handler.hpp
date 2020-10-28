@@ -9,6 +9,28 @@
 #ifndef Input_Handler_hpp
 #define Input_Handler_hpp
 #include <stdio.h>
+#include <iostream>
+#include <stdlib.h>
+#include <fstream>
+#include <vector>
+struct RGB
+{
+    unsigned int r, g, b;
+};
+struct ImageRGB
+{
+    int w, h;
+    RGB pixel;
+};
+typedef unsigned char byte;
+typedef byte* pbyte;
+void load_ppm(ImageRGB& img, const std::string& name, int rows, int cols);
+void eat_line(pbyte& ptr, const pbyte end);
+void eat_comment(pbyte& ptr, const pbyte end);
+void eat_white(pbyte& ptr, const pbyte end);
+int load_file(std::vector<byte>& buf, const std::string& name);
+void eat_token(pbyte& ptr, const pbyte end);
+int get_int(pbyte& ptr, const pbyte end);
 
 struct Config
 {
@@ -36,6 +58,7 @@ struct Range_head
     Range_node* next_node;
 };
 
+
 class Input_handler
 {
     Config* User_config;
@@ -44,7 +67,7 @@ class Input_handler
     struct Coordinate* resolution;  //pixels in image as X/Y
     double scale;   //This is the pixels/meter type scale
     Range_head* Range_list; //this defines ranges of derivitives
-    
+
 public:
     Input_handler(Coordinate*);
     struct Coordinate* getCoordinate(class Player*);  //Like an update position. Mostly a placeholder
@@ -52,5 +75,4 @@ public:
     struct Coordinate* getOrigin();
     struct vector* getVector(Coordinate* coord);
 };
-
 #endif /* Input_Handler_hpp */
