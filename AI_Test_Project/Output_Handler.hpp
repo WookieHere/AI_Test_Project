@@ -33,6 +33,8 @@ class Output_handler
     
 public:
     Player_head* rankPlayers(Player_head* head);    //This will rank players by best time etc.
+    FILE* initPPM_file(const char* output_file, int width, int height); //makes the ppm file header
+    void drawVector(FILE* output_file, Coordinate* A, Coordinate* B); //draw a line between two points
 };
 
 
