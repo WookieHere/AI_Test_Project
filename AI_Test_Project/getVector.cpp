@@ -16,9 +16,18 @@ vector* Input_handler::getVector(Coordinate* coord)
 
     ImageRGB image;
     load_ppm(image, this->User_config->turbulence_map, coord->X, coord->Y);
-    printf("\nTarget Pixel: [%u, %u, %u]\n", image.pixel.r, image.pixel.g, image.pixel.b); //for testing purposes
+    //printf("\nTarget Pixel: [%u, %u, %u]\n", image.pixel.r, image.pixel.g, image.pixel.b); //for testing purposes
     //return NULL
-    return createVector();
+    vector* test_vector = createVector();
+    /*
+    test_vector->X = image.pixel.r;
+    test_vector->Y = image.pixel.g;
+    test_vector->Z = image.pixel.b;
+     */
+    test_vector->X = 127;
+    test_vector->Y = 0;
+    test_vector->Z = 50;
+    return test_vector;
 }
 
 void eat_token(pbyte& ptr, const pbyte end)
@@ -74,7 +83,7 @@ int load_file(std::vector<byte>& buf, const char* name)
     FILE* f = fopen(name, "rb");
     if (!f)
     {
-        std::cout << "Could not open file: " << name << std::endl;
+        //std::cout << "Could not open file: " << name << std::endl;
         return 1;
     }
 
@@ -98,7 +107,7 @@ void load_ppm(ImageRGB& img, const char* name, int rows, int cols)
     std::vector<byte> file;
     if (load_file(file, name))
     {
-        std::cout << "Could not open file: " << name << std::endl;
+       // std::cout << "Could not open file: " << name << std::endl;
         return;
     }
 

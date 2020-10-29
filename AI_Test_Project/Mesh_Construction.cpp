@@ -64,7 +64,7 @@ Cost_mesh* create_cost_mesh(int x_size, int y_size)
         {
             //trailing_pointer = node_pointer;
             node_pointer = create_mesh_node();
-            node_pointer->data = set_data(i, j);
+            node_pointer->data = set_data(j, i);
             if(i == 0 && j == 0)
             {
                 Allocated_mesh->origin = node_pointer;

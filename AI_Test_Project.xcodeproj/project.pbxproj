@@ -18,6 +18,8 @@
 		E7A78931253C03DB00B385D7 /* Input_Handler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7A7892F253C03DB00B385D7 /* Input_Handler.cpp */; };
 		E7AD2F2C253955D600B4B9A8 /* Unit_Testing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AD2F2A253955D600B4B9A8 /* Unit_Testing.cpp */; };
 		E7AD2F2E253B32F700B4B9A8 /* Route_Evaluation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7AD2F2D253B32F700B4B9A8 /* Route_Evaluation.cpp */; };
+		E7C48CEF254A9A5800164CC8 /* Player_Physics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C48CEE254A9A5800164CC8 /* Player_Physics.cpp */; };
+		E7C48CF2254AA22300164CC8 /* Random_Generator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7C48CF0254AA22300164CC8 /* Random_Generator.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,6 +56,9 @@
 		E7AD2F2A253955D600B4B9A8 /* Unit_Testing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Unit_Testing.cpp; sourceTree = "<group>"; };
 		E7AD2F2B253955D600B4B9A8 /* Unit_Testing.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Unit_Testing.hpp; sourceTree = "<group>"; };
 		E7AD2F2D253B32F700B4B9A8 /* Route_Evaluation.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Route_Evaluation.cpp; sourceTree = "<group>"; };
+		E7C48CEE254A9A5800164CC8 /* Player_Physics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player_Physics.cpp; sourceTree = "<group>"; };
+		E7C48CF0254AA22300164CC8 /* Random_Generator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Random_Generator.cpp; sourceTree = "<group>"; };
+		E7C48CF1254AA22300164CC8 /* Random_Generator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Random_Generator.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +111,9 @@
 				E74FB745254A59AD008D800A /* readConfig.cpp */,
 				E74FB747254A7759008D800A /* USA_TM.ppm */,
 				E74FB744254A563D008D800A /* Test_Config.txt */,
+				E7C48CEE254A9A5800164CC8 /* Player_Physics.cpp */,
+				E7C48CF0254AA22300164CC8 /* Random_Generator.cpp */,
+				E7C48CF1254AA22300164CC8 /* Random_Generator.hpp */,
 			);
 			path = AI_Test_Project;
 			sourceTree = "<group>";
@@ -169,6 +177,8 @@
 			files = (
 				E77E8F34251A890200E48190 /* main.cpp in Sources */,
 				E74FB746254A59AD008D800A /* readConfig.cpp in Sources */,
+				E7C48CEF254A9A5800164CC8 /* Player_Physics.cpp in Sources */,
+				E7C48CF2254AA22300164CC8 /* Random_Generator.cpp in Sources */,
 				E7A78929253BF06800B385D7 /* Linked_List_Handler.cpp in Sources */,
 				E7A7892E253C03C500B385D7 /* Output_Handler.cpp in Sources */,
 				E7A7892B253BFB7700B385D7 /* Player.cpp in Sources */,

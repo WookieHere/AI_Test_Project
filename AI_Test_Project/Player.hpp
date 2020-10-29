@@ -39,10 +39,12 @@ struct Coordinate
 
 unit_vector* toUnitVector(vector* A);
 Coordinate* subCoordinates(Coordinate* A, Coordinate* B);
+Coordinate* addCoordinates(Coordinate* A, Coordinate* B);
 unit_vector* connectCoords(Coordinate* A, Coordinate* B);
 unit_vector* createUnitVector();
 Coordinate* createCoordinate();
 vector* createVector();
+
 
 struct Genetics
 {
@@ -51,7 +53,7 @@ struct Genetics
     double distance_weight;//change in distance to destination
     double work_weight;    //sin(change_in_height/distance)*Fuel_mileage_const = height weight
     // translation_weight; //(F-(F.dr))Fuel_mileage_const
-    double accuracy_weight;    //guessed_work/real_work
+    //double accuracy_weight;    //guessed_work/real_work
     double turning_rate;       //last velocity vector vs current
     double change_constant;     //generate key coordinate ranges via input console
 };
@@ -63,8 +65,8 @@ struct Agent_data
     double fuel_use;    //running total of force against vector
     vector* wind_vector;
     unit_vector* travel_direction;   //unit vector of player direction
-    Coordinate* Player_position;
-    Coordinate* Player_Destination;
+    Coordinate Player_position;
+    Coordinate Player_Destination;
     //filled in with constants and everything later
 };
 
@@ -85,9 +87,10 @@ class Player
 {
     Agent_data* Player_data;
     double distance_to_destination;    //Instead of calculating it every time, this will be an easier lookup
-    double average_velocity;
+    //double average_velocity;
                                     //The rest of the analysis for cost will be done at each node
                                     //With the results being calculated by the Output_handler
+    double time_taken;  //in seconds
     struct Cost_mesh* reference_frame;
     struct Coordinate_head* Route;
     class Output_handler* Output_route; //This will be a class in Route_Constructor.hpp
@@ -101,10 +104,11 @@ public:
     double getDistance(Coordinate*, Coordinate*); //outputs the distance between two coords
     //double getWork(Coordinate distance, vector* wind);
     void travel();
+    void manGenetics(double*);
     
 private:
     void generateReferenceFrame();
-    void modifyCost(struct mesh_node*);
+    double modifyCost(struct mesh_node*);
     double getWork(Coordinate*, vector*);
     //unit_vector* toUnitVector(vector*);
     double getForce(int, Config*);
@@ -114,7 +118,7 @@ private:
     double getTurnRate(unit_vector*, unit_vector*);
     //unit_vector* connectCoords(Coordinate*, Coordinate*);
     double interactGenetics(double*);
-    void costMeshAssign(Cost_mesh* mesh);
+    mesh_node* costMeshAssign(Cost_mesh* mesh);
 };
 
 

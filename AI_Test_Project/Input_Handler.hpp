@@ -88,8 +88,8 @@ public:
     Input_handler(Coordinate*, Coordinate*, double);
     void setConfig(const char* filename);
     struct Coordinate* getCoordinate(class Player*);  //Like an update position. Mostly a placeholder
-    struct Coordinate* getDestination();
-    struct Coordinate* getOrigin();
+    struct Coordinate getDestination();
+    struct Coordinate getOrigin();
     struct vector* getVector(Coordinate* coord);
     Config getConfig();
 };
