@@ -1,0 +1,23 @@
+Filenames:
+{
+Input_file: USA_TM.ppm
+Output_file: some_image.jpg
+}
+
+Mesh_parameters:
+{
+x_size = 9;                     //reference frame dimensions (try to make it an odd number)
+y_size = 9;
+roughness = 2;                  //meters per node
+}
+
+Boeing_747:
+{
+Avg_Thrust = 252000;            //DEFINITELY a placeholder. avg thrust for a 747 Boeing (newtons)
+Minimum_Velocity = 294.98;      //minimum velocity in m/s
+Wind_Unit = 4.855;              //m/s per 1 unit of wind vector ((37/127) * (1000/60))
+Wing_Area = 541.2;              //meters^2 for Boeing 747
+Pressure_Const = .613;          //P = .613V^2 where V is wind velocity
+Drag_Coefficient: .031;         //no unit, C_o in equations of Boeing 747
+Max_Turn_Rate: .07;             //radians
+}

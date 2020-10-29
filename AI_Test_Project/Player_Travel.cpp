@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "Player.hpp"
+#define     COST_INPUT_NUM     5
 
 unit_vector* toUnitVector(vector* A)
 {
@@ -42,7 +43,7 @@ double Player::getWork(Coordinate* checked_dist, vector* wind)
     //unit_vector* unit_wind = toUnitVector(wind);
     Config parameters = this->Input_Console->getConfig();
     Coordinate origin = {static_cast<double>(parameters.x_size / 2), static_cast<double>(parameters.y_size / 2)};
-    double meters_traveled = this->getDistance(*checked_dist, origin); //not optimal technically
+    double meters_traveled = this->getDistance(checked_dist, &origin); //not optimal technically
     //double velocity_X = this->Player_data->current_velocity * this->Player_data->travel_direction->X;
     //double velocity_Y = this->Player_data->current_velocity * this->Player_data->travel_direction->Y;
     //double velocity_Z = this->Player_data->current_velocity * this->Player_data->travel_direction->Z;
@@ -73,6 +74,24 @@ double Player::getTimeAdded(double Lost_work, double distance_traveled)
     }
 }
 
+Coordinate* Player::subCoordinates(Coordinate* A, Coordinate* B)
+{
+    Coordinate* new_Coordinate = (Coordinate*)malloc(sizeof(Coordinate));
+    new_Coordinate->X = A->X - B->X;
+    new_Coordinate->Y = A->Y - B->Y;        //this just returns the difference between two coordinates
+    return new_Coordinate;
+}
+
+unit_vector* Player::connectCoords(Coordinate* A, Coordinate* B)
+{
+    vector* new_vector = (vector*)malloc(sizeof(vector));
+    new_vector->X = A->X - B->X;
+    new_vector->Y = A->Y - B->Y;
+    new_vector->Z = 0;
+    unit_vector* new_unit_vector = toUnitVector(new_vector);
+    return new_unit_vector; //this returns a vector that can connect two given points as a unit vector
+}
+
 double Player::getTurnRate(unit_vector* A, unit_vector* B)
 {
     double angle = acos(((A->X * B->X) + (A->Y * B->Y) + (A->Z * B->Z)) / (sqrt((pow(A->X, 2) + pow(A->Y, 2) + pow(A->Z, 2))) * sqrt((pow(B->X, 2)) + pow(B->Y, 2)) + pow(B->Z, 2)));
@@ -85,6 +104,25 @@ double Player::getTurnRate(unit_vector* A, unit_vector* B)
     }
 }
 
+double Player::interactGenetics(double* input)
+{
+    /*
+     cost_input_array[0] = distance_traveled;
+     cost_input_array[1] = distance_delta;
+     cost_input_array[2] = Lost_work;
+     cost_input_array[3] = time_taken;
+     cost_input_array[4] = turn_rate;
+     */
+    Genetics* genes = this->Player_data->Player_genes;  //just to simplify later lines
+    double total_cost = 0;
+    total_cost += genes->time_weight * input[3];
+    total_cost += genes->travel_weight * input[0];
+    total_cost += genes->work_weight * input[2];
+    total_cost += genes->turning_rate * input[4];
+    total_cost += genes->distance_weight * input[1];
+    return total_cost;
+}
+
 void Player::modifyCost(mesh_node* current_node)
 {
     //genetics are already loaded
@@ -92,24 +130,43 @@ void Player::modifyCost(mesh_node* current_node)
     Config parameters = this->Input_Console->getConfig();
     new_loc.X = (current_node->data->Coord->X * parameters.roughness) + Player_data->Player_position->X;
     new_loc.Y = (current_node->data->Coord->Y * parameters.roughness) + Player_data->Player_position->Y;
-    double distance_traveled = getDistance(*this->Player_data->Player_position, new_loc);
+    double distance_traveled = getDistance(this->Player_data->Player_position, &new_loc);
+    double distance_delta = getDistance(&new_loc, this->Player_data->Player_Destination) - getDistance(this->Player_data->Player_position, this->Player_data->Player_Destination);
     double Lost_work = this->getWork(subCoordinates(this->Player_data->Player_position, &new_loc), this->Input_Console->getVector(&new_loc));
     double time_taken = this->getTimeAdded(Lost_work, distance_traveled);
-    vector* direction_vector = (vector*)malloc(sizeof(vector));
-    direction_vector->X = current_node->data->Coord->X * parameters.roughness;
-    direction_vector->Y = current_node->data->Coord->Y * parameters.roughness;
-    direction_vector->Z = 0;
-    unit_vector* unit_dir = toUnitVector(direction_vector);
-    //double turn_rate = this->getTurnRate(this->Player_data->travel_direction, subCoordinates(&new_loc, this->Player_data->travel_direction));
+    double turn_rate = this->getTurnRate(connectCoords(Player_data->Player_position, &new_loc), this->Player_data->travel_direction);
+    double* cost_input_array = (double*)malloc(sizeof(double) * COST_INPUT_NUM);
+    cost_input_array[0] = distance_traveled;
+    cost_input_array[1] = distance_delta;
+    cost_input_array[2] = Lost_work;
+    cost_input_array[3] = time_taken;
+    cost_input_array[4] = turn_rate;
     //int key_change = getKeyChanges(&new_loc, this->Player_data->Player_position);
-    //double Node_Cost = interactGenetics(new_dist_destination, distance_traveled, Lost_work, time_taken, turn_rate, key_change);
-    //current_node->data->Cost = Node_Cost;
-    
+    double Node_Cost = interactGenetics(cost_input_array);
+    current_node->data->Cost = Node_Cost;
+    //this function interacts with the genetics and simulates plane flight to
+    //generate a cost for decision making
+}
+
+void Player::costMeshAssign(Cost_mesh* mesh)
+{
+    mesh_node* column_holder = mesh->origin;
+    mesh_node* traversal_node = mesh->origin;
+    for(int i = 0; i < mesh->y_width; i++)
+    {
+        for(int j = 0; j < mesh->x_width; j++)
+        {
+            this->modifyCost(traversal_node);
+            traversal_node = traversal_node->west_coord;
+        }//goes through a row left to right
+        column_holder = column_holder->south_coord;
+        traversal_node = column_holder;
+    }
 }
 
 void Player::generateReferenceFrame()
 {
     Config parameters = this->Input_Console->getConfig();
     this->reference_frame = create_cost_mesh(parameters.x_size, parameters.y_size);
-    doMesh(this->modifyCost, reference_frame);  //this will assign a cost to each node in the mesh
+    this->costMeshAssign(reference_frame); //this will assign a cost to each node in the mesh
 }

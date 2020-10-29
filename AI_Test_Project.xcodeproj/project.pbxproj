@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E74FB743254A539C008D800A /* getVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74FB742254A539C008D800A /* getVector.cpp */; };
+		E74FB746254A59AD008D800A /* readConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74FB745254A59AD008D800A /* readConfig.cpp */; };
 		E75FAF9425474E960033E312 /* Player_Travel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E75FAF9325474E960033E312 /* Player_Travel.cpp */; };
 		E77E8F34251A890200E48190 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77E8F33251A890200E48190 /* main.cpp */; };
 		E77E8F3E251A8F7B00E48190 /* Mesh_Construction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E77E8F3D251A8F7B00E48190 /* Mesh_Construction.cpp */; };
@@ -31,6 +33,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E74FB742254A539C008D800A /* getVector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = getVector.cpp; sourceTree = "<group>"; };
+		E74FB744254A563D008D800A /* Test_Config.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Test_Config.txt; sourceTree = "<group>"; };
+		E74FB745254A59AD008D800A /* readConfig.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = readConfig.cpp; sourceTree = "<group>"; };
 		E75FAF9325474E960033E312 /* Player_Travel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player_Travel.cpp; sourceTree = "<group>"; };
 		E77E8F30251A890200E48190 /* AI_Test_Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AI_Test_Project; sourceTree = BUILT_PRODUCTS_DIR; };
 		E77E8F33251A890200E48190 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -96,6 +101,9 @@
 				E7A7892D253C03C500B385D7 /* Output_Handler.hpp */,
 				E7A7892F253C03DB00B385D7 /* Input_Handler.cpp */,
 				E7A78930253C03DB00B385D7 /* Input_Handler.hpp */,
+				E74FB742254A539C008D800A /* getVector.cpp */,
+				E74FB745254A59AD008D800A /* readConfig.cpp */,
+				E74FB744254A563D008D800A /* Test_Config.txt */,
 			);
 			path = AI_Test_Project;
 			sourceTree = "<group>";
@@ -158,12 +166,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E77E8F34251A890200E48190 /* main.cpp in Sources */,
+				E74FB746254A59AD008D800A /* readConfig.cpp in Sources */,
 				E7A78929253BF06800B385D7 /* Linked_List_Handler.cpp in Sources */,
 				E7A7892E253C03C500B385D7 /* Output_Handler.cpp in Sources */,
 				E7A7892B253BFB7700B385D7 /* Player.cpp in Sources */,
 				E77E8F3E251A8F7B00E48190 /* Mesh_Construction.cpp in Sources */,
 				E75FAF9425474E960033E312 /* Player_Travel.cpp in Sources */,
 				E7AD2F2C253955D600B4B9A8 /* Unit_Testing.cpp in Sources */,
+				E74FB743254A539C008D800A /* getVector.cpp in Sources */,
 				E7AD2F2E253B32F700B4B9A8 /* Route_Evaluation.cpp in Sources */,
 				E7A78931253C03DB00B385D7 /* Input_Handler.cpp in Sources */,
 			);

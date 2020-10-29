@@ -38,9 +38,10 @@ struct Coordinate
 struct Genetics
 {
     double time_weight;    //(work*time/distance + velocity/distance)^-1 AKA how long it took to get there
+    double travel_weight;
     double distance_weight;//change in distance to destination
-    double height_weight;    //sin(change_in_height/distance)*Fuel_mileage_const
-    double translation_weight; //(F-(F.dr))Fuel_mileage_const
+    double work_weight;    //sin(change_in_height/distance)*Fuel_mileage_const = height weight
+    // translation_weight; //(F-(F.dr))Fuel_mileage_const
     double accuracy_weight;    //guessed_work/real_work
     double turning_rate;       //last velocity vector vs current
     double change_constant;     //generate key coordinate ranges via input console
@@ -88,7 +89,7 @@ public:
     ~Player();
     struct Player_data getPlayerData(); //This retrieves a copy of the current data
     void updateData();          //Uses the Input Handler to update position, vector, distance, etc.
-    double getDistance(Coordinate, Coordinate); //outputs the distance between two coords
+    double getDistance(Coordinate*, Coordinate*); //outputs the distance between two coords
     //double getWork(Coordinate distance, vector* wind);
     
 private:
@@ -101,6 +102,9 @@ private:
     Coordinate* subCoordinates(Coordinate*, Coordinate*);
     double getTimeAdded(double, double);
     double getTurnRate(unit_vector*, unit_vector*);
+    unit_vector* connectCoords(Coordinate*, Coordinate*);
+    double interactGenetics(double*);
+    void costMeshAssign(Cost_mesh* mesh);
 };
 
 

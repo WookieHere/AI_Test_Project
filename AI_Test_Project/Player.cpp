@@ -33,15 +33,15 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     this->Player_data->wind_vector = 0;     //for updateData();
 }
 
-double Player::getDistance(Coordinate A, Coordinate B)
+double Player::getDistance(Coordinate* A, Coordinate* B)
 {
-    double result = sqrt(pow(A.X - B.X, 2) + pow(A.Y - B.Y, 2));
+    double result = sqrt(pow(A->X - B->X, 2) + pow(A->Y - B->Y, 2));
     return result;
 }
 
 void Player::updateData()
 {
-    this->distance_to_destination = this->getDistance(*Player_data->Player_position, *Player_data->Player_Destination);
+    this->distance_to_destination = this->getDistance(Player_data->Player_position, Player_data->Player_Destination);
     this->Player_data->wind_vector = this->Input_Console->getVector(Player_data->Player_position);
     //update current velocity
     //update fuel use

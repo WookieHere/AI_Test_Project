@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <vector>
+
 struct RGB
 {
     unsigned int r, g, b;
@@ -22,6 +23,8 @@ struct ImageRGB
     int w, h;
     RGB pixel;
 };
+
+//this block is for reading RGB values (Zach's code)
 typedef unsigned char byte;
 typedef byte* pbyte;
 void load_ppm(ImageRGB& img, const std::string& name, int rows, int cols);
@@ -34,7 +37,9 @@ int get_int(pbyte& ptr, const pbyte end);
 
 struct Config
 {
-    FILE* heightmap_img;
+    const char* heightmap_img;
+    const char* turbulence_map;   //purely for simulation
+    //also needs a data structure for a keyframe setup. probably an array of tuples etc
     int x_size;     //reference frame dimensions (try to make it an odd number)
     int y_size;
     double roughness;       //2 meters per node
@@ -80,7 +85,8 @@ class Input_handler
     Range_head* Range_list; //this defines ranges of derivitives
 
 public:
-    Input_handler(Coordinate*);
+    Input_handler(Coordinate*, Coordinate*, double);
+    void setConfig(const char* filename);
     struct Coordinate* getCoordinate(class Player*);  //Like an update position. Mostly a placeholder
     struct Coordinate* getDestination();
     struct Coordinate* getOrigin();
