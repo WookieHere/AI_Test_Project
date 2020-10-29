@@ -50,9 +50,9 @@ double Player::getWork(Coordinate* checked_dist, vector* wind)
     double Force_Z = this->getForce(wind->Z, &parameters);
     double Force_X = this->getForce(wind->X, &parameters);   //these might need tweaking from Wing Area
     double Force_Y = this->getForce(wind->Y, &parameters);
-    double lost_thrust_Z = getLostWork(Force_Z, meters_traveled, &parameters);
-    double lost_thrust_X = getLostWork(Force_X, meters_traveled, &parameters);
-    double lost_thrust_Y = getLostWork(Force_Y, meters_traveled, &parameters);
+    double lost_thrust_Z = this->getLostWork(Force_Z, meters_traveled, &parameters);
+    double lost_thrust_X = this->getLostWork(Force_X, meters_traveled, &parameters);
+    double lost_thrust_Y = this->getLostWork(Force_Y, meters_traveled, &parameters);
     return lost_thrust_X + lost_thrust_Y + lost_thrust_Z;   //work lost from turbulance
 }
 
@@ -74,7 +74,7 @@ double Player::getTimeAdded(double Lost_work, double distance_traveled)
     }
 }
 
-Coordinate* Player::subCoordinates(Coordinate* A, Coordinate* B)
+Coordinate* subCoordinates(Coordinate* A, Coordinate* B)
 {
     Coordinate* new_Coordinate = (Coordinate*)malloc(sizeof(Coordinate));
     new_Coordinate->X = A->X - B->X;
@@ -82,7 +82,7 @@ Coordinate* Player::subCoordinates(Coordinate* A, Coordinate* B)
     return new_Coordinate;
 }
 
-unit_vector* Player::connectCoords(Coordinate* A, Coordinate* B)
+unit_vector* connectCoords(Coordinate* A, Coordinate* B)
 {
     vector* new_vector = (vector*)malloc(sizeof(vector));
     new_vector->X = A->X - B->X;
@@ -126,10 +126,10 @@ double Player::interactGenetics(double* input)
 void Player::modifyCost(mesh_node* current_node)
 {
     //genetics are already loaded
-    Coordinate new_loc;
+    Coordinate new_loc = {0,0};
     Config parameters = this->Input_Console->getConfig();
-    new_loc.X = (current_node->data->Coord->X * parameters.roughness) + Player_data->Player_position->X;
-    new_loc.Y = (current_node->data->Coord->Y * parameters.roughness) + Player_data->Player_position->Y;
+    new_loc.X = ((current_node->data->Coord->X - (parameters.x_size/2)) * parameters.roughness) + Player_data->Player_position->X;
+    new_loc.Y = ((current_node->data->Coord->Y - (parameters.y_size/2)) * parameters.roughness) + Player_data->Player_position->Y;
     double distance_traveled = getDistance(this->Player_data->Player_position, &new_loc);
     double distance_delta = getDistance(&new_loc, this->Player_data->Player_Destination) - getDistance(this->Player_data->Player_position, this->Player_data->Player_Destination);
     double Lost_work = this->getWork(subCoordinates(this->Player_data->Player_position, &new_loc), this->Input_Console->getVector(&new_loc));
@@ -150,14 +150,16 @@ void Player::modifyCost(mesh_node* current_node)
 
 void Player::costMeshAssign(Cost_mesh* mesh)
 {
-    mesh_node* column_holder = mesh->origin;
-    mesh_node* traversal_node = mesh->origin;
+    mesh_node* column_holder = create_mesh_node();
+    mesh_node* traversal_node = create_mesh_node();
+    column_holder = mesh->origin;
+    traversal_node = mesh->origin;
     for(int i = 0; i < mesh->y_width; i++)
     {
         for(int j = 0; j < mesh->x_width; j++)
         {
             this->modifyCost(traversal_node);
-            traversal_node = traversal_node->west_coord;
+            traversal_node = traversal_node->east_coord;
         }//goes through a row left to right
         column_holder = column_holder->south_coord;
         traversal_node = column_holder;
@@ -169,4 +171,5 @@ void Player::generateReferenceFrame()
     Config parameters = this->Input_Console->getConfig();
     this->reference_frame = create_cost_mesh(parameters.x_size, parameters.y_size);
     this->costMeshAssign(reference_frame); //this will assign a cost to each node in the mesh
+    printf("done");
 }

@@ -24,7 +24,7 @@ void Input_handler::setConfig(const char* filename)
     
     while (fgets(max_name_size, MAX_LINE_SIZE, config_file))
     {
-        <#statements#>
+        //do stuff
     }
     
 }

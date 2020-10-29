@@ -27,11 +27,11 @@ struct ImageRGB
 //this block is for reading RGB values (Zach's code)
 typedef unsigned char byte;
 typedef byte* pbyte;
-void load_ppm(ImageRGB& img, const std::string& name, int rows, int cols);
+void load_ppm(ImageRGB& img, const char* name, int rows, int cols);
 void eat_line(pbyte& ptr, const pbyte end);
 void eat_comment(pbyte& ptr, const pbyte end);
 void eat_white(pbyte& ptr, const pbyte end);
-int load_file(std::vector<byte>& buf, const std::string& name);
+int load_file(std::vector<byte>& buf, const char* name);
 void eat_token(pbyte& ptr, const pbyte end);
 int get_int(pbyte& ptr, const pbyte end);
 

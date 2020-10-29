@@ -9,17 +9,23 @@
 #include <stdio.h>
 #include <math.h>
 #include "Player.hpp"
-#define LAUNCH_VELOCITY 100 //placeholder
+
 
 
 Player::Player(Input_handler* Input, Output_handler* Output)
 {
-    Coordinate* Origin = (Coordinate*)malloc(sizeof(Coordinate));
-    Origin->X = 0;
-    Origin->Y = 0;
+    //Coordinate* Origin = (Coordinate*)malloc(sizeof(Coordinate));
+    this->Player_data = (Agent_data*)malloc(sizeof(Agent_data));
+    //Origin->X = 0;
+    //Origin->Y = 0;
+    this->Player_data->Player_Destination = createCoordinate();
+    this->Player_data->Player_genes = (Genetics*)malloc(sizeof(Genetics));
+    this->Player_data->Player_position = createCoordinate();
+    this->Player_data->travel_direction = createUnitVector();
+    this->Player_data->wind_vector = createVector();
     this->average_velocity = 0;
-    this->Player_data->current_velocity = LAUNCH_VELOCITY;
-    this->Player_data->Player_position = Origin;
+    this->Player_data->current_velocity = 10000;
+    //this->Player_data->Player_position = Origin;
     this->Player_data->fuel_use = 0;
     this->Input_Console = Input;
     this->Output_route = Output;
@@ -46,6 +52,11 @@ void Player::updateData()
     //update current velocity
     //update fuel use
     
+}
+
+void Player::travel()
+{
+    this->generateReferenceFrame();
 }
 
 

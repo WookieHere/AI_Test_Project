@@ -11,7 +11,23 @@
 data* create_data()
 {
     data* allocated_memory = (data*)malloc(sizeof(data));
+    allocated_memory->Coord = (Coordinate*)malloc(sizeof(Coordinate));
     return allocated_memory;
+}
+
+unit_vector* createUnitVector()
+{
+    return (unit_vector*)malloc(sizeof(unit_vector));
+}
+
+vector* createVector()
+{
+    return (vector*)malloc(sizeof(vector));
+}
+
+Coordinate* createCoordinate()
+{
+    return (Coordinate*)malloc(sizeof(Coordinate));
 }
 
 data* set_data(int x, int y)

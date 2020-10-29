@@ -12,6 +12,8 @@
 #include "Input_Handler.hpp"
 #include "Output_Handler.hpp"
 
+
+
 struct vector
 {
     signed int X : 8;
@@ -35,6 +37,13 @@ struct Coordinate
     double Y;
 };
 
+unit_vector* toUnitVector(vector* A);
+Coordinate* subCoordinates(Coordinate* A, Coordinate* B);
+unit_vector* connectCoords(Coordinate* A, Coordinate* B);
+unit_vector* createUnitVector();
+Coordinate* createCoordinate();
+vector* createVector();
+
 struct Genetics
 {
     double time_weight;    //(work*time/distance + velocity/distance)^-1 AKA how long it took to get there
@@ -47,11 +56,11 @@ struct Genetics
     double change_constant;     //generate key coordinate ranges via input console
 };
 
-struct Player_data
+struct Agent_data
 {
     Genetics* Player_genes;
-    int current_velocity;   //running current velocity. dropping below a constant will result in fuel use
-    int fuel_use;    //running total of force against vector
+    double current_velocity;   //running current velocity. dropping below a constant will result in fuel use
+    double fuel_use;    //running total of force against vector
     vector* wind_vector;
     unit_vector* travel_direction;   //unit vector of player direction
     Coordinate* Player_position;
@@ -74,7 +83,7 @@ struct Coordinate_head
 
 class Player
 {
-    struct Player_data* Player_data;
+    Agent_data* Player_data;
     double distance_to_destination;    //Instead of calculating it every time, this will be an easier lookup
     double average_velocity;
                                     //The rest of the analysis for cost will be done at each node
@@ -86,23 +95,24 @@ class Player
     
 public:
     Player(Input_handler* Input, Output_handler* Output);       //there is only 1 Output handler/input handler in this implementation
-    ~Player();
+    //~Player();
     struct Player_data getPlayerData(); //This retrieves a copy of the current data
     void updateData();          //Uses the Input Handler to update position, vector, distance, etc.
     double getDistance(Coordinate*, Coordinate*); //outputs the distance between two coords
     //double getWork(Coordinate distance, vector* wind);
+    void travel();
     
 private:
     void generateReferenceFrame();
     void modifyCost(struct mesh_node*);
     double getWork(Coordinate*, vector*);
-    unit_vector* toUnitVector(vector*);
+    //unit_vector* toUnitVector(vector*);
     double getForce(int, Config*);
     double getLostWork(double, double, Config*);
-    Coordinate* subCoordinates(Coordinate*, Coordinate*);
+    //Coordinate* subCoordinates(Coordinate*, Coordinate*);
     double getTimeAdded(double, double);
     double getTurnRate(unit_vector*, unit_vector*);
-    unit_vector* connectCoords(Coordinate*, Coordinate*);
+    //unit_vector* connectCoords(Coordinate*, Coordinate*);
     double interactGenetics(double*);
     void costMeshAssign(Cost_mesh* mesh);
 };
