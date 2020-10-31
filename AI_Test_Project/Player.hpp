@@ -105,6 +105,7 @@ public:
     //double getWork(Coordinate distance, vector* wind);
     void travel();
     void manGenetics(double*);
+    Genetics getGenetics();
     
 private:
     void generateReferenceFrame();

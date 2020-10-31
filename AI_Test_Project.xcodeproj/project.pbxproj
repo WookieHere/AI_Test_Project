@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E728D900254D1E1800B77AD0 /* Player_Training.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E728D8FE254D1E1800B77AD0 /* Player_Training.cpp */; };
 		E74FB743254A539C008D800A /* getVector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74FB742254A539C008D800A /* getVector.cpp */; };
 		E74FB746254A59AD008D800A /* readConfig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E74FB745254A59AD008D800A /* readConfig.cpp */; };
 		E75FAF9425474E960033E312 /* Player_Travel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E75FAF9325474E960033E312 /* Player_Travel.cpp */; };
@@ -35,6 +36,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E728D8FE254D1E1800B77AD0 /* Player_Training.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player_Training.cpp; sourceTree = "<group>"; };
+		E728D8FF254D1E1800B77AD0 /* Player_Training.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Player_Training.hpp; sourceTree = "<group>"; };
 		E74FB742254A539C008D800A /* getVector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = getVector.cpp; sourceTree = "<group>"; };
 		E74FB744254A563D008D800A /* Test_Config.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = Test_Config.txt; sourceTree = "<group>"; };
 		E74FB745254A59AD008D800A /* readConfig.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = readConfig.cpp; sourceTree = "<group>"; };
@@ -95,6 +98,8 @@
 				E7A7892A253BFB7700B385D7 /* Player.cpp */,
 				E77E8F3A251A899E00E48190 /* Player.hpp */,
 				E75FAF9325474E960033E312 /* Player_Travel.cpp */,
+				E7C48CEE254A9A5800164CC8 /* Player_Physics.cpp */,
+				E728D8FE254D1E1800B77AD0 /* Player_Training.cpp */,
 				E77E8F3D251A8F7B00E48190 /* Mesh_Construction.cpp */,
 				E77E8F3C251A8AE800E48190 /* Mesh_Construction.hpp */,
 				E7A78927253BF06800B385D7 /* Linked_List_Handler.cpp */,
@@ -111,9 +116,9 @@
 				E74FB745254A59AD008D800A /* readConfig.cpp */,
 				E74FB747254A7759008D800A /* USA_TM.ppm */,
 				E74FB744254A563D008D800A /* Test_Config.txt */,
-				E7C48CEE254A9A5800164CC8 /* Player_Physics.cpp */,
 				E7C48CF0254AA22300164CC8 /* Random_Generator.cpp */,
 				E7C48CF1254AA22300164CC8 /* Random_Generator.hpp */,
+				E728D8FF254D1E1800B77AD0 /* Player_Training.hpp */,
 			);
 			path = AI_Test_Project;
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 			files = (
 				E77E8F34251A890200E48190 /* main.cpp in Sources */,
 				E74FB746254A59AD008D800A /* readConfig.cpp in Sources */,
+				E728D900254D1E1800B77AD0 /* Player_Training.cpp in Sources */,
 				E7C48CEF254A9A5800164CC8 /* Player_Physics.cpp in Sources */,
 				E7C48CF2254AA22300164CC8 /* Random_Generator.cpp in Sources */,
 				E7A78929253BF06800B385D7 /* Linked_List_Handler.cpp in Sources */,
