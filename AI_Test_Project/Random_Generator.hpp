@@ -14,9 +14,9 @@
 typedef enum randomDatatype { int_r, double_r, char_r,}randomDatatype;
 
 double getRandomDouble(int min, int max);
-double* getRandomArray(double min, double max, int size);
+double* getRandomDoubleArray(double min, double max, int size);
 int getRandomInt(int min, int max);
-int getRandomIntArray(int min, int max, int size);
+int* getRandomIntArray(int min, int max, int size);
 void swapInts(int* array, int A, int B);
 int* getRandomMatchup(int min, int max);
 int getRandom2RN(int min, int max);

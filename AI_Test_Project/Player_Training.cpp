@@ -6,10 +6,11 @@
 //  Copyright © 2020 Luke Nasby. All rights reserved.
 //
 #include "Player.hpp"
+#include "Output_Handler.hpp"
 #include "Random_Generator.hpp"
 #include "Player_Training.hpp"
 
-void Output_Cross_Over(Player* A, Player* B)
+void Output_handler::crossOver(Player* A, Player* B)
 {
     Genetics gene_A = A->getGenetics();
     Genetics gene_B = B->getGenetics();

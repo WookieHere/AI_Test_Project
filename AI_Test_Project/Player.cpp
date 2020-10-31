@@ -103,4 +103,8 @@ void Player::manGenetics(double* input_array)
     */
 }
 
+Genetics Player::getGenetics()
+{
+    return *this->Player_data->Player_genes;
+}
 

@@ -26,7 +26,7 @@ int main(int argc, const char * argv[])
     Input_handler Input_Console = Input_handler(Origin, Destination, 400);
     Output_handler Output = Output_handler();
     
-    double* rand_array = getRandomArray(-10000, 10000, 6);
+    double* rand_array = getRandomDoubleArray(-10000, 10000, 6);
     Player test_player = Player(&Input_Console, &Output);
     
     Player_head* Player_list = (Player_head*)malloc(sizeof(Player_head));
@@ -38,7 +38,7 @@ int main(int argc, const char * argv[])
     for(int i = 0; i < 500; i++)
     {
         temp_player = (Player*)malloc(sizeof(Player));
-        rand_array = getRandomArray(-10000, 10000, 6);
+        rand_array = getRandomDoubleArray(-10000, 10000, 6);
         *temp_player = Player(&Input_Console, &Output);
         temp_player->manGenetics(rand_array);
         Player_list->length++;

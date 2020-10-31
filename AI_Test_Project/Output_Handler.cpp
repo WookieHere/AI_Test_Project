@@ -27,9 +27,9 @@ FILE* Output_handler::initPPM_file(const char* output_filename, int width, int h
 	}
 
 	fprintf(out_file, "P6\n%d %d\n255\n", width, height); //this code is important for the type of ppm file and the header
-	for (int i; i < height; i++)
+	for (int i = 0; i < height; i++)
 	{
-		for (int j; j < width; j++)
+		for (int j = 0; j < width; j++)
 		{
 			fwrite(color, SIZE, SIZE_ITEMS, out_file); //binary output
 		}
