@@ -21,9 +21,9 @@ int main(int argc, const char * argv[])
     Coordinate* Destination = (Coordinate*)malloc(sizeof(Coordinate));
     Origin->X = 0;
     Origin->Y = 0;
-    Destination->X = 100;
-    Destination->Y = 100;
-    Input_handler Input_Console = Input_handler(Origin, Destination, 400);
+    Destination->X = 10000;
+    Destination->Y = 10000;
+    Input_handler Input_Console = Input_handler(Origin, Destination, 400, "USA_TM.ppm");
     Output_handler Output = Output_handler();
     
     double* rand_array = getRandomDoubleArray(-10000, 10000, 6);

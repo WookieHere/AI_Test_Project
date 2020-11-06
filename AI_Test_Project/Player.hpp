@@ -16,9 +16,9 @@
 
 struct vector
 {
-    signed int X : 8;
-    signed int Y : 8;
-    signed int Z : 8;
+    int8_t X;
+    int8_t Y;
+    int8_t Z;
     //This means 8 bits used for each direction, since it is pulled from a 8 bit RGB value.
     //the max value of a direction is (255-1)/2 * 37 (km/h)
 };

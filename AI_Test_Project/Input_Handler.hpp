@@ -27,7 +27,7 @@ struct ImageRGB
 //this block is for reading RGB values (Zach's code)
 typedef unsigned char byte;
 typedef byte* pbyte;
-void load_ppm(ImageRGB& img, const char* name, int rows, int cols);
+int load_ppm(ImageRGB& img, const char* name, int rows, int cols);
 void eat_line(pbyte& ptr, const pbyte end);
 void eat_comment(pbyte& ptr, const pbyte end);
 void eat_white(pbyte& ptr, const pbyte end);
@@ -85,7 +85,7 @@ class Input_handler
     Range_head* Range_list; //this defines ranges of derivitives
 
 public:
-    Input_handler(Coordinate*, Coordinate*, double);
+    Input_handler(Coordinate*, Coordinate*, double, const char*);
     void setConfig(const char* filename);
     struct Coordinate* getCoordinate(class Player*);  //Like an update position. Mostly a placeholder
     struct Coordinate getDestination();

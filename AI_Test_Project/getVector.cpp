@@ -9,24 +9,32 @@
 #include <stdio.h>
 #include "Input_Handler.hpp"
 #include "Player.hpp"
+#include <math.h>
 
 vector* Input_handler::getVector(Coordinate* coord)
 {
     //This will scan an image found in the config for the RGB value at that pixel...
 
     ImageRGB image;
-    load_ppm(image, this->User_config->turbulence_map, coord->X, coord->Y);
+    int error = load_ppm(image, this->User_config->turbulence_map, coord->X, coord->Y);
     //printf("\nTarget Pixel: [%u, %u, %u]\n", image.pixel.r, image.pixel.g, image.pixel.b); //for testing purposes
-    //return NULL
     vector* test_vector = createVector();
-    /*
-    test_vector->X = image.pixel.r;
-    test_vector->Y = image.pixel.g;
-    test_vector->Z = image.pixel.b;
-     */
-    test_vector->X = 127;
-    test_vector->Y = 0;
-    test_vector->Z = 50;
+    
+    if(error == 100)
+    {
+        test_vector->X = 127;
+        test_vector->Y = 0;
+        test_vector->Z = 50;
+        printf("File not loaded\n");
+        return test_vector;
+    }//error is 100 if file was NULL
+    
+    
+    test_vector->X = image.pixel.r * (int)ceil((1/pow(9, 2)));
+    test_vector->Y = image.pixel.g * (int)ceil((1/pow(9, 2)));
+    test_vector->Z = image.pixel.b * (int)ceil((1/pow(9, 2)));
+     
+    
     return test_vector;
 }
 
@@ -55,7 +63,7 @@ void eat_line(pbyte& ptr, const pbyte end)
             break;
     }
     ptr++;
-}
+}//move on from new_line
 
 void eat_comment(pbyte& ptr, const pbyte end)
 {
@@ -66,7 +74,7 @@ void eat_comment(pbyte& ptr, const pbyte end)
             break;
         eat_line(ptr, end);
     }
-}
+}//move on from comments
 
 void eat_white(pbyte& ptr, const pbyte end)
 {
@@ -75,7 +83,7 @@ void eat_white(pbyte& ptr, const pbyte end)
         if (*ptr != '\n' && *ptr != '\r' && *ptr != '\t' && *ptr != ' ')
             break;
     }
-}
+}//move ahead to nearest non-white space character
 
 int load_file(std::vector<byte>& buf, const char* name)
 {
@@ -102,13 +110,13 @@ int load_file(std::vector<byte>& buf, const char* name)
     return 0;
 }
 
-void load_ppm(ImageRGB& img, const char* name, int rows, int cols)
+int load_ppm(ImageRGB& img, const char* name, int rows, int cols)
 {
     std::vector<byte> file;
     if (load_file(file, name))
     {
        // std::cout << "Could not open file: " << name << std::endl;
-        return;
+        return 100;
     }
 
     pbyte ptr = &file[0];   //starts at the start of the file
@@ -168,4 +176,5 @@ void load_ppm(ImageRGB& img, const char* name, int rows, int cols)
             }
         }
     }
+    return 0;
 }

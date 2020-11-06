@@ -9,13 +9,13 @@
 #include "Input_Handler.hpp"
 #include "Player.hpp"
 
-Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, double scale)
+Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, double scale, const char* filename)
 {
     this->User_config = (Config*)malloc(sizeof(Config));
     this->Player_Origin = Origin;
     this->Destination_Coord = Destination;
     this->User_config->heightmap_img = NULL;
-    this->User_config->turbulence_map = "USA_TM.ppm";
+    this->User_config->turbulence_map = filename;
     this->User_config->x_size = 9;     //reference frame dimensions (try to make it an odd number)
     this->User_config->y_size = 9;
     this->User_config->roughness = 2;       //2 meters per node
