@@ -24,8 +24,9 @@ int main(int argc, const char * argv[])
     Destination->X = 10000;
     Destination->Y = 10000;
     Player_head* Player_list = (Player_head*)malloc(sizeof(Player_head));
-    Input_handler Input_Console = Input_handler(Origin, Destination, 400, "USA_TM.ppm");
     Output_handler Output = Output_handler(Player_list);
+    Input_handler Input_Console = Input_handler(Origin, Destination, &Output, "USA_TM.ppm");
+    
     
     double* rand_array = getRandomDoubleArray(-10000, 10000, 6);
     Player test_player = Player(&Input_Console, &Output);

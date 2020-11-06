@@ -56,6 +56,10 @@ double Player::modifyCost(mesh_node* current_node)
     double distance_delta = (getDistance(subCoordinates(&new_loc, current_location), destination) - getDistance(current_location, destination)); //the -1 is so that the program will select for a higher values as being a good thing
     double Lost_work = this->getWork(addCoordinates(current_location, &new_loc), this->Player_data->wind_vector);
     double time_taken = this->getTimeAdded(Lost_work, distance_traveled);
+
+    this->time_register[0] = time_taken;    //this stores the time in a temp register
+    this->fuel_register[0] = Lost_work;
+    
     double turn_rate = this->getTurnRate(connectCoords(current_location, &new_loc), this->Player_data->travel_direction);
     double* cost_input_array = (double*)malloc(sizeof(double) * COST_INPUT_NUM);
     cost_input_array[0] = distance_traveled;
@@ -66,7 +70,7 @@ double Player::modifyCost(mesh_node* current_node)
     //int key_change = getKeyChanges(&new_loc, this->Player_data->Player_position);
     double Node_Cost = interactGenetics(cost_input_array);
     current_node->data->Cost = Node_Cost;
-    //this->time_taken += time_taken;
+
     return Node_Cost;
     //this function interacts with the genetics and simulates plane flight to
     //generate a cost for decision making
@@ -91,6 +95,8 @@ mesh_node* Player::costMeshAssign(Cost_mesh* mesh)
             {
                 prev_min = temp_double;
                 returned_node = traversal_node;
+                this->time_register[1] = this->time_register[0];
+                this->fuel_register[1] = this->fuel_register[0];
             }
             
             traversal_node = traversal_node->east_coord;
@@ -98,6 +104,8 @@ mesh_node* Player::costMeshAssign(Cost_mesh* mesh)
         column_holder = column_holder->south_coord;
         traversal_node = column_holder;
     }
+    this->time_taken += this->time_register[1];
+    this->fuel_used += this->fuel_register[1];
     return returned_node;
 }
 
@@ -109,6 +117,7 @@ void Player::generateReferenceFrame()
     this->Player_data->Player_position.X = ((new_position_node->data->Coord->X - (parameters.x_size/2)) * parameters.roughness) + Player_data->Player_position.X;
     this->Player_data->Player_position.Y = ((new_position_node->data->Coord->Y - (parameters.y_size/2)) * parameters.roughness) + Player_data->Player_position.Y;
     //the above sets the new position of the player
+
     this->distance_to_destination = getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
     
     
@@ -132,4 +141,5 @@ void Player::travel()
     printf("Player_Y: %f\n", this->Player_data->Player_position.Y);
     printf("Turn no. %d\n", i);
     printf("------------------------\n");
+    this->Output_route->addToRoster(this);
 }

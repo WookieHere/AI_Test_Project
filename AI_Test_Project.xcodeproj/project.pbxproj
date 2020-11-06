@@ -75,6 +75,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E750E1EE25553B70000F304F /* Non_AI_Files */ = {
+			isa = PBXGroup;
+			children = (
+				E77E8F3D251A8F7B00E48190 /* Mesh_Construction.cpp */,
+				E77E8F3C251A8AE800E48190 /* Mesh_Construction.hpp */,
+				E7A78927253BF06800B385D7 /* Linked_List_Handler.cpp */,
+				E7A78928253BF06800B385D7 /* Linked_List_Handler.hpp */,
+				E7AD2F2D253B32F700B4B9A8 /* Route_Evaluation.cpp */,
+				E77E8F3B251A89F300E48190 /* Route_Constructor.hpp */,
+				E7AD2F2A253955D600B4B9A8 /* Unit_Testing.cpp */,
+				E7AD2F2B253955D600B4B9A8 /* Unit_Testing.hpp */,
+				E7C48CF0254AA22300164CC8 /* Random_Generator.cpp */,
+				E7C48CF1254AA22300164CC8 /* Random_Generator.hpp */,
+			);
+			path = Non_AI_Files;
+			sourceTree = "<group>";
+		};
+		E750E1EF25553BB6000F304F /* Input_Handler */ = {
+			isa = PBXGroup;
+			children = (
+				E7A7892F253C03DB00B385D7 /* Input_Handler.cpp */,
+				E7A78930253C03DB00B385D7 /* Input_Handler.hpp */,
+				E74FB742254A539C008D800A /* getVector.cpp */,
+				E74FB745254A59AD008D800A /* readConfig.cpp */,
+				E728D8FF254D1E1800B77AD0 /* Player_Training.hpp */,
+			);
+			path = Input_Handler;
+			sourceTree = "<group>";
+		};
+		E750E1F025553BFC000F304F /* Output_Handler */ = {
+			isa = PBXGroup;
+			children = (
+				E728D8FE254D1E1800B77AD0 /* Player_Training.cpp */,
+				E7A7892C253C03C500B385D7 /* Output_Handler.cpp */,
+				E7A7892D253C03C500B385D7 /* Output_Handler.hpp */,
+			);
+			path = Output_Handler;
+			sourceTree = "<group>";
+		};
+		E750E1F125553C1A000F304F /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				E77E8F3A251A899E00E48190 /* Player.hpp */,
+				E7A7892A253BFB7700B385D7 /* Player.cpp */,
+				E75FAF9325474E960033E312 /* Player_Travel.cpp */,
+				E7C48CEE254A9A5800164CC8 /* Player_Physics.cpp */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		E77E8F27251A890200E48190 = {
 			isa = PBXGroup;
 			children = (
@@ -94,31 +144,13 @@
 		E77E8F32251A890200E48190 /* AI_Test_Project */ = {
 			isa = PBXGroup;
 			children = (
-				E77E8F33251A890200E48190 /* main.cpp */,
-				E7A7892A253BFB7700B385D7 /* Player.cpp */,
-				E77E8F3A251A899E00E48190 /* Player.hpp */,
-				E75FAF9325474E960033E312 /* Player_Travel.cpp */,
-				E7C48CEE254A9A5800164CC8 /* Player_Physics.cpp */,
-				E728D8FE254D1E1800B77AD0 /* Player_Training.cpp */,
-				E77E8F3D251A8F7B00E48190 /* Mesh_Construction.cpp */,
-				E77E8F3C251A8AE800E48190 /* Mesh_Construction.hpp */,
-				E7A78927253BF06800B385D7 /* Linked_List_Handler.cpp */,
-				E7A78928253BF06800B385D7 /* Linked_List_Handler.hpp */,
-				E7AD2F2D253B32F700B4B9A8 /* Route_Evaluation.cpp */,
-				E77E8F3B251A89F300E48190 /* Route_Constructor.hpp */,
-				E7AD2F2A253955D600B4B9A8 /* Unit_Testing.cpp */,
-				E7AD2F2B253955D600B4B9A8 /* Unit_Testing.hpp */,
-				E7A7892C253C03C500B385D7 /* Output_Handler.cpp */,
-				E7A7892D253C03C500B385D7 /* Output_Handler.hpp */,
-				E7A7892F253C03DB00B385D7 /* Input_Handler.cpp */,
-				E7A78930253C03DB00B385D7 /* Input_Handler.hpp */,
-				E74FB742254A539C008D800A /* getVector.cpp */,
-				E74FB745254A59AD008D800A /* readConfig.cpp */,
 				E750E1EC2555106A000F304F /* USA_TM.ppm */,
 				E74FB744254A563D008D800A /* Test_Config.txt */,
-				E7C48CF0254AA22300164CC8 /* Random_Generator.cpp */,
-				E7C48CF1254AA22300164CC8 /* Random_Generator.hpp */,
-				E728D8FF254D1E1800B77AD0 /* Player_Training.hpp */,
+				E77E8F33251A890200E48190 /* main.cpp */,
+				E750E1F125553C1A000F304F /* Player */,
+				E750E1F025553BFC000F304F /* Output_Handler */,
+				E750E1EF25553BB6000F304F /* Input_Handler */,
+				E750E1EE25553B70000F304F /* Non_AI_Files */,
 			);
 			path = AI_Test_Project;
 			sourceTree = "<group>";

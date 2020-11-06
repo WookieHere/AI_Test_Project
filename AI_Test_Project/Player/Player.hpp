@@ -87,10 +87,12 @@ class Player
 {
     Agent_data* Player_data;
     double distance_to_destination;    //Instead of calculating it every time, this will be an easier lookup
-    //double average_velocity;
                                     //The rest of the analysis for cost will be done at each node
                                     //With the results being calculated by the Output_handler
+    double* time_register;   //temporary time register to be added to time taken conditionally
     double time_taken;  //in seconds
+    double* fuel_register;
+    double fuel_used;
     struct Cost_mesh* reference_frame;
     struct Coordinate_head* Route;
     class Output_handler* Output_route; //This will be a class in Route_Constructor.hpp
@@ -107,6 +109,9 @@ public:
     void manGenetics(double*);
     Genetics getGenetics();
     struct Coordinate_head* getRoute(); //returns Route
+    double getTimeTaken();
+    double getFuelUsed();
+    void replaceGenes(Genetics);
 private:
     void generateReferenceFrame();
     double modifyCost(struct mesh_node*);

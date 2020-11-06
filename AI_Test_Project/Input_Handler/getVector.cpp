@@ -97,7 +97,7 @@ int load_file(std::vector<byte>& buf, const char* name)
 
     // get size
     fseek(f, 0, SEEK_END);
-    int s = ftell(f);
+    int s = (int)ftell(f);
     fseek(f, 0, SEEK_SET);
 
     // read (put space at end for atoi)
@@ -152,11 +152,11 @@ int load_ppm(ImageRGB& img, const char* name, int rows, int cols)
 
     // get bits
     eat_comment(ptr, end);
-    int bits = get_int(ptr, end);
+    get_int(ptr, end);
 
     // load image data
     int target_location = rows * cols;  //this will be the start of the pixel we want
-    int target_end = target_location + 3; //end of the pixel data we want
+    //(unused)int target_end = target_location + 3; //end of the pixel data we want
 
     if (mode == 6)
     {

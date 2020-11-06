@@ -43,7 +43,9 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     this->Player_data->current_velocity = 10000;
     //this->Player_data->Player_position = Origin;
     this->time_taken = 0;
+    this->time_register = (double*)malloc(sizeof(double) * 2);
     this->Player_data->fuel_use = 0;
+    this->fuel_register = (double*)malloc(sizeof(double) * 2);
            //for updateData();
     
     this->Player_data->wind_vector = createVector();
@@ -111,4 +113,19 @@ Genetics Player::getGenetics()
 Coordinate_head* Player::getRoute()
 {
     return this->Route;
+}
+
+double Player::getTimeTaken()
+{
+    return this->time_taken;
+}
+
+double Player::getFuelUsed()
+{
+    return this->fuel_used;
+}
+
+void Player::replaceGenes(Genetics new_genes)
+{
+    *this->Player_data->Player_genes = new_genes;
 }

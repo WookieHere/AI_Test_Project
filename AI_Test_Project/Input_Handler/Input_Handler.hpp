@@ -39,6 +39,7 @@ struct Config
 {
     const char* heightmap_img;
     const char* turbulence_map;   //purely for simulation
+    int generation_size;
     //also needs a data structure for a keyframe setup. probably an array of tuples etc
     int x_size;     //reference frame dimensions (try to make it an odd number)
     int y_size;
@@ -83,14 +84,17 @@ class Input_handler
     struct Coordinate* resolution;  //pixels in image as X/Y
     double scale;   //This is the pixels/meter type scale
     Range_head* Range_list; //this defines ranges of derivitives
+    class Output_handler* Output;
+    int generation_count;
 
 public:
-    Input_handler(Coordinate*, Coordinate*, double, const char*);
+    Input_handler(Coordinate*, Coordinate*, Output_handler*, const char*);
     void setConfig(const char* filename);
     struct Coordinate* getCoordinate(class Player*);  //Like an update position. Mostly a placeholder
     struct Coordinate getDestination();
     struct Coordinate getOrigin();
     struct vector* getVector(Coordinate* coord);
     Config getConfig();
+    int loop();
 };
 #endif /* Input_Handler_hpp */

@@ -9,12 +9,13 @@
 #include <stdio.h>
 #include "Input_Handler.hpp"
 #include "Player.hpp"
+#include <string.h>
 #define     MAX_LINE_SIZE   1000
 
 void Input_handler::setConfig(const char* filename)
 {
     FILE* config_file = fopen(filename, "r");
-    char* token;
+    char* token = (char*)malloc(sizeof(char) * MAX_LINE_SIZE);
     char max_name_size[64];
     
     if(config_file == NULL)
@@ -25,6 +26,9 @@ void Input_handler::setConfig(const char* filename)
     while (fgets(max_name_size, MAX_LINE_SIZE, config_file))
     {
         //do stuff
+        strtok(token, "\n");
+        //token is now the whole line
+        
     }
     
 }

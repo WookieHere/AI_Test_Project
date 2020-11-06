@@ -30,16 +30,22 @@ class Output_handler
     
     Player_head* player_roster;
     Config* User_config;        //This will be a struct for defining how the output is managed
-                                //(what image to use, color setup, etc.)
-    Player_head* Player_list;
+    Player_head* post_breeding_players; //linked list of players for breeding
+    const char* output_log;
     
 public:
     Output_handler(Player_head* head);
-    ~Output_handler() {};
-    Player_head* rankPlayers(Player_head* head);    //This will rank players by best time etc.
-    FILE* initPPM_file(const char* output_file, int width, int height); //makes the ppm file header
-    bool drawVector(FILE* fp, Coordinate* A, Coordinate* B); //draw a line between two points
-    void drawPlayer(const char* filename, Player_head* ranked_players); //graph all the players to the output file
+    //~Output_handler();
+    
+    bool addToRoster(Player*);
+    Player_head* getNewPlayers();   //to be called by the input handler
+private:
+    void printPlayerRoute(struct Coordinate_head*);    
+    void printRoutes();
+    void crossOver(Player*, Player*);
+    void breedPlayers();
+    bool addToRoster(Player*, int);
+    void mutate(Player*);
 };
 
 
