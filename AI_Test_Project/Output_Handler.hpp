@@ -26,6 +26,8 @@ struct Player_head
 
 class Output_handler
 {
+    Output_handler(Player_head* head, User_config);
+    ~Output_Handler() {};
     Player_head* player_roster;
     Config* User_config;        //This will be a struct for defining how the output is managed
                                 //(what image to use, color setup, etc.)
@@ -34,11 +36,8 @@ class Output_handler
 public:
     Player_head* rankPlayers(Player_head* head);    //This will rank players by best time etc.
     FILE* initPPM_file(const char* output_file, int width, int height); //makes the ppm file header
-    void drawVector(FILE* output_file, Coordinate* A, Coordinate* B); //draw a line between two points
-private:
-    void crossOver(Player*, Player*);
-    int getFitness(Player*);    //a low fitness is considered good in this algorithm
-    
+    bool drawVector(FILE* fp, Coordinate* A, Coordinate* B); //draw a line between two points
+    void drawPlayer(const char* filename, Player_head* ranked_players); //graph all the players to the output file
 };
 
 
