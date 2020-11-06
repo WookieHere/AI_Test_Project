@@ -21,8 +21,8 @@ int main(int argc, const char * argv[])
     Coordinate* Destination = (Coordinate*)malloc(sizeof(Coordinate));
     Origin->X = 0;
     Origin->Y = 0;
-    Destination->X = 10000;
-    Destination->Y = 10000;
+    Destination->X = 1000;
+    Destination->Y = 1000;
     Player_head* Player_list = (Player_head*)malloc(sizeof(Player_head));
     Output_handler Output = Output_handler(Player_list);
     Input_handler Input_Console = Input_handler(Origin, Destination, &Output, "USA_TM.ppm");
@@ -30,27 +30,6 @@ int main(int argc, const char * argv[])
     
     double* rand_array = getRandomDoubleArray(-10000, 10000, 6);
     Player test_player = Player(&Input_Console, &Output);
-    
-    
-    Player_list->length = 0;
-    
-    Player_node* temp = createNodePlayer();
-    Player_list->next_node = temp;
-    Player* temp_player;
-    for(int i = 0; i < 500; i++)
-    {
-        temp_player = (Player*)malloc(sizeof(Player));
-        rand_array = getRandomDoubleArray(-10000, 10000, 6);
-        *temp_player = Player(&Input_Console, &Output);
-        temp_player->manGenetics(rand_array);
-        Player_list->length++;
-        temp->ranked_player = temp_player;
-        temp_player->updateData();
-        temp_player->travel();
-        temp->next_node = createNodePlayer();
-        temp = temp->next_node;
-        temp_player = NULL;
-    }
     
     rand_array[0] = 0;
     rand_array[1] = 1;
@@ -62,5 +41,8 @@ int main(int argc, const char * argv[])
     test_player.manGenetics(rand_array);
     test_player.updateData();
     test_player.travel();
+    
+    Input_Console.loop();
+    
     return 0;
 }

@@ -16,17 +16,26 @@ vector* Input_handler::getVector(Coordinate* coord)
     //This will scan an image found in the config for the RGB value at that pixel...
 
     ImageRGB image;
+    vector* test_vector = createVector();
+    test_vector->X = 127;
+    test_vector->Y = 0;
+    test_vector->Z = 50;
+    return test_vector;
     int error = load_ppm(image, this->User_config->turbulence_map, coord->X, coord->Y);
     //printf("\nTarget Pixel: [%u, %u, %u]\n", image.pixel.r, image.pixel.g, image.pixel.b); //for testing purposes
-    vector* test_vector = createVector();
+    
     
     if(error == 100)
     {
-        test_vector->X = 127;
-        test_vector->Y = 0;
-        test_vector->Z = 50;
-        printf("File not loaded\n");
-        return test_vector;
+        /*
+         vector* test_vector = createVector();
+         test_vector->X = 127;
+         test_vector->Y = 0;
+         test_vector->Z = 50;
+         */
+         
+        //printf("File not loaded\n");
+        
     }//error is 100 if file was NULL
     
     
@@ -115,7 +124,7 @@ int load_ppm(ImageRGB& img, const char* name, int rows, int cols)
     std::vector<byte> file;
     if (load_file(file, name))
     {
-       // std::cout << "Could not open file: " << name << std::endl;
+        std::cout << "Could not open file: " << name << std::endl;
         return 100;
     }
 
@@ -135,10 +144,11 @@ int load_ppm(ImageRGB& img, const char* name, int rows, int cols)
     // get w
     eat_comment(ptr, end);
     img.w = get_int(ptr, end);
+    
     if (img.w < cols)
     {
         std::cout << "ERROR: target is out of bounds" << std::endl;
-        exit(0);
+        return 0;
     }
 
     // get h
@@ -147,7 +157,7 @@ int load_ppm(ImageRGB& img, const char* name, int rows, int cols)
     if (img.h < rows)
     {
         std::cout << "ERROR: target is out of bounds" << std::endl;
-        exit(0);
+        return 0;
     }
 
     // get bits

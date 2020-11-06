@@ -147,9 +147,9 @@
 				E750E1EC2555106A000F304F /* USA_TM.ppm */,
 				E74FB744254A563D008D800A /* Test_Config.txt */,
 				E77E8F33251A890200E48190 /* main.cpp */,
-				E750E1F125553C1A000F304F /* Player */,
-				E750E1F025553BFC000F304F /* Output_Handler */,
 				E750E1EF25553BB6000F304F /* Input_Handler */,
+				E750E1F025553BFC000F304F /* Output_Handler */,
+				E750E1F125553C1A000F304F /* Player */,
 				E750E1EE25553B70000F304F /* Non_AI_Files */,
 			);
 			path = AI_Test_Project;

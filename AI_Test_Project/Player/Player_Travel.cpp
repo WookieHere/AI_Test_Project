@@ -117,6 +117,11 @@ void Player::generateReferenceFrame()
     this->Player_data->Player_position.X = ((new_position_node->data->Coord->X - (parameters.x_size/2)) * parameters.roughness) + Player_data->Player_position.X;
     this->Player_data->Player_position.Y = ((new_position_node->data->Coord->Y - (parameters.y_size/2)) * parameters.roughness) + Player_data->Player_position.Y;
     //the above sets the new position of the player
+    Coordinate_node temp = {(Coordinate*)malloc(sizeof(Coordinate)), NULL};// = (Coordinate_node*)malloc(sizeof(Coordinate_node));
+    *temp.Coordinate = this->Player_data->Player_position;
+    temp.next_node = this->Route->next_node;
+    this->Route->next_node = &temp;
+    //this adds the new position ot the route
 
     this->distance_to_destination = getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
     
@@ -131,15 +136,17 @@ void Player::travel()
         generateReferenceFrame();
         
         i++;
-        
+        //printf("%d = i\n", i);
         if(i > 1000)
         {
             break;
         }
     }
+    /*
     printf("Player_X: %f\n", this->Player_data->Player_position.X);
     printf("Player_Y: %f\n", this->Player_data->Player_position.Y);
     printf("Turn no. %d\n", i);
     printf("------------------------\n");
+     */
     this->Output_route->addToRoster(this);
 }
