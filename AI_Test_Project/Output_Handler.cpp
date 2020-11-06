@@ -9,15 +9,15 @@
 #include "Output_Handler.hpp"
 #define	 SIZE 1
 #define  SIZE_ITEMS	3
+#include <stdio.h>
 
-Output_handler::Output_handler(Player_head* head, )
+Output_handler::Output_handler(Player_head* head)
 {
 
 }
 void Output_handler::drawPlayer(const char* filename, Player_head* list)
 {
-	FILE* fp;
-	fopen_s(fp, filename, "w+b"); //open the file for read and write in binary mode
+	FILE* fp = fopen(filename, "w+b"); //open the file for read and write in binary mode
 	if (!fp)
 	{
 		std::cout << "ERROR: cannot open file" << std::endl;
@@ -70,10 +70,11 @@ bool Output_handler::drawVector(FILE* fp, Coordinate* A, Coordinate* B) //draw a
 	{
 		//fprintf to the RGB values at current point
 		//iterate a line + slope
-		fprintf(fp, "%d", color->r, color->g, color->b);
-		fseek(fp, file_width + slope, SEEK_CUR);
+        fprintf(fp, "%d %d %d\n", color.r, color.g, color.b);
+		//fseek(fp, file_width + slope, SEEK_CUR);
 
 	}
+    return 1;
 }
 
 FILE* Output_handler::initPPM_file(const char* output_filename, int width, int height)
