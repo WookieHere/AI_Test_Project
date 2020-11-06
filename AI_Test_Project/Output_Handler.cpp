@@ -27,12 +27,12 @@ void Output_handler::drawPlayer(const char* filename, Player_head* list)
 	for (int i = 0; i < list->length; i++)
 	{
 		Player* player = list->next_node->ranked_player;
-		for (int j = 0; j < player->Route->length; j++)
+		for (int j = 0; j < player->getRoute()->length; j++)
 		{
-			Coordinate* A = player->Route->next_node->Coordinate;
-			Coordinate* B = player->Route->next_node->next_node->Coordinate;
+			Coordinate* A = player->getRoute()->next_node->Coordinate;
+			Coordinate* B = player->getRoute()->next_node->next_node->Coordinate;
 			this->drawVector(fp, A, B);
-			player->Route->next_node = player->Route->next_node->next_node; //iterate through the coordinates
+			player->getRoute()->next_node = player->getRoute()->next_node->next_node; //iterate through the coordinates
 		}
 		player = list->next_node->next_node->ranked_player; //iterate through the players
 	}

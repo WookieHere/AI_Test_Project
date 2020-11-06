@@ -26,8 +26,8 @@ struct Player_head
 
 class Output_handler
 {
-    Output_handler(Player_head* head, User_config);
-    ~Output_Handler() {};
+    Output_handler(Player_head* head);
+    ~Output_handler() {};
     Player_head* player_roster;
     Config* User_config;        //This will be a struct for defining how the output is managed
                                 //(what image to use, color setup, etc.)

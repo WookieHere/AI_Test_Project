@@ -106,7 +106,7 @@ public:
     void travel();
     void manGenetics(double*);
     Genetics getGenetics();
-    
+    struct Coordinate_head* getRoute(); //returns Route
 private:
     void generateReferenceFrame();
     double modifyCost(struct mesh_node*);
@@ -120,6 +120,7 @@ private:
     //unit_vector* connectCoords(Coordinate*, Coordinate*);
     double interactGenetics(double*);
     mesh_node* costMeshAssign(Cost_mesh* mesh);
+    
 };
 
 

@@ -108,3 +108,7 @@ Genetics Player::getGenetics()
     return *this->Player_data->Player_genes;
 }
 
+Coordinate_head* Player::getRoute()
+{
+    return this->Route;
+}

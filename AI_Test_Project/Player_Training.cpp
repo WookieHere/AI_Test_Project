@@ -10,7 +10,7 @@
 #include "Random_Generator.hpp"
 #include "Player_Training.hpp"
 
-void Output_handler::crossOver(Player* A, Player* B)
+/*void Output_handler::crossOver(Player* A, Player* B)
 {
     Genetics gene_A = A->getGenetics();
     Genetics gene_B = B->getGenetics();
@@ -20,3 +20,4 @@ void Output_handler::crossOver(Player* A, Player* B)
     //only a fraction of the top of the array contain the indicies to be flipped
     
 }
+*/
