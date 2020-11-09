@@ -35,75 +35,93 @@ void Input_handler::setConfig(const char* filename)
                 if( strcmp(token,"Input_file") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->heightmap_img = token;
+                    this->User_config->heightmap_img = token;
                     //printf("%s\n", config->heightmap_img);
                 }
                 if( strcmp(token,"Output_file") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->turbulence_map = token;
+                    this->User_config->turbulence_map = token;
                     //printf("%s\n", config->turbulence_map);
                 }
                  if( strcmp(token,"x_size") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->x_size = atoi(token);
+                    this->User_config->x_size = atoi(token);
                     //printf("%d\n", config->x_size);
                 }
                 if( strcmp(token,"y_size") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->y_size = atoi(token);
+                    this->User_config->y_size = atoi(token);
                     //printf("%d\n", config->y_size);
                 }
                  if( strcmp(token,"roughness") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->roughness = atof(token);
+                    this->User_config->roughness = atof(token);
                     //printf("%f\n", config->roughness);
                 }
                  if( strcmp(token,"Avg_Thrust") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->Avg_Thrust = atof(token);
+                    this->User_config->Avg_Thrust = atof(token);
                     //printf("%f\n", config->Avg_Thrust);
                 }
                  if( strcmp(token,"Minimum_Velocity") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->Minimum_Velocity = atof(token);
+                    this->User_config->Minimum_Velocity = atof(token);
                     //printf("%f\n", config->Minimum_Velocity);
                 }
                 if( strcmp(token,"Wind_Unit") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->Wind_Unit = atof(token);
+                    this->User_config->Wind_Unit = atof(token);
                     //printf("%f\n", config->Wind_Unit);
                 }
                  if( strcmp(token,"Wing_Area") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->Wing_Area = atof(token);
+                    this->User_config->Wing_Area = atof(token);
                     //printf("%f\n", config->Wing_Area);
                 }
                  if( strcmp(token,"Pressure_Const") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->Pressure_Const = atof(token);
+                    this->User_config->Pressure_Const = atof(token);
                     //printf("%f\n", config->Pressure_Const);
                 }
                  if( strcmp(token,"Drag_Coefficient") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->Drag_Coefficient = atof(token);
+                    this->User_config->Drag_Coefficient = atof(token);
                     //printf("%f\n", config->Drag_Coefficient);
                 }
                  if( strcmp(token,"Max_Turn_Rate") == 0)
                 {
                     token = strtok(NULL, delims);
-                    this->Max_Turn_Rate = atof(token);
+                    this->User_config->Max_Turn_Rate = atof(token);
                     //printf("%f\n", config->Max_Turn_Rate);
-                } 
+                }
+                if( strcmp(token,"generation_size") == 0)
+                {
+                    token = strtok(NULL, delims);
+                    this->User_config->generation_size = atoi(token);
+                    //printf("%f\n", config->Max_Turn_Rate);
+                }
+                if( strcmp(token,"generation_end_count") == 0)
+                {
+                    token = strtok(NULL, delims);
+                    this->User_config->generation_end_count = atoi(token);
+                    //printf("%f\n", config->Max_Turn_Rate);
+                }
+                if( strcmp(token,"Plane_mass") == 0)
+                {
+                    token = strtok(NULL, delims);
+                    this->User_config->Plane_mass = atof(token);
+                    //printf("%f\n", config->Max_Turn_Rate);
+                }
                 //printf("%s\n", token);                                                      
 
             token = strtok(NULL, delims);

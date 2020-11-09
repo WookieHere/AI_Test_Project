@@ -22,6 +22,7 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     //Origin->Y = 0;
     //this->Player_data->Player_position = createCoordinate();
     //this->Player_data->Player_Destination = createCoordinate();
+    this->used_config = this->Input_Console->getConfig();
     this->Player_data->Player_position = this->Input_Console->getOrigin();
     this->Player_data->Player_Destination = this->Input_Console->getDestination();
     
@@ -40,7 +41,7 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     this->Route->next_node->Coordinate = &this->Player_data->Player_position;//needs to be fixed
     
     //this->average_velocity = 0;
-    this->Player_data->current_velocity = 10000;
+    this->Player_data->current_velocity = this->used_config.Minimum_Velocity;
     //this->Player_data->Player_position = Origin;
     this->time_taken = 0;
     this->time_register = (double*)malloc(sizeof(double) * 2);
@@ -61,6 +62,8 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     this->Player_data->Player_genes->travel_weight = 1;
     this->Player_data->Player_genes->turning_rate = 1;
     this->Player_data->Player_genes->work_weight = 1;
+    
+    
 }
 
 double Player::getDistance(Coordinate* A, Coordinate* B)

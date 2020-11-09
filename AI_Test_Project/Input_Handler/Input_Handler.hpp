@@ -40,6 +40,7 @@ struct Config
     const char* heightmap_img;
     const char* turbulence_map;   //purely for simulation
     int generation_size;
+    int generation_end_count;
     //also needs a data structure for a keyframe setup. probably an array of tuples etc
     int x_size;     //reference frame dimensions (try to make it an odd number)
     int y_size;
@@ -52,6 +53,7 @@ struct Config
     double Drag_Coefficient;      //no unit, C_o in equations of Boeing 747
     double Minimum_Velocity;
     double Max_Turn_Rate;
+    double Plane_mass;  //literally mass of the plane in kg's
     //some other stuff to be filled in later
 };
 
@@ -85,11 +87,11 @@ class Input_handler
     double scale;   //This is the pixels/meter type scale
     Range_head* Range_list; //this defines ranges of derivitives
     class Output_handler* Output;
-    int generation_count;
-
+    int generation_count;   //increments each generation
+    
 public:
     Input_handler(Coordinate*, Coordinate*, Output_handler*, const char*);
-    void setConfig(const char* filename);
+    void setConfig(const char* filename);   //made this public
     struct Coordinate* getCoordinate(class Player*);  //Like an update position. Mostly a placeholder
     struct Coordinate getDestination();
     struct Coordinate getOrigin();

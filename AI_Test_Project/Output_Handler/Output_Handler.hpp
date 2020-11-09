@@ -44,7 +44,7 @@ private:
     void printRoutes();
     void crossOver(Player*, Player*);
     void breedPlayers();
-    bool addToRoster(Player*, int);
+    bool addToRoster(Player*, Player_head*);
     void mutate(Player*);
 };
 

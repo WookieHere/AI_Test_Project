@@ -15,9 +15,16 @@ Boeing_747:
 {
 Avg_Thrust = 252000;            //DEFINITELY a placeholder. avg thrust for a 747 Boeing (newtons)
 Minimum_Velocity = 294.98;      //minimum velocity in m/s
-Wind_Unit = 4.855;              //m/s per 1 unit of wind vector ((37/127) * (1000/60))
+Wind_Unit = 1;              //m/s per 1 unit of wind vector ((37/127) * (1000/60))
 Wing_Area = 541.2;              //meters^2 for Boeing 747
-Pressure_Const = .613;          //P = .613V^2 where V is wind velocity
-Drag_Coefficient: .031;         //no unit, C_o in equations of Boeing 747
-Max_Turn_Rate: .07;             //radians
+Pressure_Const = .613;          //P = .613V^2 where V is wind velocity -> N/m^2
+Drag_Coefficient = .031;         //no unit, C_o in equations of Boeing 747
+Max_Turn_Rate = .07;             //radians
+Plane_mass = 333740;            //mass of plane in kg's
+}
+
+Generation_settings (important!):
+{
+generation_size = 20;
+generation_end_count = 200;
 }

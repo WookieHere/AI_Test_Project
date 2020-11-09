@@ -14,10 +14,10 @@
 
 int main(int argc, const char * argv[])
 {
-    Cost_mesh* test_mesh = create_cost_mesh(10, 10);
-    print_mesh(test_mesh);
-    freeCostMesh(test_mesh);
-    print_mesh(test_mesh);
+    //Cost_mesh* test_mesh = create_cost_mesh(10, 10);
+    //print_mesh(test_mesh);
+    //freeCostMesh(test_mesh);
+    //print_mesh(test_mesh);
     
     Coordinate* Origin = (Coordinate*)malloc(sizeof(Coordinate));
     Coordinate* Destination = (Coordinate*)malloc(sizeof(Coordinate));
@@ -28,6 +28,7 @@ int main(int argc, const char * argv[])
     Player_head* Player_list = (Player_head*)malloc(sizeof(Player_head));
     Output_handler Output = Output_handler(Player_list);
     Input_handler Input_Console = Input_handler(Origin, Destination, &Output, "USA_TM.ppm");
+    Input_Console.setConfig("Test_Config.txt");
     
     
     double* rand_array = getRandomDoubleArray(-10000, 10000, 6);
@@ -44,7 +45,7 @@ int main(int argc, const char * argv[])
     test_player.updateData();
     test_player.travel();
     
-    Input_Console.loop();
+    //Input_Console.loop();
     
     return 0;
 }

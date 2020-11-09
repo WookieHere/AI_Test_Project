@@ -93,6 +93,7 @@ class Player
     double time_taken;  //in seconds
     double* fuel_register;
     double fuel_used;
+    Config  used_config;
     struct Cost_mesh* reference_frame;
     struct Coordinate_head* Route;
     class Output_handler* Output_route; //This will be a class in Route_Constructor.hpp
@@ -112,13 +113,14 @@ public:
     double getTimeTaken();
     double getFuelUsed();
     void replaceGenes(Genetics);
+    
 private:
     void generateReferenceFrame();
     double modifyCost(struct mesh_node*);
     double getWork(Coordinate*, vector*);
     //unit_vector* toUnitVector(vector*);
-    double getForce(int, Config*);
-    double getLostWork(double, double, Config*);
+    double getForce(int);
+    double getLostWork(double*, double);
     //Coordinate* subCoordinates(Coordinate*, Coordinate*);
     double getTimeAdded(double, double);
     double getTurnRate(unit_vector*, unit_vector*);

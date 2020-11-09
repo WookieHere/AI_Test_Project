@@ -17,7 +17,7 @@ void Output_handler::breedPlayers()
     {
         if((500 - i) > getRandom2RN(0, this->player_roster->length))
         {
-            this->addToRoster(traversal_node->ranked_player, 1);    //the '1' is to place into the breeding roster.
+            this->addToRoster(traversal_node->ranked_player, this->post_breeding_players);   
         }
     }
     traversal_node = this->post_breeding_players->next_node;

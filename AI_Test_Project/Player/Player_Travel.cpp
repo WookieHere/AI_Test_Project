@@ -40,27 +40,27 @@ double Player::modifyCost(mesh_node* current_node)
 {
     //genetics are already loaded
     Coordinate new_loc = {0,0};
-    Config parameters = this->Input_Console->getConfig();   //get config
-    Coordinate* current_location = &this->Player_data->Player_position;
-    Coordinate* destination = &this->Player_data->Player_Destination;
-    this->Player_data->wind_vector = this->Input_Console->getVector(current_location);
+    Coordinate current_location = this->Player_data->Player_position;
+    Coordinate destination = this->Player_data->Player_Destination;
+    //just for readability those coordinates are set.
+    this->Player_data->wind_vector = this->Input_Console->getVector(&current_location);
     //this is to simplify code in later steps
     
-    new_loc.X = ((current_node->data->Coord->X - (parameters.x_size/2)) * parameters.roughness) + current_location->X;
-    new_loc.Y = ((current_node->data->Coord->Y - (parameters.y_size/2)) * parameters.roughness) + current_location->Y;
+    new_loc.X = ((current_node->data->Coord->X - (this->used_config.x_size/2)) * this->used_config.roughness) + current_location.X;
+    new_loc.Y = ((current_node->data->Coord->Y - (this->used_config.y_size/2)) * this->used_config.roughness) + current_location.Y;
     //define new location
     
     
     
-    double distance_traveled = getDistance(current_location, &new_loc);
-    double distance_delta = (getDistance(current_location, destination) - getDistance(&new_loc, destination)); //the -1 is so that the program will select for a higher values as being a good thing
+    double distance_traveled = getDistance(&current_location, &new_loc);
+    double distance_delta = (getDistance(&current_location, &destination) - getDistance(&new_loc, &destination)); //the -1 is so that the program will select for a higher values as being a good thing
     double Lost_work = this->getWork(&new_loc, this->Player_data->wind_vector);   //divide by 10000?
     double time_taken = this->getTimeAdded(Lost_work, distance_traveled);
 
     this->time_register[0] = time_taken;    //this stores the time in a temp register
     this->fuel_register[0] = Lost_work;
     
-    double turn_rate = this->getTurnRate(connectCoords(current_location, &new_loc), this->Player_data->travel_direction);
+    double turn_rate = this->getTurnRate(connectCoords(&current_location, &new_loc), this->Player_data->travel_direction);
     double* cost_input_array = (double*)malloc(sizeof(double) * COST_INPUT_NUM);
     cost_input_array[0] = distance_traveled;
     cost_input_array[1] = distance_delta;
@@ -112,19 +112,22 @@ mesh_node* Player::costMeshAssign(Cost_mesh* mesh)
 
 void Player::generateReferenceFrame()
 {
-    Config parameters = this->Input_Console->getConfig();
-    this->reference_frame = create_cost_mesh(parameters.x_size, parameters.y_size);
+    
+    this->reference_frame = create_cost_mesh(this->used_config.x_size, this->used_config.y_size);
     mesh_node* new_position_node = this->costMeshAssign(reference_frame); //this will assign a cost to each node in the mesh
-    this->Player_data->Player_position.X = ((new_position_node->data->Coord->X - (parameters.x_size/2)) * parameters.roughness) + Player_data->Player_position.X;
-    this->Player_data->Player_position.Y = ((new_position_node->data->Coord->Y - (parameters.y_size/2)) * parameters.roughness) + Player_data->Player_position.Y;
+    this->Player_data->Player_position.X = ((new_position_node->data->Coord->X - (this->used_config.x_size/2)) * this->used_config.roughness) + Player_data->Player_position.X;
+    this->Player_data->Player_position.Y = ((new_position_node->data->Coord->Y - (this->used_config.y_size/2)) * this->used_config.roughness) + Player_data->Player_position.Y;
     //the above sets the new position of the player
-    Coordinate_node temp = {(Coordinate*)malloc(sizeof(Coordinate)), NULL};// = (Coordinate_node*)malloc(sizeof(Coordinate_node));
+    
+    Coordinate_node temp = {(Coordinate*)malloc(sizeof(Coordinate)), NULL};
     *temp.Coordinate = this->Player_data->Player_position;
     temp.next_node = this->Route->next_node;
     this->Route->next_node = &temp;
     //this adds the new position to the route
 
     this->distance_to_destination = getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
+    
+    
     freeCostMesh(reference_frame);
     
 }
@@ -132,13 +135,14 @@ void Player::generateReferenceFrame()
 void Player::travel()
 {
     int i = 0;
+    Coordinate origin = this->Player_data->Player_position;
     while(this->distance_to_destination > 10)
     {
         generateReferenceFrame();
         
         i++;
         //printf("%d = i\n", i);
-        if(i > 1000)
+        if(this->distance_to_destination > getDistance(&origin, &this->Player_data->Player_Destination) * 2)
         {
             break;
         }
