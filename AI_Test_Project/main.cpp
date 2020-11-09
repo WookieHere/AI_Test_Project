@@ -16,6 +16,8 @@ int main(int argc, const char * argv[])
 {
     Cost_mesh* test_mesh = create_cost_mesh(10, 10);
     print_mesh(test_mesh);
+    freeCostMesh(test_mesh);
+    print_mesh(test_mesh);
     
     Coordinate* Origin = (Coordinate*)malloc(sizeof(Coordinate));
     Coordinate* Destination = (Coordinate*)malloc(sizeof(Coordinate));

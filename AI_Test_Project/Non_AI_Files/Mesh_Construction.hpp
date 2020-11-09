@@ -41,6 +41,8 @@ data*       create_data();
 data*       set_data(int x, int y);
 mesh_node*  get_node(Cost_mesh*, int x, int y);
 void        doMesh(void(*func)(mesh_node*), Cost_mesh*);
+void        freeNode(mesh_node* node);
+void        freeCostMesh(Cost_mesh* mesh);
 
 
 

@@ -53,8 +53,8 @@ double Player::modifyCost(mesh_node* current_node)
     
     
     double distance_traveled = getDistance(current_location, &new_loc);
-    double distance_delta = (getDistance(subCoordinates(&new_loc, current_location), destination) - getDistance(current_location, destination)); //the -1 is so that the program will select for a higher values as being a good thing
-    double Lost_work = this->getWork(addCoordinates(current_location, &new_loc), this->Player_data->wind_vector);
+    double distance_delta = (getDistance(current_location, destination) - getDistance(&new_loc, destination)); //the -1 is so that the program will select for a higher values as being a good thing
+    double Lost_work = this->getWork(&new_loc, this->Player_data->wind_vector);   //divide by 10000?
     double time_taken = this->getTimeAdded(Lost_work, distance_traveled);
 
     this->time_register[0] = time_taken;    //this stores the time in a temp register
@@ -71,6 +71,7 @@ double Player::modifyCost(mesh_node* current_node)
     double Node_Cost = interactGenetics(cost_input_array);
     current_node->data->Cost = Node_Cost;
 
+    free((double*)cost_input_array);
     return Node_Cost;
     //this function interacts with the genetics and simulates plane flight to
     //generate a cost for decision making
@@ -121,10 +122,10 @@ void Player::generateReferenceFrame()
     *temp.Coordinate = this->Player_data->Player_position;
     temp.next_node = this->Route->next_node;
     this->Route->next_node = &temp;
-    //this adds the new position ot the route
+    //this adds the new position to the route
 
     this->distance_to_destination = getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
-    
+    freeCostMesh(reference_frame);
     
 }
 

@@ -40,6 +40,14 @@ Coordinate* subCoordinates(Coordinate* A, Coordinate* B)
     return new_Coordinate;
 }
 
+Coordinate* addCoordinates(Coordinate* A, Coordinate* B)
+{
+    Coordinate* new_coord = createCoordinate();
+    new_coord->X = A->X + B->X;
+    new_coord->Y = A->Y + B->Y;
+    return new_coord;
+}
+
 double Player::getTimeAdded(double Lost_work, double distance_traveled)
 {
     //new_pos = last_pos + current_velocity(t) + force(t^2)
@@ -47,9 +55,9 @@ double Player::getTimeAdded(double Lost_work, double distance_traveled)
     //0 = -distance_traveled + current_velocity(t) + force(t^2)
     //below will be quadratic equation for above
     //-B +/- sqrt(B^2 + 4AC)/2A
-    double D =  (((-1) * this->Player_data->current_velocity) + sqrt(pow(this->Player_data->current_velocity, 2) + (4 * (-1 * distance_traveled) * (Lost_work / distance_traveled))))/ (2 * (-1 * distance_traveled));
-    double E =  (((-1) * this->Player_data->current_velocity) - sqrt(pow(this->Player_data->current_velocity, 2) + (4 * (-1 * distance_traveled) * (Lost_work / distance_traveled))))/ (2 * (-1 * distance_traveled));
-    if(D > E)
+    double D =  (((-1) * this->Player_data->current_velocity) + sqrt(pow(this->Player_data->current_velocity, 2) - (4 * (-1 * distance_traveled) * (Lost_work / distance_traveled))))/ (2 * (-1 * distance_traveled));
+    double E =  (((-1) * this->Player_data->current_velocity) - sqrt(pow(this->Player_data->current_velocity, 2) - (4 * (-1 * distance_traveled) * (Lost_work / distance_traveled))))/ (2 * (-1 * distance_traveled));
+    if(D > E && D < 1000000)    //arbitrary to get rid of NaN's
     {
         return D;
     }else
@@ -102,10 +110,4 @@ unit_vector* toUnitVector(vector* A)
     return result;
 }
 
-Coordinate* addCoordinates(Coordinate* A, Coordinate* B)
-{
-    Coordinate* new_coord = createCoordinate();
-    new_coord->X = A->X + B->X;
-    new_coord->Y = A->Y + B->Y;
-    return new_coord;
-}
+

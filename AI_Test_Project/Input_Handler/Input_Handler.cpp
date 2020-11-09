@@ -20,7 +20,7 @@ Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, Output
     this->Destination_Coord = Destination;
     this->User_config->heightmap_img = NULL;
     this->User_config->turbulence_map = filename;
-    this->User_config->generation_size = 500;
+    this->User_config->generation_size = 10;
     this->generation_count = 0;
     this->User_config->x_size = 9;     //reference frame dimensions (try to make it an odd number)
     this->User_config->y_size = 9;
@@ -72,9 +72,9 @@ int Input_handler::loop()
             temp_player->travel();
             temp->next_node = createNodePlayer();
             temp = temp->next_node;
-            temp_player = NULL;
+            temp_player = NULL; //makes the first generation
         }
-        this->generation_count++;
+        this->generation_count = this->generation_count + 1;
     }else if(this->generation_count < 1000)
     {
         Player_head* new_players = this->Output->getNewPlayers();
@@ -84,6 +84,11 @@ int Input_handler::loop()
             traversal_node->ranked_player->updateData();
             traversal_node->ranked_player->travel();
         }
+        this->generation_count = this->generation_count + 1;
+    }
+    if(this->generation_count < 1000)
+    {
+        this->loop();
     }
     return 0;
     
