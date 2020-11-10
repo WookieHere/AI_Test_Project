@@ -36,6 +36,14 @@ Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, Output
     this->User_config->Plane_mass = 333747;
 }
 
+Input_handler::~Input_handler()
+{
+    /*just have to deallocate the User Config*/
+    this->User_config->heightmap_img = NULL;
+    this->User_config->turbulence_map = NULL;
+    free(this->User_config);
+}
+
 
 
 Coordinate Input_handler::getDestination()
