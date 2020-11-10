@@ -18,6 +18,30 @@ Output_handler::Output_handler(Player_head* head)
     this->User_config = (Config*)malloc(sizeof(Config));
     this->output_log = "output.log";
 }
+Output_handler::~Output_handler()
+{
+    /*deallocate the whole list of players in player head*/
+    Player_head* temp_head;
+    while(this->player_roster->next_node != NULL)
+    {
+        temp_head = this->player_roster->next_node; //temporary holder
+        this->player_roster->next_node = this->player_roster->next_node->next_node;
+        free(temp_head->player_roster->next_node->ranked_player);
+        free(temp_head->player_roster->next_node);
+    }
+    free(this->player_roster);
+    /*deallocate post breeding players*/
+    while(this->post_breeding_players->next_node != NULL)
+    {
+        temp_head = this->post_breeding_players->next_node; //temporary holder
+        this->post_breeding_players->next_node = this->post_breeding_players->next_node->next_node;
+        free(temp_head->post_breeding_players->next_node->ranked_player);
+        free(temp_head->post_breeding_players->next_node);   
+    }
+    free(this->post_breeding_players);
+    /*deallocate user config*/
+    free(this->User_config);
+}
 
 void Output_handler::printPlayerRoute(Coordinate_head* Route)
 {
