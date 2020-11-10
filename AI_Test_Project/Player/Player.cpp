@@ -67,15 +67,18 @@ Player::Player(Input_handler* Input, Output_handler* Output)
 }
 Player::~Player()
 {
+    int i;
     /*deallocate the coordinates route*/
     Coordinate_head* temp_route;
-    while(this->Route->next_node != NULL)
+    for(i = 0; i < this->Route->length; i++)
     {
         temp_route = this->Route;
-        this->Route = this->Route->next_node;
-        free(temp_route); 
+        this->Route->next_node = this->Route->next_node->next_node;
+        free(temp_route->next_node->Coordinate->X);
+        free(temp_route->next_node->Coordinate->Y);
+        free(temp_route->next_node); 
     }
-
+    free(this->Route);
     /*deallocate time register*/
     free(this->time_register);
     /*deallocate fuel register*/
