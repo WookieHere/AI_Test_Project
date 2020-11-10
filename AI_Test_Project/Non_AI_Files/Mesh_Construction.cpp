@@ -12,6 +12,7 @@ data* create_data()
 {
     data* allocated_memory = (data*)malloc(sizeof(data));
     allocated_memory->Coord = (Coordinate*)malloc(sizeof(Coordinate));
+    allocated_memory->wind_vector = (vector*)malloc(sizeof(vector));
     return allocated_memory;
 }
 
@@ -47,18 +48,18 @@ mesh_node* create_mesh_node()
 {
     mesh_node* allocated_node = (mesh_node*)malloc(sizeof(mesh_node));
     allocated_node->data = create_data();
-    allocated_node->north_coord = (mesh_node*)malloc(sizeof(mesh_node));
-    allocated_node->east_coord = (mesh_node*)malloc(sizeof(mesh_node));
-    allocated_node->west_coord = (mesh_node*)malloc(sizeof(mesh_node));
-    allocated_node->south_coord = (mesh_node*)malloc(sizeof(mesh_node));
+    allocated_node->north_coord = NULL;
+    allocated_node->east_coord = NULL;
+    allocated_node->west_coord = NULL;
+    allocated_node->south_coord = NULL;
     //pretty sure the malloc's are a waste of space, but only 1 of these ever exists at a time
     return allocated_node;
 }
 
 Cost_mesh* create_cost_mesh(int x_size, int y_size)
 {
-    mesh_node* node_pointer = NULL;
-    mesh_node* trailing_pointer = NULL;
+    mesh_node* node_pointer = (mesh_node*)malloc(sizeof(mesh_node));
+    mesh_node* trailing_pointer = (mesh_node*)malloc(sizeof(mesh_node));
     Cost_mesh* Allocated_mesh = (Cost_mesh*)malloc(sizeof(Cost_mesh));
     Allocated_mesh->x_width = x_size;
     Allocated_mesh->y_width = y_size;
@@ -158,6 +159,10 @@ Cost_mesh* create_cost_mesh(int x_size, int y_size)
 void freeCostMesh(Cost_mesh* mesh)
 {
     //freeNode(mesh->origin); //that is a recursive call
+    if(mesh->origin == NULL)
+    {
+        return;
+    }
     mesh_node* temp = mesh->origin;
     mesh_node* trail = mesh->origin;
     mesh_node* col_holder = mesh->origin->south_coord;

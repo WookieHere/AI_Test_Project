@@ -20,28 +20,34 @@ Output_handler::Output_handler(Player_head* head)
 }
 Output_handler::~Output_handler()
 {
-    int i;
     /*deallocate the whole list of players in player head*/
-    Player_head* temp_head;
-    while(i = 0; i < this->player_roster->length; i++)
+    Player_node* traversal_node = (Player_node*)malloc(sizeof(Player_node));
+    Player_node* temp = (Player_node*)malloc(sizeof(Player_node));
+    traversal_node = this->player_roster->next_node;
+    temp = this->player_roster->next_node;
+    for(int i = 0; i < this->player_roster->length - 1; i++)
     {
-        temp_head = this->player_roster->next_node; //temporary holder
-        this->player_roster->next_node = this->player_roster->next_node->next_node;
-        free(temp_head->player_roster->next_node->ranked_player);
-        free(temp_head->player_roster->next_node);
+        temp = traversal_node; //temporary holder
+        traversal_node = traversal_node->next_node;
+        free(temp->ranked_player);
+        temp->next_node = NULL;
     }
     free(this->player_roster);
+    this->player_roster = NULL;
     /*deallocate post breeding players*/
-    for(i = 0; i < this->post_breeding_players->length; i++)
+    traversal_node = this->post_breeding_players->next_node;
+    temp = this->post_breeding_players->next_node;
+    for(int i = 0; i < this->post_breeding_players->length; i++)
     {
-        temp_head = this->post_breeding_players->next_node; //temporary holder
-        this->post_breeding_players->next_node = this->post_breeding_players->next_node->next_node;
-        free(temp_head->post_breeding_players->next_node->ranked_player);
-        free(temp_head->post_breeding_players->next_node);   
+        temp = traversal_node; //temporary holder
+        traversal_node = traversal_node->next_node;
+        free(temp->ranked_player);
+        temp->next_node = NULL;
     }
     free(this->post_breeding_players);
+    this->post_breeding_players = NULL;
     /*deallocate user config*/
-    free(this->User_config);
+    //free(this->User_config);  //this is not a pointer
 }
 
 void Output_handler::printPlayerRoute(Coordinate_head* Route)
@@ -124,7 +130,7 @@ bool Output_handler::addToRoster(Player* player, Player_head* head)
     }
     traversal_node = head->next_node;
     
-    for(int i = 0; i < head->length; i++)
+    for(int i = 0; i < head->length - 1; i++)
     {
         if(player->getTimeTaken() >= traversal_node->ranked_player->getTimeTaken())
         {
@@ -136,7 +142,11 @@ bool Output_handler::addToRoster(Player* player, Player_head* head)
     }
     //traversal_node now points at place where player should be
     Player_node* new_node = (Player_node*)malloc(sizeof(Player_node));
-    new_node->next_node = traversal_node->next_node;
+    if(traversal_node->next_node != NULL)
+    {
+        new_node->next_node = traversal_node->next_node;
+    }
+    
     traversal_node->next_node = new_node;
     new_node->ranked_player = traversal_node->ranked_player;
     traversal_node->ranked_player = player;

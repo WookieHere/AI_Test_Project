@@ -101,7 +101,7 @@ class Player
     
 public:
     Player(Input_handler* Input, Output_handler* Output);       //there is only 1 Output handler/input handler in this implementation
-    //~Player();
+    ~Player();
     struct Player_data getPlayerData(); //This retrieves a copy of the current data
     void updateData();          //Uses the Input Handler to update position, vector, distance, etc.
     double getDistance(Coordinate*, Coordinate*); //outputs the distance between two coords
@@ -117,12 +117,12 @@ public:
 private:
     void generateReferenceFrame();
     double modifyCost(struct mesh_node*);
-    double getWork(Coordinate*, vector*);
+    double getWork(Coordinate*, vector*, unit_vector*);
     //unit_vector* toUnitVector(vector*);
     //double getForce(int);
-    double getLostWork(double*);
+    double getLostWork(double*, unit_vector*);
     //Coordinate* subCoordinates(Coordinate*, Coordinate*);
-    double getTimeAdded(double, double);
+    double getTimeAdded(double);
     double getTurnRate(unit_vector*, unit_vector*);
     //unit_vector* connectCoords(Coordinate*, Coordinate*);
     double interactGenetics(double*);

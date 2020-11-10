@@ -54,17 +54,25 @@ double Player::modifyCost(mesh_node* current_node)
     
     double distance_traveled = getDistance(&current_location, &new_loc);
     double distance_delta = (getDistance(&current_location, &destination) - getDistance(&new_loc, &destination)); //the -1 is so that the program will select for a higher values as being a good thing
-    double Lost_work = this->getWork(&new_loc, this->Player_data->wind_vector);   //divide by 10000?
-    double time_taken = this->getTimeAdded(Lost_work, distance_traveled);
+    
+    unit_vector new_direction = *connectCoords(&current_location, &new_loc);
+    double velocity_delta = this->getWork(&new_loc, this->Player_data->wind_vector, &new_direction);   //divide by 10000?
+    double time_taken = this->getTimeAdded(distance_traveled);
 
     this->time_register[0] = time_taken;    //this stores the time in a temp register
-    this->fuel_register[0] = Lost_work;
+    if(velocity_delta < 0)
+    {
+        this->fuel_register[0] = time_taken * velocity_delta * this->used_config.Plane_mass;
+    }else
+    {
+        this->fuel_register[0] = 0;
+    }
     
     double turn_rate = this->getTurnRate(connectCoords(&current_location, &new_loc), this->Player_data->travel_direction);
     double* cost_input_array = (double*)malloc(sizeof(double) * COST_INPUT_NUM);
     cost_input_array[0] = distance_traveled;
     cost_input_array[1] = distance_delta;
-    cost_input_array[2] = Lost_work;
+    cost_input_array[2] = fuel_register[0];
     cost_input_array[3] = time_taken;
     cost_input_array[4] = turn_rate;
     //int key_change = getKeyChanges(&new_loc, this->Player_data->Player_position);
@@ -79,9 +87,9 @@ double Player::modifyCost(mesh_node* current_node)
 
 mesh_node* Player::costMeshAssign(Cost_mesh* mesh)
 {
-    mesh_node* column_holder = create_mesh_node();
-    mesh_node* traversal_node = create_mesh_node();
-    mesh_node* returned_node = create_mesh_node();
+    mesh_node* column_holder = (mesh_node*)malloc(sizeof(mesh_node));
+    mesh_node* traversal_node = (mesh_node*)malloc(sizeof(mesh_node));
+    mesh_node* returned_node = (mesh_node*)malloc(sizeof(mesh_node));
     returned_node = mesh->origin;
     column_holder = mesh->origin;
     traversal_node = mesh->origin;
@@ -136,15 +144,23 @@ void Player::travel()
 {
     int i = 0;
     Coordinate origin = this->Player_data->Player_position;
+    double max_turn_distance =sqrt(pow(this->used_config.x_size * this->used_config.roughness, 2) + pow(this->used_config.y_size * this->used_config.roughness, 2));
+    //that's the max distance traveled per turn
+    double original_dist = getDistance(&origin, &this->Player_data->Player_Destination);
     while(this->distance_to_destination > 10)
     {
         generateReferenceFrame();
         
         i++;
         //printf("%d = i\n", i);
-        if(this->distance_to_destination > getDistance(&origin, &this->Player_data->Player_Destination) * 2)
+        if(this->distance_to_destination > (original_dist * 2))
         {
+            //to make sure the AI is moving in the right direction
             break;
+        }else if(i > (original_dist * 5/max_turn_distance))
+         {
+             //this is to make sure the AI is at least moving
+             break;
         }
     }
     /*

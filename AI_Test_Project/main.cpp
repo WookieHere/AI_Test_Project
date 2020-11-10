@@ -35,17 +35,17 @@ int main(int argc, const char * argv[])
     Player test_player = Player(&Input_Console, &Output);
     
     rand_array[0] = 0;
-    rand_array[1] = 1;
-    rand_array[2] = 1;
+    rand_array[1] = -1;
+    rand_array[2] = -1;
     rand_array[3] = 0;
     rand_array[4] = 0;
     rand_array[5] = 0;
     
-    test_player.manGenetics(rand_array);
-    test_player.updateData();
-    test_player.travel();
+    //test_player.manGenetics(rand_array);
+    //test_player.updateData();
+    //test_player.travel();
     
-    //Input_Console.loop();
+    Player_head* last_gen = Input_Console.loop();
     
     return 0;
 }

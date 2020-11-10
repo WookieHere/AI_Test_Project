@@ -27,21 +27,19 @@ struct Player_head
 
 class Output_handler
 {
-    Output_handler(Player_head* head);
-    ~Output_handler() {};
+    
     Player_head* player_roster;
                                 //(what image to use, color setup, etc.)
     Player_head* Player_list;
-    
-    Player_head* player_roster;
+
     Config* User_config;        //This will be a struct for defining how the output is managed
-    Player_head* post_breeding_players; //linked list of players for breeding
+    
     const char* output_log;
     
 public:
+    Player_head* post_breeding_players; //linked list of players for breeding
     Output_handler(Player_head* head);
     ~Output_handler();
-    
     bool addToRoster(Player*);
     Player_head* getNewPlayers();   //to be called by the input handler
 private:

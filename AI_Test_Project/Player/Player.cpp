@@ -7,6 +7,7 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "Player.hpp"
 #include "Linked_List_Handler.hpp"
@@ -31,9 +32,9 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     this->Player_data->travel_direction->Y = 0;
     this->Player_data->travel_direction->Z = 0;
     
-    this->reference_frame = create_cost_mesh(this->Input_Console->getConfig().x_size, this->Input_Console->getConfig().y_size);
-    this->reference_frame->x_width = this->Input_Console->getConfig().x_size;
-    this->reference_frame->y_width = this->Input_Console->getConfig().y_size;
+    this->reference_frame = (Cost_mesh*)malloc(sizeof(Cost_mesh));
+    this->reference_frame->x_width = this->used_config.x_size;
+    this->reference_frame->y_width = this->used_config.y_size;
     
     this->Route = (Coordinate_head*)malloc(sizeof(Coordinate_head));
     this->Route->length = 0;
@@ -69,25 +70,39 @@ Player::~Player()
 {
     int i;
     /*deallocate the coordinates route*/
-    Coordinate_head* temp_route;
+    Coordinate_node* temp_node = (Coordinate_node*)malloc(sizeof(Coordinate_node));
+    Coordinate_node* traversal_node = (Coordinate_node*)malloc(sizeof(Coordinate_node));
+    traversal_node = this->Route->next_node;
     for(i = 0; i < this->Route->length; i++)
     {
-        temp_route = this->Route;
-        this->Route->next_node = this->Route->next_node->next_node;
-        free(temp_route->next_node->Coordinate->X);
-        free(temp_route->next_node->Coordinate->Y);
-        free(temp_route->next_node); 
+        temp_node = traversal_node;
+        traversal_node = traversal_node->next_node;
+        free(temp_node->Coordinate);
+        temp_node->Coordinate = NULL;
+        temp_node->next_node = NULL;
+        temp_node = NULL;
     }
     free(this->Route);
+    this->Route = NULL;
     /*deallocate time register*/
     free(this->time_register);
+    this->time_register = NULL;
     /*deallocate fuel register*/
     free(this->fuel_register);
+    this->fuel_register = NULL;
     /*deallocate the player's genes*/
+    freeCostMesh(this->reference_frame);
+    //do NOT free the input/output handlers
+    
     free(this->Player_data->Player_genes);
+    this->Player_data->Player_genes = NULL;
     /*need to deallocate player data*/
+    free(this->Player_data->travel_direction);
+    this->Player_data->travel_direction = NULL;
+    free(this->Player_data->wind_vector);
+    this->Player_data->wind_vector = NULL;
     free(this->Player_data);
-
+    this->Player_data = NULL;
 }
 
 double Player::getDistance(Coordinate* A, Coordinate* B)

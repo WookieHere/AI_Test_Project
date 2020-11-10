@@ -48,7 +48,7 @@ Coordinate* addCoordinates(Coordinate* A, Coordinate* B)
     return new_coord;
 }
 
-double Player::getTimeAdded(double Lost_work, double distance_traveled)
+double Player::getTimeAdded(double distance_traveled)
 {
     //new_pos = last_pos + current_velocity(t) + force(t^2)
     //distance_traveled = 0 + current_velocity(t) + force(t^2)
@@ -56,11 +56,35 @@ double Player::getTimeAdded(double Lost_work, double distance_traveled)
     //below will be quadratic equation for above
     //-B +/- sqrt(B^2 - 4AC)/2A
     //not used in this implementation
-    return 1;
+    double D = 0;
+    double E = 0;
+    if(this->Player_data->current_velocity > this->used_config.Minimum_Velocity)
+    {
+        double A = -5;  //arbitrary constant for decelleration
+        double B = this->Player_data->current_velocity;
+        double C = -1 * distance_traveled;
+        
+        double D = ((-1 * B) + sqrt(pow(B, 2) - (4 * A * C)))/ (2 * A);
+        double E = ((-1 * B) + sqrt(pow(B, 2) - (4 * A * C)))/ (2 * A);
+    }else
+    {
+        D = 1/(distance_traveled / this->used_config.Minimum_Velocity);
+        E = 1;
+    }
+    if(E == 1)
+    {
+        return D;
+    }else if(D < 0 && D > E)
+    {
+        return D;
+    }else
+    {
+        return E;
+    }
     
 }
 
-double Player::getWork(Coordinate* checked_dist, vector* wind)
+double Player::getWork(Coordinate* checked_dist, vector* wind, unit_vector* new_dir)
 {
     //the distance is from origin (0,0)
     //unit_vector* unit_wind = toUnitVector(wind)
@@ -69,18 +93,18 @@ double Player::getWork(Coordinate* checked_dist, vector* wind)
     //double velocity_Y = this->Player_data->current_velocity * this->Player_data->travel_direction->Y;
     //double velocity_Z = this->Player_data->current_velocity * this->Player_data->travel_direction->Z;
     
-    double Force_X = this->Player_data->wind_vector->X;   //these might need tweaking from Wing Area
-    double Force_Y = this->Player_data->wind_vector->Y;
-    double Force_Z = this->Player_data->wind_vector->Z;
-    double* Forces = (double*)malloc(sizeof(double) * 3); //to hold each dir's forces
-    Forces[0] = Force_X;
-    Forces[1] = Force_Y;
-    Forces[2] = Force_Z;
-    double lost_thrust = getLostWork(Forces);
-    return lost_thrust;   //work lost from turbulance
+    double velocity_X = this->Player_data->wind_vector->X;   //these might need tweaking from Wing Area
+    double velocity_Y = this->Player_data->wind_vector->Y;
+    double velocity_Z = this->Player_data->wind_vector->Z;
+    double* velocities = (double*)malloc(sizeof(double) * 3); //to hold each dir's forces
+    velocities[0] = velocity_X;
+    velocities[1] = velocity_Y;
+    velocities[2] = velocity_Z;
+    double delta_velocity = getLostWork(velocities, new_dir);
+    return delta_velocity;   //work lost from turbulance
 }
 
-double Player::getLostWork(double* array)
+double Player::getLostWork(double* array, unit_vector* dir)
 {
     //the array format is [0] = X, [1] = Y, [2] = Z
     double X = array[0];
@@ -88,9 +112,9 @@ double Player::getLostWork(double* array)
     double Z = array[2];
     double delta_work = 0;  //positive is good
     
-    double player_X = this->Player_data->travel_direction->X * this->Player_data->current_velocity;
-    double player_Y = this->Player_data->travel_direction->Y * this->Player_data->current_velocity;
-    double player_Z = this->Player_data->travel_direction->Z * this->Player_data->current_velocity;
+    double player_X = dir->X * this->Player_data->current_velocity;
+    double player_Y = dir->Y * this->Player_data->current_velocity;
+    double player_Z = dir->Z * this->Player_data->current_velocity;
     
     if(abs(player_X) > abs(X))
     {
@@ -173,6 +197,19 @@ double Player::getLostWork(double* array)
     }
     return delta_work;
 }
+
+
+unit_vector* toUnitVector(vector* A)
+{
+    double magnitude = abs(A->X) + abs(A->Y) + abs(A->Z);
+    unit_vector* result = (unit_vector*)malloc(sizeof(unit_vector));
+    result->X = A->X / magnitude;
+    result->Y = A->Y / magnitude;
+    result->Z = A->Z / magnitude;
+    return result;
+}
+
+
 /*
 double Player::getForce(int wind_velocity)
 {
@@ -188,15 +225,3 @@ double Player::getForce(int wind_velocity)
 {
     
 }*/
-
-unit_vector* toUnitVector(vector* A)
-{
-    double magnitude = abs(A->X) + abs(A->Y) + abs(A->Z);
-    unit_vector* result = (unit_vector*)malloc(sizeof(unit_vector));
-    result->X = A->X / magnitude;
-    result->Y = A->Y / magnitude;
-    result->Z = A->Z / magnitude;
-    return result;
-}
-
-

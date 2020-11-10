@@ -80,6 +80,7 @@ struct Range_head
 
 class Input_handler
 {
+    
     Config* User_config;
     struct Coordinate* Destination_Coord;
     struct Coordinate* Player_Origin;
@@ -91,12 +92,13 @@ class Input_handler
     
 public:
     Input_handler(Coordinate*, Coordinate*, Output_handler*, const char*);
+    ~Input_handler();
     void setConfig(const char* filename);   //made this public
     struct Coordinate* getCoordinate(class Player*);  //Like an update position. Mostly a placeholder
     struct Coordinate getDestination();
     struct Coordinate getOrigin();
     struct vector* getVector(Coordinate* coord);
     Config getConfig();
-    int loop();
+    struct Player_head* loop();
 };
 #endif /* Input_Handler_hpp */

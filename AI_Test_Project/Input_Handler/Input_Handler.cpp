@@ -61,7 +61,7 @@ Coordinate Input_handler::getOrigin()
     return *this->Player_Origin;
 }
 
-int Input_handler::loop()
+Player_head* Input_handler::loop()
 {
     if(this->generation_count == 0)
     {
@@ -69,12 +69,12 @@ int Input_handler::loop()
         Player_node* temp = createNodePlayer();
         Player_list->next_node = temp;
         Player* temp_player;
-        double* rand_array = (double*)malloc(sizeof(Genetics)/sizeof(double));
+        double* rand_array = (double*)malloc(sizeof(Genetics)/sizeof(double) * 6);
         for(int i = 0; i < this->User_config->generation_size; i++)
         {
-            temp_player = (Player*)malloc(sizeof(Player));
+            temp_player = new Player(this, this->Output);
             rand_array = getRandomDoubleArray(-10000, 10000, 6);
-            *temp_player = Player(this, Output);
+            //*temp_player = Player(this, Output);
             temp_player->manGenetics(rand_array);
             Player_list->length++;
             temp->ranked_player = temp_player;
@@ -100,7 +100,7 @@ int Input_handler::loop()
     {
         this->loop();
     }
-    return 0;
+    return this->Output->post_breeding_players;
     
     
 }
