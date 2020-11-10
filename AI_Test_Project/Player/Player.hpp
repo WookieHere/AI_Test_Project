@@ -119,8 +119,8 @@ private:
     double modifyCost(struct mesh_node*);
     double getWork(Coordinate*, vector*);
     //unit_vector* toUnitVector(vector*);
-    double getForce(int);
-    double getLostWork(double*, double);
+    //double getForce(int);
+    double getLostWork(double*);
     //Coordinate* subCoordinates(Coordinate*, Coordinate*);
     double getTimeAdded(double, double);
     double getTurnRate(unit_vector*, unit_vector*);
