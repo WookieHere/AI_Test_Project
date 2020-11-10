@@ -101,7 +101,7 @@ class Player
     
 public:
     Player(Input_handler* Input, Output_handler* Output);       //there is only 1 Output handler/input handler in this implementation
-    //~Player();
+    ~Player();
     struct Player_data getPlayerData(); //This retrieves a copy of the current data
     void updateData();          //Uses the Input Handler to update position, vector, distance, etc.
     double getDistance(Coordinate*, Coordinate*); //outputs the distance between two coords

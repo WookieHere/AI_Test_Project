@@ -65,6 +65,27 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     
     
 }
+Player::~Player()
+{
+    /*deallocate the coordinates route*/
+    Coordinate_head* temp_route;
+    while(this->Route->next_node != NULL)
+    {
+        temp_route = this->Route;
+        this->Route = this->Route->next_node;
+        free(temp_route); 
+    }
+
+    /*deallocate time register*/
+    free(this->time_register);
+    /*deallocate fuel register*/
+    free(this->fuel_register);
+    /*deallocate the player's genes*/
+    free(this->Player_data->Player_genes);
+    /*need to deallocate player data*/
+    free(this->Player_data);
+
+}
 
 double Player::getDistance(Coordinate* A, Coordinate* B)
 {
