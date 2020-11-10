@@ -20,9 +20,10 @@ Output_handler::Output_handler(Player_head* head)
 }
 Output_handler::~Output_handler()
 {
+    int i;
     /*deallocate the whole list of players in player head*/
     Player_head* temp_head;
-    while(this->player_roster->next_node != NULL)
+    while(i = 0; i < this->player_roster->length; i++)
     {
         temp_head = this->player_roster->next_node; //temporary holder
         this->player_roster->next_node = this->player_roster->next_node->next_node;
@@ -31,7 +32,7 @@ Output_handler::~Output_handler()
     }
     free(this->player_roster);
     /*deallocate post breeding players*/
-    while(this->post_breeding_players->next_node != NULL)
+    for(i = 0; i < this->post_breeding_players->length; i++)
     {
         temp_head = this->post_breeding_players->next_node; //temporary holder
         this->post_breeding_players->next_node = this->post_breeding_players->next_node->next_node;
