@@ -16,9 +16,9 @@
 
 struct vector
 {
-    int8_t X;
-    int8_t Y;
-    int8_t Z;
+    int X;
+    int Y;
+    int Z;
     //This means 8 bits used for each direction, since it is pulled from a 8 bit RGB value.
     //the max value of a direction is (255-1)/2 * 37 (km/h)
 };
@@ -97,7 +97,7 @@ class Player
     struct Cost_mesh* reference_frame;
     struct Coordinate_head* Route;
     class Output_handler* Output_route; //This will be a class in Route_Constructor.hpp
-    class Input_handler* Input_Console; //This will contain the map files and update sensors
+    //class Input_handler* Input_Console; //This will contain the map files and update sensors
     
 public:
     Player(Input_handler* Input, Output_handler* Output);       //there is only 1 Output handler/input handler in this implementation
@@ -113,6 +113,7 @@ public:
     double getTimeTaken();
     double getFuelUsed();
     void replaceGenes(Genetics);
+    class Input_handler* Input_Console; //This will contain the map files and update sensors
     
 private:
     void generateReferenceFrame();

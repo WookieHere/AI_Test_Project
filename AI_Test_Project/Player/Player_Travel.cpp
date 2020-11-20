@@ -50,7 +50,10 @@ double Player::modifyCost(mesh_node* current_node)
     new_loc.Y = ((current_node->data->Coord->Y - (this->used_config.y_size/2)) * this->used_config.roughness) + current_location.Y;
     //define new location
     
-    
+    if(new_loc.X == 0 && new_loc.Y == 0)
+    {
+        return INFINITY;
+    }
     
     double distance_traveled = getDistance(&current_location, &new_loc);
     double distance_delta = (getDistance(&current_location, &destination) - getDistance(&new_loc, &destination)); //the -1 is so that the program will select for a higher values as being a good thing
@@ -87,12 +90,10 @@ double Player::modifyCost(mesh_node* current_node)
 
 mesh_node* Player::costMeshAssign(Cost_mesh* mesh)
 {
-    mesh_node* column_holder = (mesh_node*)malloc(sizeof(mesh_node));
-    mesh_node* traversal_node = (mesh_node*)malloc(sizeof(mesh_node));
-    mesh_node* returned_node = (mesh_node*)malloc(sizeof(mesh_node));
-    returned_node = mesh->origin;
-    column_holder = mesh->origin;
-    traversal_node = mesh->origin;
+    mesh_node* returned_node = mesh->origin;
+    mesh_node* column_holder = mesh->origin;
+    mesh_node* traversal_node = mesh->origin;
+    //Coordinate temp_coord = {0,0};
     double prev_min = 50000000;
     double temp_double = 0;
     for(int i = 0; i < mesh->y_width; i++)
@@ -104,6 +105,7 @@ mesh_node* Player::costMeshAssign(Cost_mesh* mesh)
             {
                 prev_min = temp_double;
                 returned_node = traversal_node;
+                
                 this->time_register[1] = this->time_register[0];
                 this->fuel_register[1] = this->fuel_register[0];
             }
@@ -113,6 +115,11 @@ mesh_node* Player::costMeshAssign(Cost_mesh* mesh)
         column_holder = column_holder->south_coord;
         traversal_node = column_holder;
     }
+    //free(column_holder);
+    //free(traversal_node);
+    //free(returned_node);
+    //column_holder = NULL;
+    //traversal_node = NULL;
     this->time_taken += this->time_register[1];
     this->fuel_used += this->fuel_register[1];
     return returned_node;
@@ -120,12 +127,15 @@ mesh_node* Player::costMeshAssign(Cost_mesh* mesh)
 
 void Player::generateReferenceFrame()
 {
-    
+    Coordinate old_pos = this->Player_data->Player_position;
     this->reference_frame = create_cost_mesh(this->used_config.x_size, this->used_config.y_size);
     mesh_node* new_position_node = this->costMeshAssign(reference_frame); //this will assign a cost to each node in the mesh
+    //that also returns a mesh node of the new node to go to
     this->Player_data->Player_position.X = ((new_position_node->data->Coord->X - (this->used_config.x_size/2)) * this->used_config.roughness) + Player_data->Player_position.X;
     this->Player_data->Player_position.Y = ((new_position_node->data->Coord->Y - (this->used_config.y_size/2)) * this->used_config.roughness) + Player_data->Player_position.Y;
     //the above sets the new position of the player
+    this->Player_data->travel_direction = connectCoords(&old_pos, &this->Player_data->Player_position);
+    //sets the new travel direction
     
     Coordinate_node temp = {(Coordinate*)malloc(sizeof(Coordinate)), NULL};
     *temp.Coordinate = this->Player_data->Player_position;
@@ -144,7 +154,7 @@ void Player::travel()
 {
     int i = 0;
     Coordinate origin = this->Player_data->Player_position;
-    double max_turn_distance =sqrt(pow(this->used_config.x_size * this->used_config.roughness, 2) + pow(this->used_config.y_size * this->used_config.roughness, 2));
+    double max_turn_distance = sqrt((.5) * (pow(this->used_config.x_size * this->used_config.roughness, 2) + pow(this->used_config.y_size * this->used_config.roughness, 2)));
     //that's the max distance traveled per turn
     double original_dist = getDistance(&origin, &this->Player_data->Player_Destination);
     while(this->distance_to_destination > 10)
@@ -156,10 +166,14 @@ void Player::travel()
         if(this->distance_to_destination > (original_dist * 2))
         {
             //to make sure the AI is moving in the right direction
+            
+            this->time_taken = INFINITY;
             break;
-        }else if(i > (original_dist * 5/max_turn_distance))
-         {
+        }else if(i > (original_dist * 10/max_turn_distance))
+        {
              //this is to make sure the AI is at least moving
+             //the time taken part is to select against these at all costs
+             this->time_taken = INFINITY;
              break;
         }
     }

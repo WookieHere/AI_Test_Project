@@ -31,7 +31,7 @@ int main(int argc, const char * argv[])
     Input_Console.setConfig("Test_Config.txt");
     
     
-    double* rand_array = getRandomDoubleArray(-10000, 10000, 6);
+    double* rand_array = getRandomDoubleArray(-10, 10, 6);
     Player test_player = Player(&Input_Console, &Output);
     
     rand_array[0] = 0;
@@ -45,7 +45,28 @@ int main(int argc, const char * argv[])
     //test_player.updateData();
     //test_player.travel();
     
-    Player_head* last_gen = Input_Console.loop();
+    Player* A = new Player(&Input_Console, &Output);
+    Player* B = new Player(&Input_Console, &Output);
+    A->manGenetics(getRandomDoubleArray(-10, 10, 6));
+    //A->manGenetics(getRandomDoubleArray(-10, 10, 6));
+    crossTest(A, B);
+    
+    
+    int i = 0;
+    Player_head* last_gen = (Player_head*)Input_Console.loop();
+    while((int*)last_gen == 0)
+    {
+        i++;
+        //Output.setRoster(last_gen);
+        last_gen = (Player_head*)Input_Console.loop();
+        
+    }
+    //Player_head* last_gen = Input_Console.loop();
     
     return 0;
 }
+
+//add an addToRoute function
+//unit test addToRoute, Mutate.
+//last gen is coming up with a length of 0. investigate this
+//double check roster rotation and deletion working.

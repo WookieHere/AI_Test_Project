@@ -13,14 +13,26 @@
 void Output_handler::breedPlayers()
 {
     Player_node* traversal_node = this->player_roster->next_node;
+    int new_size = 0;
     for(int i = 0; i < this->player_roster->length; i++)
     {
-        if((500 - i) > getRandom2RN(0, this->player_roster->length))
+        if((this->player_roster->length - i) > getRandom2RN(0, this->player_roster->length))
         {
-            this->addToRoster(traversal_node->ranked_player, this->post_breeding_players);   
+            this->addToRoster(traversal_node->ranked_player, this->post_breeding_players);
+            new_size++;
+            //this will breed a new player on a 2RN of it's position
         }
+        traversal_node = traversal_node->next_node;
+    }
+    
+    traversal_node = this->player_roster->next_node;
+    for(int k = 0; k < this->player_roster->length - new_size; k++)
+    {
+        this->addToRoster(new Player(traversal_node->ranked_player->Input_Console, this), this->post_breeding_players);
+        //this pads the end of the roster with new players
     }
     traversal_node = this->post_breeding_players->next_node;
+    
     for(int j = 0; j < this->post_breeding_players->length; j += 2)
     {
         this->crossOver(traversal_node->ranked_player, traversal_node->next_node->ranked_player);
@@ -31,7 +43,7 @@ void Output_handler::breedPlayers()
         if(getRandomInt(0, 100) > 95)
         {
             this->mutate(traversal_node->next_node->ranked_player);
-        }
+        }//these mutate a player 5% of the time
         traversal_node = traversal_node->next_node->next_node;
     }
 }
@@ -49,37 +61,37 @@ void Output_handler::crossOver(Player* A, Player* B)
         switch (combination_sequence[i])
         {
             case 0:
-                gene_A.time_weight = temp;
+                temp = gene_A.time_weight;
                 gene_A.time_weight = gene_B.time_weight;
                 gene_B.time_weight = temp;
                 break;
                 
             case 1:
-                gene_A.travel_weight = temp;
+                temp = gene_A.travel_weight;
                 gene_A.travel_weight = gene_B.travel_weight;
                 gene_B.travel_weight = temp;
                 break;
                 
             case 2:
-                gene_A.distance_weight = temp;
+                temp = gene_A.distance_weight;
                 gene_A.distance_weight = gene_B.distance_weight;
                 gene_B.distance_weight = temp;
                 break;
                 
             case 3:
-                gene_A.work_weight = temp;
+                temp = gene_A.work_weight;
                 gene_A.work_weight = gene_B.work_weight;
                 gene_B.work_weight = temp;
                 break;
                 
             case 4:
-                gene_A.turning_rate = temp;
+                temp = gene_A.turning_rate;
                 gene_A.turning_rate = gene_B.turning_rate;
                 gene_B.turning_rate = temp;
                 break;
                 
             case 5:
-                gene_A.change_constant = temp;
+                temp = gene_A.change_constant;
                 gene_A.change_constant = gene_B.change_constant;
                 gene_B.change_constant = temp;
                 break;
@@ -102,7 +114,7 @@ void Output_handler::mutate(Player* player)
     
     int* combination_sequence = getRandomMatchup(0, sizeof(gene_A)/ sizeof(double));
     int genes_to_switch = getRandomInt(0, sizeof(gene_A)/ sizeof(double));
-    double* new_genes = getRandomDoubleArray(-1000, 1000, genes_to_switch);
+    double* new_genes = getRandomDoubleArray(-100, 100, genes_to_switch);
 
     for(int i = 0; i < genes_to_switch; i++)
     {

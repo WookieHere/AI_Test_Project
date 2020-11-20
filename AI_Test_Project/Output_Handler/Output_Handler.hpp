@@ -41,11 +41,13 @@ public:
     Output_handler(Player_head* head);
     ~Output_handler();
     bool addToRoster(Player*);
+    void crossOver(Player*, Player*);   //TEMPORARY in public for testing
+    void rotateRoster();   //this sets the output to a new roster
     Player_head* getNewPlayers();   //to be called by the input handler
 private:
     void printPlayerRoute(struct Coordinate_head*);    
     void printRoutes();
-    void crossOver(Player*, Player*);
+    //void crossOver(Player*, Player*);
     void breedPlayers();
     bool addToRoster(Player*, Player_head*);
     void mutate(Player*);

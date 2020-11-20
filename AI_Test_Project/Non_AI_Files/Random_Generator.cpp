@@ -17,6 +17,12 @@ double getRandomDouble(int min, int max)
     returned = returned / 1000;
     returned += min;
     srand((int)returned * 1000);
+    while(abs(returned) < 0)
+    {
+        returned = getRandomDouble(min, max);
+    }
+    //the double from this can never be 0
+    srand(returned * (int)clock());
     return returned;
 }
 

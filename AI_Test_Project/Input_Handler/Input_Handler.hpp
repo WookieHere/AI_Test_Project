@@ -99,6 +99,6 @@ public:
     struct Coordinate getOrigin();
     struct vector* getVector(Coordinate* coord);
     Config getConfig();
-    struct Player_head* loop();
+    void* loop();
 };
 #endif /* Input_Handler_hpp */

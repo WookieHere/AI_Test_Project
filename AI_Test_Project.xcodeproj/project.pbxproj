@@ -99,7 +99,6 @@
 				E7A78930253C03DB00B385D7 /* Input_Handler.hpp */,
 				E74FB742254A539C008D800A /* getVector.cpp */,
 				E74FB745254A59AD008D800A /* readConfig.cpp */,
-				E728D8FF254D1E1800B77AD0 /* Player_Training.hpp */,
 			);
 			path = Input_Handler;
 			sourceTree = "<group>";
@@ -109,6 +108,7 @@
 			children = (
 				E728D8FE254D1E1800B77AD0 /* Player_Training.cpp */,
 				E7A7892C253C03C500B385D7 /* Output_Handler.cpp */,
+				E728D8FF254D1E1800B77AD0 /* Player_Training.hpp */,
 				E7A7892D253C03C500B385D7 /* Output_Handler.hpp */,
 			);
 			path = Output_Handler;

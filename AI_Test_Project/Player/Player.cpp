@@ -11,6 +11,7 @@
 #include <math.h>
 #include "Player.hpp"
 #include "Linked_List_Handler.hpp"
+#include "Random_Generator.hpp"
 
 
 Player::Player(Input_handler* Input, Output_handler* Output)
@@ -125,6 +126,14 @@ void Player::manGenetics(double* input_array)
     {
         input_array = (double*)realloc(input_array, sizeof(double) * 6);
     }
+    for(int i = 0; i < 6; i++)
+    {
+        if(abs(input_array[i]) < 1)
+        {
+            input_array[i] += getRandomDouble(-100, 100);
+        }
+    }
+    
     Genetics new_genes =
     {
         input_array[0],

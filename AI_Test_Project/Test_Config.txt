@@ -25,6 +25,6 @@ Plane_mass = 333740;            //mass of plane in kg's
 
 Generation_settings (important!):
 {
-generation_size = 200;
-generation_end_count = 5;
+generation_size = 100;
+generation_end_count = 50;
 }

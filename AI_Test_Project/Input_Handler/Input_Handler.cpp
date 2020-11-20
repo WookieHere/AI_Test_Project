@@ -11,6 +11,8 @@
 #include "Random_Generator.hpp"
 #include "Player.hpp"
 #include "Output_Handler.hpp"
+#define GENE_MAX_NEGATIVE   -100
+#define GENE_MAX_POSITIVE   100
 
 Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, Output_handler* Output, const char* filename)
 {
@@ -61,7 +63,7 @@ Coordinate Input_handler::getOrigin()
     return *this->Player_Origin;
 }
 
-Player_head* Input_handler::loop()
+void* Input_handler::loop()
 {
     if(this->generation_count == 0)
     {
@@ -73,7 +75,7 @@ Player_head* Input_handler::loop()
         for(int i = 0; i < this->User_config->generation_size; i++)
         {
             temp_player = new Player(this, this->Output);
-            rand_array = getRandomDoubleArray(-10000, 10000, 6);
+            rand_array = getRandomDoubleArray(GENE_MAX_NEGATIVE, GENE_MAX_POSITIVE, 6);
             //*temp_player = Player(this, Output);
             temp_player->manGenetics(rand_array);
             Player_list->length++;
@@ -84,10 +86,13 @@ Player_head* Input_handler::loop()
             temp = temp->next_node;
             temp_player = NULL; //makes the first generation
         }
-        this->generation_count = this->generation_count + 1;
+        this->generation_count++;
     }else if(this->generation_count < this->User_config->generation_end_count)
     {
         Player_head* new_players = this->Output->getNewPlayers();
+        this->Output->rotateRoster();
+        //sets new generation
+        
         Player_node* traversal_node = new_players->next_node;
         for(int i = 0; i < new_players->length; i++)
         {
@@ -98,9 +103,9 @@ Player_head* Input_handler::loop()
     }
     if(this->generation_count < this->User_config->generation_end_count)
     {
-        this->loop();
+        return (void*)0;
     }
-    return this->Output->post_breeding_players;
+    return (void*)this->Output->post_breeding_players;
     
     
 }

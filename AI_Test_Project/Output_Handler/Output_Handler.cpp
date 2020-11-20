@@ -88,6 +88,7 @@ void Output_handler::printRoutes()
 
 bool Output_handler::addToRoster(Player* player)
 {
+    bool is_last_node = 0;
     if(this->player_roster->length == 0)
     {
         this->player_roster->next_node = (Player_node*)malloc(sizeof(Player_node));
@@ -96,22 +97,24 @@ bool Output_handler::addToRoster(Player* player)
         return 0;
     }
     Player_node* traversal_node = this->player_roster->next_node;
+    Player_node* trailing_node = this->player_roster->next_node;
     for(int i = 0; i < this->player_roster->length; i++)
     {
         if(player->getTimeTaken() >= traversal_node->ranked_player->getTimeTaken())
         {
+            trailing_node = traversal_node;
             traversal_node = traversal_node->next_node;
         }else
         {
+            is_last_node = 1;
             break;
         }
     }
     //traversal_node now points at place where player should be
     Player_node* new_node = (Player_node*)malloc(sizeof(Player_node));
-    new_node->next_node = traversal_node->next_node;
-    traversal_node->next_node = new_node;
-    new_node->ranked_player = traversal_node->ranked_player;
-    traversal_node->ranked_player = player;
+    new_node->next_node = trailing_node->next_node;
+    trailing_node->next_node = new_node;
+    new_node->ranked_player = player;
     this->player_roster->length++;
     //places the player into it's correct position in ranking based on time taken
     return 0;
@@ -128,13 +131,16 @@ bool Output_handler::addToRoster(Player* player, Player_head* head)
         head->length++;
         return 0;
     }
-    traversal_node = head->next_node;
     
+    traversal_node = head->next_node;
+    Player_node* trailing_node = head->next_node;
     for(int i = 0; i < head->length - 1; i++)
     {
-        if(player->getTimeTaken() >= traversal_node->ranked_player->getTimeTaken())
+        if(player->getTimeTaken() >= traversal_node->ranked_player->getTimeTaken() || player->getTimeTaken() == 0)
         {
+            trailing_node = traversal_node;
             traversal_node = traversal_node->next_node;
+            //players of time taken == 0 will be at the very end
         }else
         {
             break;  //for the intial roster this will not sort
@@ -142,14 +148,10 @@ bool Output_handler::addToRoster(Player* player, Player_head* head)
     }
     //traversal_node now points at place where player should be
     Player_node* new_node = (Player_node*)malloc(sizeof(Player_node));
-    if(traversal_node->next_node != NULL)
-    {
-        new_node->next_node = traversal_node->next_node;
-    }
-    
-    traversal_node->next_node = new_node;
-    new_node->ranked_player = traversal_node->ranked_player;
-    traversal_node->ranked_player = player;
+    new_node->next_node = trailing_node->next_node;
+    trailing_node->next_node = new_node;
+    new_node->ranked_player = player;
+    head->length++;
     //places the player into it's correct position in ranking based on time taken
     return 0;
 }
@@ -160,4 +162,25 @@ Player_head* Output_handler::getNewPlayers()
     this->printRoutes();
     this->breedPlayers();
     return this->post_breeding_players;
+}
+
+void Output_handler::rotateRoster()
+{
+    //this->player_roster = new_head;
+    //this->post_breeding_players->length = 0;
+    //this->post_breeding_players->next_node = NULL;
+    //you can't free that breeding list since they point to same places in memory as roster
+    Player_node* traversal_node = this->player_roster->next_node;
+    Player_node* copy_node = this->post_breeding_players->next_node;
+    Player_node* copy_trail = this->post_breeding_players->next_node;
+    for(int i = 0; i < this->post_breeding_players->length; i++)
+    {
+        copy_trail = copy_node;
+        traversal_node->ranked_player = copy_node->ranked_player;
+        traversal_node = traversal_node->next_node;
+        copy_node = copy_node->next_node;
+        copy_trail->next_node = NULL;
+        //this copies post_breeding to player roster then clears the breeding list
+    }
+    this->post_breeding_players->length = 0;
 }
