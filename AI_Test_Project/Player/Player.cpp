@@ -58,12 +58,15 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     //set default values for genes
     //this->Player_data->Player_genes->accuracy_weight = 0;
     this->Player_data->Player_genes = (Genetics*)malloc(sizeof(Genetics));
-    this->Player_data->Player_genes->change_constant = 0;
+    //this->Player_data->Player_genes->change_constant = 0;
     this->Player_data->Player_genes->distance_weight = 1;
     this->Player_data->Player_genes->time_weight = 1;
     this->Player_data->Player_genes->travel_weight = 1;
     this->Player_data->Player_genes->turning_rate = 1;
     this->Player_data->Player_genes->work_weight = 1;
+    this->Player_data->Player_genes->velocity_2 = 1;
+    this->Player_data->Player_genes->distance_2 = 1;
+    this->Player_data->Player_genes->key_2 = 1;
     
     this->Route = (Coordinate_head*)malloc(sizeof(Coordinate_head));
     this->Route->next_node = (Coordinate_node*)malloc(sizeof(Coordinate_node));

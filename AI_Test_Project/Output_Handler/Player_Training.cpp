@@ -11,6 +11,7 @@
 #include "Player_Training.hpp"
 #define GENE_MAX_NEGATIVE   -10000
 #define GENE_MAX_POSITIVE   10000
+#define GENE_COUNT          9
 
 void Output_handler::breedPlayers()
 {
@@ -67,7 +68,7 @@ void Output_handler::breedPlayers()
     for(int k = 0; k < this->player_roster->length - new_size; k++)
     {
         new_player = new Player(traversal_node->ranked_player->Input_Console, this);
-        rand_array = getRandomDoubleArray(GENE_MAX_NEGATIVE, GENE_MAX_POSITIVE, 6);
+        rand_array = getRandomDoubleArray(GENE_MAX_NEGATIVE, GENE_MAX_POSITIVE, GENE_COUNT);
         new_player->manGenetics(rand_array);
         this->addToRoster(new_player, this->post_breeding_players);
         //this pads the end of the roster with new players
@@ -101,8 +102,8 @@ void Output_handler::crossOver(Player* A, Player* B)
     Genetics gene_A = A->getGenetics();
     Genetics gene_B = B->getGenetics();
     
-    int* combination_sequence = getRandomMatchup(0, sizeof(gene_A)/ sizeof(double));
-    int genes_to_switch = getRandomInt(0, sizeof(gene_A)/ sizeof(double));
+    int* combination_sequence = getRandomMatchup(0, GENE_COUNT);
+    int genes_to_switch = getRandomInt(0, GENE_COUNT);
     int temp = 0;
     for(int i = 0; i < genes_to_switch; i++)
     {
@@ -139,11 +140,29 @@ void Output_handler::crossOver(Player* A, Player* B)
                 break;
                 
             case 5:
-                temp = gene_A.change_constant;
-                gene_A.change_constant = gene_B.change_constant;
-                gene_B.change_constant = temp;
+                temp = gene_A.key_2;
+                gene_A.key_2 = gene_B.key_2;
+                gene_B.key_2 = temp;
                 break;
                 
+            case 6:
+                temp = gene_A.distance_2;
+                gene_A.distance_2 = gene_B.distance_2;
+                gene_B.distance_2 = temp;
+                break;
+                
+            case 7:
+                temp = gene_A.velocity_2;
+                gene_A.velocity_2 = gene_B.velocity_2;
+                gene_B.velocity_2 = temp;
+                break;
+                
+            case 8:
+                temp = gene_A.layer_2;
+                gene_A.layer_2 = gene_B.layer_2;
+                gene_B.layer_2 = temp;
+                break;
+            
                 
             default:
                 break;
@@ -160,9 +179,9 @@ void Output_handler::mutate(Player* player)
     Genetics gene_A = player->getGenetics();
     
     
-    int* combination_sequence = getRandomMatchup(0, sizeof(gene_A)/ sizeof(double));
-    int genes_to_switch = getRandomInt(0, sizeof(gene_A)/ sizeof(double));
-    double* new_genes = getRandomDoubleArray(-100, 100, genes_to_switch);
+    int* combination_sequence = getRandomMatchup(0, GENE_COUNT);
+    int genes_to_switch = getRandomInt(0, GENE_COUNT);
+    double* new_genes = getRandomDoubleArray(GENE_MAX_NEGATIVE, GENE_MAX_POSITIVE, genes_to_switch);
 
     for(int i = 0; i < genes_to_switch; i++)
     {
@@ -189,10 +208,18 @@ void Output_handler::mutate(Player* player)
                 break;
                 
             case 5:
-                gene_A.change_constant = new_genes[i];
+                gene_A.key_2 = new_genes[i];
                 break;
-                
-                
+            case 6:
+                gene_A.distance_2 = new_genes[i];
+                break;
+            case 7:
+                gene_A.velocity_2 = new_genes[i];
+                break;
+            case 8:
+                  gene_A.layer_2 = new_genes[i];
+                  break;
+        
             default:
                 break;
         }//sadly there is not a better way to do that.

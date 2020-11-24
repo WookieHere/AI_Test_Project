@@ -38,7 +38,7 @@ void printGenetics(Player* A, const char* name)
     printf("distance_weight: %f\n", genes.distance_weight);
     printf("work_weight: %f\n", genes.work_weight);
     printf("turning_rate: %f\n", genes.turning_rate);
-    printf("change_constant: %f\n", genes.change_constant);
+    printf("change_constant: %f\n", genes.key_2);
     printf("-------------------------");
 }
 

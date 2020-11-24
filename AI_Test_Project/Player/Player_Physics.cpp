@@ -218,7 +218,8 @@ unit_vector* toUnitVector(vector* A)
 double Player::getKeyChanges(Coordinate new_loc)
 {
     double dist = this->Input_Console->getDistKeyFrame(&new_loc, &this->Player_data->Player_position);
-    return dist - this->dist_to_key;
+    
+    return dist;
 }//this should be a good thing on good velocity, bad on bad impact etc.
 
 /*

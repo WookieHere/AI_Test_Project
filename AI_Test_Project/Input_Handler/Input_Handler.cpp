@@ -13,6 +13,7 @@
 #include "Output_Handler.hpp"
 #define GENE_MAX_NEGATIVE   -10000
 #define GENE_MAX_POSITIVE   10000
+#define GENE_COUNT          9
 #define MAX_KEYS        16
 
 Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, Output_handler* Output, const char* filename)
@@ -87,7 +88,7 @@ int Input_handler::loop()
         for(int i = 0; i < this->User_config->generation_size; i++)
         {
             temp->ranked_player = new Player(this, this->Output);
-            rand_array = getRandomDoubleArray(GENE_MAX_NEGATIVE, GENE_MAX_POSITIVE, 6);
+            rand_array = getRandomDoubleArray(GENE_MAX_NEGATIVE, GENE_MAX_POSITIVE, GENE_COUNT);
             //*temp_player = Player(this, Output);
             temp->ranked_player->manGenetics(rand_array);
             Player_list->length++;

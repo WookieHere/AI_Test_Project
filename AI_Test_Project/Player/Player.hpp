@@ -55,7 +55,13 @@ struct Genetics
     // translation_weight; //(F-(F.dr))Fuel_mileage_const
     //double accuracy_weight;    //guessed_work/real_work
     double turning_rate;       //last velocity vector vs current
-    double change_constant;     //generate key coordinate ranges via input console
+    //double change_constant;     //generate key coordinate ranges via input console
+    
+    //second layer
+    double distance_2;
+    double velocity_2;
+    double key_2;
+    double layer_2;
 };
 
 struct Agent_data

@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "Player.hpp"
-#define     COST_INPUT_NUM     6
+#define     COST_INPUT_NUM     8
 
 
 double Player::interactGenetics(double* input)
@@ -28,12 +28,19 @@ double Player::interactGenetics(double* input)
     }
     
     double total_cost = 0;
+    double layer_2_cost = 0;
     total_cost += this->Player_data->Player_genes->time_weight * input[3];
     total_cost += this->Player_data->Player_genes->travel_weight * input[0];
     total_cost += this->Player_data->Player_genes->work_weight * input[2];
     total_cost += this->Player_data->Player_genes->turning_rate * input[4];
     total_cost += this->Player_data->Player_genes->distance_weight * input[1];
-    total_cost += this->Player_data->Player_genes->change_constant * input[5];
+    
+    //layer 2
+    layer_2_cost += this->Player_data->Player_genes->key_2 * input[5];
+    layer_2_cost += this->Player_data->Player_genes->distance_2 * input[6];
+    layer_2_cost += this->Player_data->Player_genes->velocity_2 * input[7];
+    total_cost += layer_2_cost * this->Player_data->Player_genes->layer_2;
+    
     return total_cost;
 }
 
@@ -78,7 +85,7 @@ double Player::modifyCost(mesh_node* current_node)
     double turn_rate = this->getTurnRate(new_direction, this->Player_data->travel_direction);
     
     double key_change_delta = this->getKeyChanges(new_loc);
-    key_change_delta *= velocity_delta;
+    //key_change_delta *= velocity_delta;
     
     double* cost_input_array = (double*)malloc(sizeof(double) * COST_INPUT_NUM);
     cost_input_array[0] = distance_traveled;
@@ -88,6 +95,8 @@ double Player::modifyCost(mesh_node* current_node)
     cost_input_array[3] = time_register[0];
     cost_input_array[4] = turn_rate;
     cost_input_array[5] = key_change_delta;
+    cost_input_array[6] = distance_delta;
+    cost_input_array[7] = velocity_delta;
     
     double Node_Cost = interactGenetics(cost_input_array);
     current_node->data->Cost = Node_Cost;
