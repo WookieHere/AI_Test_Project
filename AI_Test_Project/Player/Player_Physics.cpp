@@ -15,7 +15,8 @@ double Player::getTurnRate(unit_vector* A, unit_vector* B)
     double angle = acos(((A->X * B->X) + (A->Y * B->Y) + (A->Z * B->Z)) / (sqrt((pow(A->X, 2) + pow(A->Y, 2) + pow(A->Z, 2))) * sqrt((pow(B->X, 2)) + pow(B->Y, 2)) + pow(B->Z, 2)));
     if (angle > this->Input_Console->getConfig().Max_Turn_Rate)
     {
-        return 100000;     //this should never be allowed to occur hence high arbitrary number
+        //return 100000;     //this should never be allowed to occur hence high arbitrary number
+        return 0;
     }else
     {
         return 0;   //temporary fix (this does not work!)
@@ -29,6 +30,8 @@ unit_vector* connectCoords(Coordinate* A, Coordinate* B)
     new_vector->Y = A->Y - B->Y;
     new_vector->Z = 0;
     unit_vector* new_unit_vector = toUnitVector(new_vector);
+    free(new_vector);
+    new_vector = NULL;
     return new_unit_vector; //this returns a vector that can connect two given points as a unit vector
 }
 
@@ -88,7 +91,7 @@ double Player::getWork(Coordinate* checked_dist, vector* wind, unit_vector* new_
 {
     //the distance is from origin (0,0)
     //unit_vector* unit_wind = toUnitVector(wind)
-    double meters_traveled = this->getDistance(checked_dist, &this->Player_data->Player_position); //not optimal technically
+    //double meters_traveled = this->getDistance(checked_dist, &this->Player_data->Player_position); //not optimal technically
     //double velocity_X = this->Player_data->current_velocity * this->Player_data->travel_direction->X;
     //double velocity_Y = this->Player_data->current_velocity * this->Player_data->travel_direction->Y;
     //double velocity_Z = this->Player_data->current_velocity * this->Player_data->travel_direction->Z;
@@ -101,6 +104,9 @@ double Player::getWork(Coordinate* checked_dist, vector* wind, unit_vector* new_
     velocities[1] = velocity_Y;
     velocities[2] = velocity_Z;
     double delta_velocity = getLostWork(velocities, new_dir);
+    
+    free(velocities);
+    velocities = NULL;
     return delta_velocity;   //work lost from turbulance
 }
 

@@ -22,9 +22,9 @@ struct data
 struct mesh_node
 {
     struct data* data;
-    struct mesh_node* north_coord;
+    //struct mesh_node* north_coord;
     struct mesh_node* east_coord;
-    struct mesh_node* west_coord;
+    //struct mesh_node* west_coord;
     struct mesh_node* south_coord;
 };
 

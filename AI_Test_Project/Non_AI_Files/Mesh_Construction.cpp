@@ -47,10 +47,10 @@ data* set_data(int x, int y)
 mesh_node* create_mesh_node()
 {
     mesh_node* allocated_node = (mesh_node*)malloc(sizeof(mesh_node));
-    allocated_node->data = create_data();
-    allocated_node->north_coord = NULL;
+    //allocated_node->data = create_data();
+    //allocated_node->north_coord = NULL;
     allocated_node->east_coord = NULL;
-    allocated_node->west_coord = NULL;
+    //allocated_node->west_coord = NULL;
     allocated_node->south_coord = NULL;
     //pretty sure the malloc's are a waste of space, but only 1 of these ever exists at a time
     return allocated_node;
@@ -58,8 +58,8 @@ mesh_node* create_mesh_node()
 
 Cost_mesh* create_cost_mesh(int x_size, int y_size)
 {
-    mesh_node* node_pointer = (mesh_node*)malloc(sizeof(mesh_node));
-    mesh_node* trailing_pointer = (mesh_node*)malloc(sizeof(mesh_node));
+    mesh_node* node_pointer = NULL;
+    mesh_node* trailing_pointer = NULL;
     Cost_mesh* Allocated_mesh = (Cost_mesh*)malloc(sizeof(Cost_mesh));
     Allocated_mesh->x_width = x_size;
     Allocated_mesh->y_width = y_size;
@@ -75,10 +75,10 @@ Cost_mesh* create_cost_mesh(int x_size, int y_size)
                 //top-left
                 Allocated_mesh->origin = node_pointer;
                 trailing_pointer = node_pointer;
-                free(node_pointer->north_coord);
-                node_pointer->north_coord = NULL;
-                free((node_pointer->west_coord));
-                node_pointer->west_coord = NULL;
+                //free(node_pointer->north_coord);
+                //node_pointer->north_coord = NULL;
+                //free((node_pointer->west_coord));
+                //node_pointer->west_coord = NULL;
                 //this just sets the origin at 0,0 (top-left)
             }else if(j == 0)
             {
@@ -89,29 +89,29 @@ Cost_mesh* create_cost_mesh(int x_size, int y_size)
                     trailing_pointer = trailing_pointer->south_coord;
                     //trailing pointer is now node above node_pointer
                 }
-                node_pointer->north_coord = trailing_pointer;
-                free(node_pointer->west_coord);
-                node_pointer->west_coord = NULL;
+                //node_pointer->north_coord = trailing_pointer;
+                //free(node_pointer->west_coord);
+                //node_pointer->west_coord = NULL;
                 trailing_pointer->south_coord = node_pointer;
                 trailing_pointer = node_pointer;
             }else if(j == 0 && i == y_size-1)
             {
                 //bottom-left
-                node_pointer->west_coord = trailing_pointer;
-                node_pointer->north_coord = trailing_pointer->north_coord->east_coord;
+                //node_pointer->west_coord = trailing_pointer;
+                //node_pointer->north_coord = trailing_pointer->north_coord->east_coord;
                 trailing_pointer->east_coord = node_pointer;
-                node_pointer->north_coord->south_coord = node_pointer;
+                //node_pointer->north_coord->south_coord = node_pointer;
                 trailing_pointer = node_pointer;
-                free(node_pointer->west_coord);
-                node_pointer->west_coord = NULL;
+                //free(node_pointer->west_coord);
+                //node_pointer->west_coord = NULL;
                 free(node_pointer->south_coord);
                 node_pointer->south_coord = NULL;
             }else if(i == 0)
             {
                 //top row
-                node_pointer->west_coord = trailing_pointer;
-                free(node_pointer->north_coord);
-                node_pointer->north_coord = NULL;
+                //node_pointer->west_coord = trailing_pointer;
+                //free(node_pointer->north_coord);
+                //node_pointer->north_coord = NULL;
                 trailing_pointer->east_coord = node_pointer;
                 trailing_pointer = node_pointer;
                 if(j == x_size - 1)
@@ -122,10 +122,10 @@ Cost_mesh* create_cost_mesh(int x_size, int y_size)
             }else if(i == y_size - 1 && j == x_size - 1)
             {
                 //bottom right corner
-                node_pointer->west_coord = trailing_pointer;
-                node_pointer->north_coord = trailing_pointer->north_coord->east_coord;
+                //node_pointer->west_coord = trailing_pointer;
+                //node_pointer->north_coord = trailing_pointer->north_coord->east_coord;
                 trailing_pointer->east_coord = node_pointer;
-                node_pointer->north_coord->south_coord = node_pointer;
+                //node_pointer->north_coord->south_coord = node_pointer;
                 trailing_pointer = node_pointer;
                 free(node_pointer->south_coord);
                 node_pointer->south_coord = NULL;
@@ -134,19 +134,19 @@ Cost_mesh* create_cost_mesh(int x_size, int y_size)
             }else if(j == x_size - 1)
             {
                 //right wall
-                node_pointer->west_coord = trailing_pointer;
-                node_pointer->north_coord = trailing_pointer->north_coord->east_coord;
+                //node_pointer->west_coord = trailing_pointer;
+                //node_pointer->north_coord = trailing_pointer->north_coord->east_coord;
                 trailing_pointer->east_coord = node_pointer;
-                node_pointer->north_coord->south_coord = node_pointer;
+                //node_pointer->north_coord->south_coord = node_pointer;
                 trailing_pointer = node_pointer;
                 free(node_pointer->east_coord);
                 node_pointer->east_coord = NULL;
             }else
             {
-                node_pointer->west_coord = trailing_pointer;
-                node_pointer->north_coord = trailing_pointer->north_coord->east_coord;
+                //node_pointer->west_coord = trailing_pointer;
+                //node_pointer->north_coord = trailing_pointer->north_coord->east_coord;
                 trailing_pointer->east_coord = node_pointer;
-                node_pointer->north_coord->south_coord = node_pointer;
+                //node_pointer->north_coord->south_coord = node_pointer;
                 trailing_pointer = node_pointer;
             }
             
@@ -179,9 +179,10 @@ void freeCostMesh(Cost_mesh* mesh)
         trail = col_holder;
         col_holder = col_holder->south_coord;
     }
-    free(mesh);
     mesh->x_width = 0;
     mesh->y_width = 0;
+    free(mesh);
+    
     mesh = NULL;
 }
 
@@ -194,11 +195,11 @@ void freeNode(mesh_node* node)
     free(node->data);
     node->data = NULL;
     //free(node->east_coord);
-    //node->east_coord = NULL;
+    node->east_coord = NULL;
     //free(node->west_coord);
     //node->west_coord = NULL;
     //free(node->south_coord);
-    //node->south_coord = NULL;
+    node->south_coord = NULL;
     //free(node->north_coord);
     //node->north_coord = NULL;
     free(node);
@@ -215,8 +216,8 @@ mesh_node* get_node(Cost_mesh* used_mesh, int x, int y)
         //This just checks to make sure the arguements are valid
         return NULL;
     }
-    mesh_node* node_pointer = create_mesh_node();
-    node_pointer = used_mesh->origin;
+    //mesh_node* node_pointer = create_mesh_node();
+    mesh_node* node_pointer = used_mesh->origin;
     for(int i = 0; i < y; i++)
     {
         node_pointer = node_pointer->south_coord;
@@ -227,7 +228,7 @@ mesh_node* get_node(Cost_mesh* used_mesh, int x, int y)
     }
     return node_pointer;
 }
-
+/*
 void doMesh(void(*func)(mesh_node*), Cost_mesh* mesh)
 {
     mesh_node* column_holder = mesh->origin;
@@ -237,12 +238,13 @@ void doMesh(void(*func)(mesh_node*), Cost_mesh* mesh)
         for(int j = 0; j < mesh->x_width; j++)
         {
             func(traversal_node);
-            traversal_node = traversal_node->west_coord;
+            //traversal_node = traversal_node->west_coord;
         }//goes through a row left to right
         column_holder = column_holder->south_coord;
         traversal_node = column_holder;
     }
-}//This does whatever function is sent to it to the whole mesh
+}
+ *///This does whatever function is sent to it to the whole mesh
  //Player will have a mesh around it's reference frame, and the
  //cost evaluation function will run for each node in the mesh,
  //then the minimum will be found

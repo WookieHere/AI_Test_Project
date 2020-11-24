@@ -14,6 +14,19 @@ void Output_handler::breedPlayers()
 {
     Player_node* traversal_node = this->player_roster->next_node;
     int new_size = 0;
+    
+    Player_node* temp = this->post_breeding_players->next_node;
+    Player_node* trail = this->post_breeding_players->next_node;
+    for(int l = 0; l < this->post_breeding_players->length; l++)
+    {
+        trail = temp;
+        temp = temp->next_node;
+        free(trail);
+        trail = NULL;
+    }//clears the post breeding players
+    this->post_breeding_players->length = 0;
+    
+    
     for(int i = 0; i < this->player_roster->length; i++)
     {
         if((this->player_roster->length - i) > getRandom2RN(0, this->player_roster->length))
@@ -23,7 +36,7 @@ void Output_handler::breedPlayers()
             //this will breed a new player on a 2RN of it's position
         }
         traversal_node = traversal_node->next_node;
-    }
+    }//post breeding players is now partially filled
     
     traversal_node = this->player_roster->next_node;
     for(int k = 0; k < this->player_roster->length - new_size; k++)
@@ -46,7 +59,12 @@ void Output_handler::breedPlayers()
         }//these mutate a player 5% of the time
         traversal_node = traversal_node->next_node->next_node;
     }
-}
+    
+    /*if(this->player_roster->length > this->User_config->generation_size || this->post_breeding_players->length > this->User_config->generation_size)
+    {
+        printf("ERROR: roster size increased mid loop\n");
+    }*/
+}//this function generates the post_breeding_players list
 
 void Output_handler::crossOver(Player* A, Player* B)
 {

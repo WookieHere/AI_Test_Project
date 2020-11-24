@@ -71,9 +71,9 @@ Player::~Player()
 {
     int i;
     /*deallocate the coordinates route*/
-    Coordinate_node* temp_node = (Coordinate_node*)malloc(sizeof(Coordinate_node));
-    Coordinate_node* traversal_node = (Coordinate_node*)malloc(sizeof(Coordinate_node));
-    traversal_node = this->Route->next_node;
+    Coordinate_node* temp_node = this->Route->next_node;
+    Coordinate_node* traversal_node = this->Route->next_node;
+    //traversal_node = this->Route->next_node;
     for(i = 0; i < this->Route->length; i++)
     {
         temp_node = traversal_node;
@@ -83,6 +83,7 @@ Player::~Player()
         temp_node->next_node = NULL;
         temp_node = NULL;
     }
+    
     free(this->Route);
     this->Route = NULL;
     /*deallocate time register*/
@@ -92,7 +93,8 @@ Player::~Player()
     free(this->fuel_register);
     this->fuel_register = NULL;
     /*deallocate the player's genes*/
-    freeCostMesh(this->reference_frame);
+    //freeCostMesh(this->reference_frame);
+    //the cost mesh is deallocated after every allocation
     //do NOT free the input/output handlers
     
     free(this->Player_data->Player_genes);
@@ -114,6 +116,9 @@ double Player::getDistance(Coordinate* A, Coordinate* B)
 
 void Player::updateData()
 {
+    this->Player_data->Player_position = this->Input_Console->getOrigin();
+
+    this->used_config = this->Input_Console->getConfig();
     this->distance_to_destination = this->getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
     this->Player_data->wind_vector = this->Input_Console->getVector(&this->Player_data->Player_position);
     //update current velocity
@@ -179,4 +184,20 @@ double Player::getFuelUsed()
 void Player::replaceGenes(Genetics new_genes)
 {
     *this->Player_data->Player_genes = new_genes;
+}
+
+void Player::freeRoute()
+{
+    Coordinate_node* temp = this->Route->next_node;
+    Coordinate_node* trail = this->Route->next_node;
+    while(temp->next_node != NULL)
+    {
+        trail = temp;
+        temp = temp->next_node;
+        free(trail->Coordinate);
+        trail = NULL;
+    }
+    this->Route->length = 0;
+    free(this->Route);
+    
 }

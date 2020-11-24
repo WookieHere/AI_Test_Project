@@ -128,7 +128,7 @@ private:
     //unit_vector* connectCoords(Coordinate*, Coordinate*);
     double interactGenetics(double*);
     mesh_node* costMeshAssign(Cost_mesh* mesh);
-    
+    void freeRoute();
 };
 
 

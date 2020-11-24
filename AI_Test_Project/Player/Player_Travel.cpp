@@ -58,11 +58,15 @@ double Player::modifyCost(mesh_node* current_node)
     double distance_traveled = getDistance(&current_location, &new_loc);
     double distance_delta = (getDistance(&current_location, &destination) - getDistance(&new_loc, &destination)); //the -1 is so that the program will select for a higher values as being a good thing
     
-    unit_vector new_direction = *connectCoords(&current_location, &new_loc);
-    double velocity_delta = this->getWork(&new_loc, this->Player_data->wind_vector, &new_direction);   //divide by 10000?
+    unit_vector* new_direction = connectCoords(&current_location, &new_loc);
+    double velocity_delta = this->getWork(&new_loc, this->Player_data->wind_vector, new_direction);
+    
+    
+    
     double time_taken = this->getTimeAdded(distance_traveled);
 
     this->time_register[0] = time_taken;    //this stores the time in a temp register
+    
     if(velocity_delta < 0)
     {
         this->fuel_register[0] = time_taken * velocity_delta * this->used_config.Plane_mass;
@@ -71,18 +75,23 @@ double Player::modifyCost(mesh_node* current_node)
         this->fuel_register[0] = 0;
     }
     
-    double turn_rate = this->getTurnRate(connectCoords(&current_location, &new_loc), this->Player_data->travel_direction);
+    double turn_rate = this->getTurnRate(new_direction, this->Player_data->travel_direction);
+    
     double* cost_input_array = (double*)malloc(sizeof(double) * COST_INPUT_NUM);
     cost_input_array[0] = distance_traveled;
     cost_input_array[1] = distance_delta;
     cost_input_array[2] = fuel_register[0];
-    cost_input_array[3] = time_taken;
+    cost_input_array[3] = time_register[0];
     cost_input_array[4] = turn_rate;
     //int key_change = getKeyChanges(&new_loc, this->Player_data->Player_position);
     double Node_Cost = interactGenetics(cost_input_array);
     current_node->data->Cost = Node_Cost;
 
-    free((double*)cost_input_array);
+    free(cost_input_array);
+    cost_input_array = NULL;
+    free(new_direction);
+    new_direction = NULL;
+    
     return Node_Cost;
     //this function interacts with the genetics and simulates plane flight to
     //generate a cost for decision making
@@ -129,7 +138,8 @@ void Player::generateReferenceFrame()
 {
     Coordinate old_pos = this->Player_data->Player_position;
     this->reference_frame = create_cost_mesh(this->used_config.x_size, this->used_config.y_size);
-    mesh_node* new_position_node = this->costMeshAssign(reference_frame); //this will assign a cost to each node in the mesh
+    
+    mesh_node* new_position_node = this->costMeshAssign(this->reference_frame); //this will assign a cost to each node in the mesh
     //that also returns a mesh node of the new node to go to
     this->Player_data->Player_position.X = ((new_position_node->data->Coord->X - (this->used_config.x_size/2)) * this->used_config.roughness) + Player_data->Player_position.X;
     this->Player_data->Player_position.Y = ((new_position_node->data->Coord->Y - (this->used_config.y_size/2)) * this->used_config.roughness) + Player_data->Player_position.Y;
@@ -137,16 +147,21 @@ void Player::generateReferenceFrame()
     this->Player_data->travel_direction = connectCoords(&old_pos, &this->Player_data->Player_position);
     //sets the new travel direction
     
-    Coordinate_node temp = {(Coordinate*)malloc(sizeof(Coordinate)), NULL};
-    *temp.Coordinate = this->Player_data->Player_position;
-    temp.next_node = this->Route->next_node;
-    this->Route->next_node = &temp;
+    /*
+    Coordinate_node* temp = (Coordinate_node*)malloc(sizeof(Coordinate_node));
+    temp->Coordinate = (Coordinate*)malloc(sizeof(Coordinate));
+    memcpy(temp->Coordinate, &this->Player_data->Player_position, sizeof(Coordinate));
+    temp->next_node = this->Route->next_node;
+    this->Route->next_node = temp;
+    this->Route->length++;
+     */
     //this adds the new position to the route
-
+    
     this->distance_to_destination = getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
     
-    
-    freeCostMesh(reference_frame);
+    //free(new_position_node);
+    //new_position_node = NULL;
+    freeCostMesh(this->reference_frame);
     
 }
 
@@ -156,11 +171,13 @@ void Player::travel()
     Coordinate origin = this->Player_data->Player_position;
     double max_turn_distance = sqrt((.5) * (pow(this->used_config.x_size * this->used_config.roughness, 2) + pow(this->used_config.y_size * this->used_config.roughness, 2)));
     //that's the max distance traveled per turn
-    double original_dist = getDistance(&origin, &this->Player_data->Player_Destination);
+    double original_rect = (this->Player_data->Player_Destination.X - origin.X) * (this->Player_data->Player_Destination.Y - origin.Y);
+    double original_dist = getDistance(&this->Player_data->Player_Destination, &origin);
+    //the area of the rectangle containing the origin and destination
+    
     while(this->distance_to_destination > 10)
     {
         generateReferenceFrame();
-        
         i++;
         //printf("%d = i\n", i);
         if(this->distance_to_destination > (original_dist * 2))
@@ -168,14 +185,21 @@ void Player::travel()
             //to make sure the AI is moving in the right direction
             
             this->time_taken = INFINITY;
+            //this->freeRoute();
             break;
-        }else if(i > (original_dist * 10/max_turn_distance))
+        }else if(i > (original_rect/2)/max_turn_distance)
         {
              //this is to make sure the AI is at least moving
              //the time taken part is to select against these at all costs
              this->time_taken = INFINITY;
+             //this->freeRoute();
              break;
         }
+    }
+    if(this->time_taken != INFINITY)
+    {
+        printf("Breakpoint active\n");
+        //breakpoint
     }
     /*
     printf("Player_X: %f\n", this->Player_data->Player_position.X);

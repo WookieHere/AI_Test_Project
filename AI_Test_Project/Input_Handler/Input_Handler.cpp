@@ -63,49 +63,54 @@ Coordinate Input_handler::getOrigin()
     return *this->Player_Origin;
 }
 
-void* Input_handler::loop()
+int Input_handler::loop()
 {
     if(this->generation_count == 0)
     {
         Player_head* Player_list = (Player_head*)malloc(sizeof(Player_head));
         Player_node* temp = createNodePlayer();
         Player_list->next_node = temp;
-        Player* temp_player;
-        double* rand_array = (double*)malloc(sizeof(Genetics)/sizeof(double) * 6);
+        Player_list->length = 0;
+        //Player* temp_player;
+        double* rand_array;
         for(int i = 0; i < this->User_config->generation_size; i++)
         {
-            temp_player = new Player(this, this->Output);
+            temp->ranked_player = new Player(this, this->Output);
             rand_array = getRandomDoubleArray(GENE_MAX_NEGATIVE, GENE_MAX_POSITIVE, 6);
             //*temp_player = Player(this, Output);
-            temp_player->manGenetics(rand_array);
+            temp->ranked_player->manGenetics(rand_array);
             Player_list->length++;
-            temp->ranked_player = temp_player;
-            temp_player->updateData();
-            temp_player->travel();
+            //temp->ranked_player;
+            temp->ranked_player->updateData();
+            temp->ranked_player->travel();
             temp->next_node = createNodePlayer();
             temp = temp->next_node;
-            temp_player = NULL; //makes the first generation
+            //temp->ranked_player = NULL; //makes the first generation
         }
         this->generation_count++;
+        free(rand_array);
+        rand_array = NULL;
+        this->Output->player_roster = Player_list;
     }else if(this->generation_count < this->User_config->generation_end_count)
     {
-        Player_head* new_players = this->Output->getNewPlayers();
-        this->Output->rotateRoster();
+        //this->Output->rotateRoster();
+        Player_head new_players = *this->Output->getNewPlayers();
+        //this->Output->clearRoster();
         //sets new generation
         
-        Player_node* traversal_node = new_players->next_node;
-        for(int i = 0; i < new_players->length; i++)
+        Player_node* traversal_node = new_players.next_node;
+        for(int i = 0; i < new_players.length; i++)
         {
             traversal_node->ranked_player->updateData();
             traversal_node->ranked_player->travel();
         }
-        this->generation_count = this->generation_count + 1;
+        this->generation_count++;
     }
     if(this->generation_count < this->User_config->generation_end_count)
     {
-        return (void*)0;
+        return 0;
     }
-    return (void*)this->Output->post_breeding_players;
+    return 1;
     
     
 }

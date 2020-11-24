@@ -28,7 +28,7 @@ struct Player_head
 class Output_handler
 {
     
-    Player_head* player_roster;
+    
                                 //(what image to use, color setup, etc.)
     Player_head* Player_list;
 
@@ -37,14 +37,16 @@ class Output_handler
     const char* output_log;
     
 public:
-    Player_head* post_breeding_players; //linked list of players for breeding
+    Player_head* player_roster;     //current players
     Output_handler(Player_head* head);
     ~Output_handler();
     bool addToRoster(Player*);
     void crossOver(Player*, Player*);   //TEMPORARY in public for testing
     void rotateRoster();   //this sets the output to a new roster
     Player_head* getNewPlayers();   //to be called by the input handler
+    void clearRoster(); //clears player roster
 private:
+    Player_head* post_breeding_players; //linked list of players for breeding
     void printPlayerRoute(struct Coordinate_head*);    
     void printRoutes();
     //void crossOver(Player*, Player*);

@@ -44,23 +44,25 @@ int main(int argc, const char * argv[])
     //test_player.manGenetics(rand_array);
     //test_player.updateData();
     //test_player.travel();
-    
+    /*
     Player* A = new Player(&Input_Console, &Output);
     Player* B = new Player(&Input_Console, &Output);
     A->manGenetics(getRandomDoubleArray(-10, 10, 6));
     //A->manGenetics(getRandomDoubleArray(-10, 10, 6));
     crossTest(A, B);
-    
+    */
     
     int i = 0;
-    Player_head* last_gen = (Player_head*)Input_Console.loop();
-    while((int*)last_gen == 0)
+    int finished_flag = Input_Console.loop();
+    Player_head* last_gen = Output.player_roster;
+    while(finished_flag == 0)
     {
         i++;
         //Output.setRoster(last_gen);
-        last_gen = (Player_head*)Input_Console.loop();
-        
+        last_gen = Output.player_roster;
+        finished_flag = Input_Console.loop();
     }
+    last_gen = Output.player_roster;
     //Player_head* last_gen = Input_Console.loop();
     
     return 0;
