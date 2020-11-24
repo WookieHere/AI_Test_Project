@@ -5,8 +5,7 @@ x_coord = [0]
 y_coord = [0]
 with open("test.txt", "r") as f:
     for line in f:
-        f_content = f.readline()
-        for p in re.split('[, \n]', f_content):
+        for p in re.split('[, \n]', line):
             temp.append(p)
         x_coord.append(temp[0])
         y_coord.append(temp[1])
