@@ -9,21 +9,31 @@
 #include "Output_Handler.hpp"
 #include "Random_Generator.hpp"
 #include "Player_Training.hpp"
+#define GENE_MAX_NEGATIVE   -10000
+#define GENE_MAX_POSITIVE   10000
 
 void Output_handler::breedPlayers()
 {
+    
     Player_node* traversal_node = this->player_roster->next_node;
+    Player_node* trail = this->player_roster->next_node;
     int new_size = 0;
     
+    /*
     Player_node* temp = this->post_breeding_players->next_node;
     Player_node* trail = this->post_breeding_players->next_node;
+    
     for(int l = 0; l < this->post_breeding_players->length; l++)
     {
         trail = temp;
         temp = temp->next_node;
+        trail->ranked_player->~Player();
+        trail->ranked_player = NULL;
         free(trail);
         trail = NULL;
     }//clears the post breeding players
+     */
+    this->post_breeding_players->next_node = NULL;
     this->post_breeding_players->length = 0;
     
     
@@ -34,14 +44,32 @@ void Output_handler::breedPlayers()
             this->addToRoster(traversal_node->ranked_player, this->post_breeding_players);
             new_size++;
             //this will breed a new player on a 2RN of it's position
+            
+            trail = traversal_node;
+            traversal_node = traversal_node->next_node;
+        }else
+        {
+            //player was not bred
+            traversal_node->ranked_player->~Player();
+            traversal_node->ranked_player = NULL;
+            trail->next_node = traversal_node->next_node;
+            free(traversal_node);
+            traversal_node = NULL;
+            //this->player_roster->length--;
+            traversal_node = trail->next_node;
         }
-        traversal_node = traversal_node->next_node;
+        
     }//post breeding players is now partially filled
     
     traversal_node = this->player_roster->next_node;
+    Player* new_player = NULL;
+    double* rand_array = NULL;
     for(int k = 0; k < this->player_roster->length - new_size; k++)
     {
-        this->addToRoster(new Player(traversal_node->ranked_player->Input_Console, this), this->post_breeding_players);
+        new_player = new Player(traversal_node->ranked_player->Input_Console, this);
+        rand_array = getRandomDoubleArray(GENE_MAX_NEGATIVE, GENE_MAX_POSITIVE, 6);
+        new_player->manGenetics(rand_array);
+        this->addToRoster(new_player, this->post_breeding_players);
         //this pads the end of the roster with new players
     }
     traversal_node = this->post_breeding_players->next_node;
@@ -64,6 +92,8 @@ void Output_handler::breedPlayers()
     {
         printf("ERROR: roster size increased mid loop\n");
     }*/
+    this->player_roster->next_node = NULL;
+    this->player_roster->length = 0;
 }//this function generates the post_breeding_players list
 
 void Output_handler::crossOver(Player* A, Player* B)

@@ -1,6 +1,6 @@
 Filenames:
 {
-Input_file: USA_TM.ppm
+Input_file: Test.ppm
 Output_file: some_image.jpg
 }
 
@@ -8,7 +8,7 @@ Mesh_parameters:
 {
 x_size = 9;                     //reference frame dimensions (try to make it an odd number)
 y_size = 9;
-roughness = 2;                  //meters per node
+roughness = 20;                  //meters per node
 }
 
 Boeing_747:
@@ -25,6 +25,6 @@ Plane_mass = 333740;            //mass of plane in kg's
 
 Generation_settings (important!):
 {
-generation_size = 24;
-generation_end_count = 50;
+generation_size = 48;
+generation_end_count = 25;
 }

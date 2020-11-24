@@ -36,8 +36,8 @@ data* set_data(int x, int y)
     data* result_data = create_data();
     //result_data->x = (int*)malloc(sizeof(int));
     //result_data->y = (int*)malloc(sizeof(int));
-    result_data->Coord = (Coordinate*)malloc(sizeof(Coordinate));
-    result_data->wind_vector = (vector*)malloc(sizeof(vector));
+    //result_data->Coord = (Coordinate*)malloc(sizeof(Coordinate));
+    //result_data->wind_vector = (vector*)malloc(sizeof(vector));
     result_data->Coord->X = x;
     result_data->Coord->Y = y;
     

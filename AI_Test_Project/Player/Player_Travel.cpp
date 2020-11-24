@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "Player.hpp"
-#define     COST_INPUT_NUM     5
+#define     COST_INPUT_NUM     6
 
 
 double Player::interactGenetics(double* input)
@@ -33,6 +33,7 @@ double Player::interactGenetics(double* input)
     total_cost += this->Player_data->Player_genes->work_weight * input[2];
     total_cost += this->Player_data->Player_genes->turning_rate * input[4];
     total_cost += this->Player_data->Player_genes->distance_weight * input[1];
+    total_cost += this->Player_data->Player_genes->change_constant * input[5];
     return total_cost;
 }
 
@@ -44,7 +45,6 @@ double Player::modifyCost(mesh_node* current_node)
     Coordinate destination = this->Player_data->Player_Destination;
     //just for readability those coordinates are set.
     this->Player_data->wind_vector = this->Input_Console->getVector(&current_location);
-    //this is to simplify code in later steps
     
     new_loc.X = ((current_node->data->Coord->X - (this->used_config.x_size/2)) * this->used_config.roughness) + current_location.X;
     new_loc.Y = ((current_node->data->Coord->Y - (this->used_config.y_size/2)) * this->used_config.roughness) + current_location.Y;
@@ -77,13 +77,18 @@ double Player::modifyCost(mesh_node* current_node)
     
     double turn_rate = this->getTurnRate(new_direction, this->Player_data->travel_direction);
     
+    double key_change_delta = this->getKeyChanges(new_loc);
+    key_change_delta *= velocity_delta;
+    
     double* cost_input_array = (double*)malloc(sizeof(double) * COST_INPUT_NUM);
     cost_input_array[0] = distance_traveled;
     cost_input_array[1] = distance_delta;
-    cost_input_array[2] = fuel_register[0];
+    //cost_input_array[2] = fuel_register[0];
+    cost_input_array[2] = 1;
     cost_input_array[3] = time_register[0];
     cost_input_array[4] = turn_rate;
-    //int key_change = getKeyChanges(&new_loc, this->Player_data->Player_position);
+    cost_input_array[5] = key_change_delta;
+    
     double Node_Cost = interactGenetics(cost_input_array);
     current_node->data->Cost = Node_Cost;
 
@@ -147,17 +152,11 @@ void Player::generateReferenceFrame()
     this->Player_data->travel_direction = connectCoords(&old_pos, &this->Player_data->Player_position);
     //sets the new travel direction
     
-    /*
-    Coordinate_node* temp = (Coordinate_node*)malloc(sizeof(Coordinate_node));
-    temp->Coordinate = (Coordinate*)malloc(sizeof(Coordinate));
-    memcpy(temp->Coordinate, &this->Player_data->Player_position, sizeof(Coordinate));
-    temp->next_node = this->Route->next_node;
-    this->Route->next_node = temp;
-    this->Route->length++;
-     */
+    addToRoute(this->Player_data->Player_position);
     //this adds the new position to the route
     
     this->distance_to_destination = getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
+    this->dist_to_key = this->Input_Console->getDistKeyFrame(&this->Player_data->Player_position, &this->Player_data->Player_position);
     
     //free(new_position_node);
     //new_position_node = NULL;
@@ -169,7 +168,9 @@ void Player::travel()
 {
     int i = 0;
     Coordinate origin = this->Player_data->Player_position;
+    
     double max_turn_distance = sqrt((.5) * (pow(this->used_config.x_size * this->used_config.roughness, 2) + pow(this->used_config.y_size * this->used_config.roughness, 2)));
+    
     //that's the max distance traveled per turn
     double original_rect = (this->Player_data->Player_Destination.X - origin.X) * (this->Player_data->Player_Destination.Y - origin.Y);
     double original_dist = getDistance(&this->Player_data->Player_Destination, &origin);
@@ -185,14 +186,16 @@ void Player::travel()
             //to make sure the AI is moving in the right direction
             
             this->time_taken = INFINITY;
-            //this->freeRoute();
+            this->freeRoute();
+            printf("Particle was killed\n");
             break;
         }else if(i > (original_rect/2)/max_turn_distance)
         {
              //this is to make sure the AI is at least moving
              //the time taken part is to select against these at all costs
              this->time_taken = INFINITY;
-             //this->freeRoute();
+             this->freeRoute();
+             printf("Particle was killed\n");
              break;
         }
     }

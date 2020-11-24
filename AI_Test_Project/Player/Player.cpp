@@ -65,24 +65,20 @@ Player::Player(Input_handler* Input, Output_handler* Output)
     this->Player_data->Player_genes->turning_rate = 1;
     this->Player_data->Player_genes->work_weight = 1;
     
+    this->Route = (Coordinate_head*)malloc(sizeof(Coordinate_head));
+    this->Route->next_node = (Coordinate_node*)malloc(sizeof(Coordinate_node));
+    this->Route->length = 1;
+    this->Route->next_node->Coordinate = (Coordinate*)malloc(sizeof(Coordinate));
+    *this->Route->next_node->Coordinate = this->Input_Console->getOrigin();
+    
+    this->dist_to_key = this->Input_Console->getDistKeyFrame(&this->Player_data->Player_position, &this->Player_data->Player_position);
     
 }
 Player::~Player()
 {
-    int i;
+    //printf("Deallocating Player:\n");
     /*deallocate the coordinates route*/
-    Coordinate_node* temp_node = this->Route->next_node;
-    Coordinate_node* traversal_node = this->Route->next_node;
-    //traversal_node = this->Route->next_node;
-    for(i = 0; i < this->Route->length; i++)
-    {
-        temp_node = traversal_node;
-        traversal_node = traversal_node->next_node;
-        free(temp_node->Coordinate);
-        temp_node->Coordinate = NULL;
-        temp_node->next_node = NULL;
-        temp_node = NULL;
-    }
+    freeRoute();
     
     free(this->Route);
     this->Route = NULL;
@@ -96,19 +92,21 @@ Player::~Player()
     //freeCostMesh(this->reference_frame);
     //the cost mesh is deallocated after every allocation
     //do NOT free the input/output handlers
-    
-    free(this->Player_data->Player_genes);
-    this->Player_data->Player_genes = NULL;
+    if(this->Player_data != NULL)
+    {
+        free(this->Player_data->Player_genes);
+        this->Player_data->Player_genes = NULL;
+        free(this->Player_data->travel_direction);
+        this->Player_data->travel_direction = NULL;
+        free(this->Player_data->wind_vector);
+        this->Player_data->wind_vector = NULL;
+        free(this->Player_data);
+        this->Player_data = NULL;
+    }
     /*need to deallocate player data*/
-    free(this->Player_data->travel_direction);
-    this->Player_data->travel_direction = NULL;
-    free(this->Player_data->wind_vector);
-    this->Player_data->wind_vector = NULL;
-    free(this->Player_data);
-    this->Player_data = NULL;
 }
 
-double Player::getDistance(Coordinate* A, Coordinate* B)
+double getDistance(Coordinate* A, Coordinate* B)
 {
     double result = sqrt(pow(A->X - B->X, 2) + pow(A->Y - B->Y, 2));
     return result;
@@ -117,9 +115,11 @@ double Player::getDistance(Coordinate* A, Coordinate* B)
 void Player::updateData()
 {
     this->Player_data->Player_position = this->Input_Console->getOrigin();
-
+    freeRoute();
+    this->dist_to_key = this->Input_Console->getDistKeyFrame(&this->Player_data->Player_position, &this->Player_data->Player_position);
+    
     this->used_config = this->Input_Console->getConfig();
-    this->distance_to_destination = this->getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
+    this->distance_to_destination = getDistance(&this->Player_data->Player_position, &this->Player_data->Player_Destination);
     this->Player_data->wind_vector = this->Input_Console->getVector(&this->Player_data->Player_position);
     //update current velocity
     //update fuel use
@@ -188,16 +188,27 @@ void Player::replaceGenes(Genetics new_genes)
 
 void Player::freeRoute()
 {
-    Coordinate_node* temp = this->Route->next_node;
-    Coordinate_node* trail = this->Route->next_node;
-    while(temp->next_node != NULL)
+    if(Route != NULL)
     {
-        trail = temp;
-        temp = temp->next_node;
-        free(trail->Coordinate);
-        trail = NULL;
+        Coordinate_node* temp = this->Route->next_node;
+        Coordinate_node* trail = this->Route->next_node;
+        for(int i = 0; i < this->Route->length; i++)
+        {
+            trail = temp;
+            temp = temp->next_node;
+            free(trail->Coordinate);
+            trail = NULL;
+        }
+        this->Route->length = 0;
     }
-    this->Route->length = 0;
-    free(this->Route);
-    
 }
+
+void Player::addToRoute(Coordinate point)
+{
+    Coordinate_node* temp = (Coordinate_node*)malloc(sizeof(Coordinate_node));
+    temp->Coordinate = (Coordinate*)malloc(sizeof(Coordinate));
+    *temp->Coordinate = point;
+    temp->next_node = this->Route->next_node;
+    this->Route->next_node = temp;
+    this->Route->length++;
+}//this adds like a stack

@@ -53,11 +53,12 @@ Output_handler::~Output_handler()
 
 void Output_handler::printPlayerRoute(Coordinate_head* Route)
 {
-    FILE* output_file = fopen(this->output_log, "rw");
+    FILE* output_file = fopen(this->output_log, "a");
     Coordinate_node* traversal_node = Route->next_node;
     
     if(output_file != NULL)
     {
+        //printf("outputting route:\n");
         fprintf(output_file, "{\n");
         for(int i = 0; i < Route->length; i++)
         {
@@ -67,7 +68,7 @@ void Output_handler::printPlayerRoute(Coordinate_head* Route)
         fprintf(output_file, "}\n\n");
     }else
     {
-        //printf("Could not open output file\n");
+        printf("Could not open output file\n");
     }
     fclose(output_file);
 }
@@ -81,6 +82,8 @@ void Output_handler::printPlayerRoute(Coordinate_head* Route)
 
 void Output_handler::printRoutes()
 {
+    FILE* output_file = fopen(this->output_log, "w");
+    fclose(output_file); //this just wipes the file
     Player_node* traversal_node = this->player_roster->next_node;
     for(int i = 0; i < this->player_roster->length; i++)
     {
@@ -91,7 +94,7 @@ void Output_handler::printRoutes()
 
 bool Output_handler::addToRoster(Player* player)
 {
-    bool is_last_node = 0;
+    bool is_first_node = 0;
     if(this->player_roster->length == 0)
     {
         this->player_roster->next_node = (Player_node*)malloc(sizeof(Player_node));
@@ -103,21 +106,35 @@ bool Output_handler::addToRoster(Player* player)
     Player_node* trailing_node = this->player_roster->next_node;
     for(int i = 0; i < this->player_roster->length; i++)
     {
-        if(player->getTimeTaken() >= traversal_node->ranked_player->getTimeTaken())
+        if(player->getTimeTaken() > traversal_node->ranked_player->getTimeTaken())
         {
             trailing_node = traversal_node;
             traversal_node = traversal_node->next_node;
         }else
         {
-            is_last_node = 1;
+            if(i == 0)
+            {
+                is_first_node = 1;
+            }
             break;
         }
     }
-    //traversal_node now points at place where player should be
+    
     Player_node* new_node = (Player_node*)malloc(sizeof(Player_node));
-    new_node->next_node = trailing_node->next_node;
-    trailing_node->next_node = new_node;
-    new_node->ranked_player = player;
+    if(is_first_node == 1)
+    {
+        new_node->next_node = this->player_roster->next_node;
+        this->player_roster->next_node = new_node;
+        new_node->ranked_player = player;
+    }else
+    {
+        new_node->next_node = trailing_node->next_node;
+        trailing_node->next_node = new_node;
+        new_node->ranked_player = player;
+    }
+    //traversal_node now points at place where player should be
+    
+    
     this->player_roster->length++;
     //places the player into it's correct position in ranking based on time taken
     return 0;
@@ -126,7 +143,7 @@ bool Output_handler::addToRoster(Player* player)
 bool Output_handler::addToRoster(Player* player, Player_head* head)
 {
     //Player_node* traversal_node = head->next_node;
-    
+    bool is_first_node = 0;
     if(head->length == 0)
     {
         head->next_node = (Player_node*)malloc(sizeof(Player_node));
@@ -137,23 +154,34 @@ bool Output_handler::addToRoster(Player* player, Player_head* head)
     
     Player_node* traversal_node = head->next_node;
     Player_node* trailing_node = head->next_node;
-    for(int i = 0; i < head->length - 1; i++)
+    for(int i = 0; i < head->length; i++)
     {
-        if(player->getTimeTaken() >= traversal_node->ranked_player->getTimeTaken() || player->getTimeTaken() == 0)
+        if(player->getTimeTaken() > traversal_node->ranked_player->getTimeTaken() || player->getTimeTaken() == 0)
         {
             trailing_node = traversal_node;
             traversal_node = traversal_node->next_node;
             //players of time taken == 0 will be at the very end
         }else
         {
+            if(i == 0)
+            {
+                is_first_node = 1;
+            }
             break;  //for the intial roster this will not sort
         }
     }
-    //traversal_node now points at place where player should be
     Player_node* new_node = (Player_node*)malloc(sizeof(Player_node));
-    new_node->next_node = trailing_node->next_node;
-    trailing_node->next_node = new_node;
-    new_node->ranked_player = player;
+    if(is_first_node == 1)
+    {
+        new_node->next_node = head->next_node;
+        head->next_node = new_node;
+        new_node->ranked_player = player;
+    }else
+    {
+        new_node->next_node = trailing_node->next_node;
+        trailing_node->next_node = new_node;
+        new_node->ranked_player = player;
+    }
     head->length++;
     //places the player into it's correct position in ranking based on time taken
     return 0;
@@ -162,9 +190,11 @@ bool Output_handler::addToRoster(Player* player, Player_head* head)
   
 Player_head* Output_handler::getNewPlayers()
 {
+    *this->User_config = this->player_roster->next_node->ranked_player->Input_Console->getConfig();
+    //to prevent config corruption that keeps happening
     this->printRoutes();
     this->breedPlayers();
-    this->clearRoster();
+    //this->clearRoster();
     return this->post_breeding_players;
 }
 

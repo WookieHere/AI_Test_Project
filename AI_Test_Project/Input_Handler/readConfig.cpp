@@ -129,4 +129,6 @@ void Input_handler::setConfig(const char* filename)
         //token is now the whole line
     }
     fclose(config_file);
+    this->User_config->turbulence_map = "Test.ppm";
+    this->readKeyFrames();
 }

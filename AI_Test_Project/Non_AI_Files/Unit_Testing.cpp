@@ -7,6 +7,7 @@
 //
 
 #include "Unit_Testing.hpp"
+#include "Random_Generator.hpp"
 
 void print_mesh(Cost_mesh* used_mesh)
 {
@@ -41,9 +42,16 @@ void printGenetics(Player* A, const char* name)
     printf("-------------------------");
 }
 
-void crossTest(Player* A, Player* B)
+void crossTest()
 {
     Output_handler* Temp = new Output_handler(NULL);
+    Coordinate Origin = {0,0};
+    Coordinate Dest = {1000, 1000};
+    Input_handler* temp_in = new Input_handler(&Origin, &Dest, Temp, "Test.ppm");
+    Player* A = new Player(temp_in, Temp);
+    Player* B = new Player(temp_in, Temp);
+    double* rand_genes = getRandomDoubleArray(-100, 100, 6);
+    A->manGenetics(rand_genes);
     printGenetics(A, "Player_A");
     printGenetics(B, "Player_B");
     Temp->crossOver(A, B);

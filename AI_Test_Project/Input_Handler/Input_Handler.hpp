@@ -80,7 +80,7 @@ struct Range_head
 
 class Input_handler
 {
-    
+    struct Coordinate** Keyframe_array;   //2D array of all keyframe definitions
     Config* User_config;
     struct Coordinate* Destination_Coord;
     struct Coordinate* Player_Origin;
@@ -100,5 +100,10 @@ public:
     struct vector* getVector(Coordinate* coord);
     Config getConfig();
     int loop();
+    double getDistKeyFrame(Coordinate*, Coordinate*);     //returns distance to nearest keyframe
+    int isInKeyframe(Coordinate*, Coordinate*);
+private:
+    void readKeyFrames();
+    
 };
 #endif /* Input_Handler_hpp */

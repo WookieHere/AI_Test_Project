@@ -27,9 +27,8 @@ int main(int argc, const char * argv[])
     Destination->Y = 1000;
     Player_head* Player_list = (Player_head*)malloc(sizeof(Player_head));
     Output_handler Output = Output_handler(Player_list);
-    Input_handler Input_Console = Input_handler(Origin, Destination, &Output, "USA_TM.ppm");
+    Input_handler Input_Console = Input_handler(Origin, Destination, &Output, "Test.ppm");
     Input_Console.setConfig("Test_Config.txt");
-    
     
     double* rand_array = getRandomDoubleArray(-10, 10, 6);
     Player test_player = Player(&Input_Console, &Output);
@@ -41,6 +40,7 @@ int main(int argc, const char * argv[])
     rand_array[4] = 0;
     rand_array[5] = 0;
     
+    //crossTest();
     //test_player.manGenetics(rand_array);
     //test_player.updateData();
     //test_player.travel();

@@ -26,8 +26,8 @@ double Player::getTurnRate(unit_vector* A, unit_vector* B)
 unit_vector* connectCoords(Coordinate* A, Coordinate* B)
 {
     vector* new_vector = (vector*)malloc(sizeof(vector));
-    new_vector->X = A->X - B->X;
-    new_vector->Y = A->Y - B->Y;
+    new_vector->X = -A->X + B->X;
+    new_vector->Y = -A->Y + B->Y;
     new_vector->Z = 0;
     unit_vector* new_unit_vector = toUnitVector(new_vector);
     free(new_vector);
@@ -215,6 +215,11 @@ unit_vector* toUnitVector(vector* A)
     return result;
 }
 
+double Player::getKeyChanges(Coordinate new_loc)
+{
+    double dist = this->Input_Console->getDistKeyFrame(&new_loc, &this->Player_data->Player_position);
+    return dist - this->dist_to_key;
+}//this should be a good thing on good velocity, bad on bad impact etc.
 
 /*
 double Player::getForce(int wind_velocity)

@@ -11,8 +11,9 @@
 #include "Random_Generator.hpp"
 #include "Player.hpp"
 #include "Output_Handler.hpp"
-#define GENE_MAX_NEGATIVE   -100
-#define GENE_MAX_POSITIVE   100
+#define GENE_MAX_NEGATIVE   -10000
+#define GENE_MAX_POSITIVE   10000
+#define MAX_KEYS        16
 
 Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, Output_handler* Output, const char* filename)
 {
@@ -21,8 +22,8 @@ Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, Output
     this->Player_Origin = Origin;
     this->Destination_Coord = Destination;
     this->generation_count = 0;
-    this->User_config->heightmap_img = NULL;
-    this->User_config->turbulence_map = filename;
+    this->User_config->heightmap_img = "Test.ppm";
+    this->User_config->turbulence_map = "Test.ppm";
     this->User_config->generation_size = 20;
     this->User_config->generation_end_count = 200;
     this->User_config->x_size = 9;     //reference frame dimensions (try to make it an odd number)
@@ -36,6 +37,12 @@ Input_handler::Input_handler(Coordinate* Origin, Coordinate* Destination, Output
     this->User_config->Drag_Coefficient = .031; //no unit, C_o in equations of Boeing 747
     this->User_config->Max_Turn_Rate = .07;    //radians
     this->User_config->Plane_mass = 333747;
+    
+    this->Keyframe_array = (Coordinate**)malloc(sizeof(Coordinate*) * MAX_KEYS);
+    for(int i = 0; i < MAX_KEYS; i++)
+    {
+        this->Keyframe_array[i] = (Coordinate*)malloc(sizeof(Coordinate) * 4);
+    }//Keyframe is allocated as a 2D array of MAX_KEYS by 4
 }
 
 Input_handler::~Input_handler()
@@ -44,6 +51,10 @@ Input_handler::~Input_handler()
     this->User_config->heightmap_img = NULL;
     this->User_config->turbulence_map = NULL;
     free(this->User_config);
+    for(int i = 0; i < MAX_KEYS; i++)
+    {
+        free(this->Keyframe_array[i]);
+    }
 }
 
 
@@ -94,6 +105,7 @@ int Input_handler::loop()
     }else if(this->generation_count < this->User_config->generation_end_count)
     {
         //this->Output->rotateRoster();
+        printf("---------end of generation %d ------------\n", this->generation_count);
         Player_head new_players = *this->Output->getNewPlayers();
         //this->Output->clearRoster();
         //sets new generation
@@ -103,6 +115,7 @@ int Input_handler::loop()
         {
             traversal_node->ranked_player->updateData();
             traversal_node->ranked_player->travel();
+            traversal_node = traversal_node->next_node;
         }
         this->generation_count++;
     }
@@ -111,6 +124,4 @@ int Input_handler::loop()
         return 0;
     }
     return 1;
-    
-    
 }

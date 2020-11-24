@@ -16,6 +16,6 @@
 void print_mesh(Cost_mesh* used_mesh);
 void print_data(data*);
 void printGenetics(Player* A, const char* name);
-void crossTest(Player* A, Player* B);
+void crossTest();
 
 #endif /* Unit_Testing_hpp */

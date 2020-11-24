@@ -16,33 +16,52 @@ vector* Input_handler::getVector(Coordinate* coord)
     //This will scan an image found in the config for the RGB value at that pixel...
 
     ImageRGB image;
-    vector* test_vector = createVector();
-    test_vector->X = 127;
-    test_vector->Y = 0;
-    test_vector->Z = 50;
-    return test_vector;
+    //vector* test_vector = createVector();
+    //test_vector->X = 127;
+    //test_vector->Y = 0;
+    //test_vector->Z = 50;
+    //return test_vector;
+    vector* test_vector = (vector*)malloc(sizeof(vector));
+    if(coord->Y > 550)
+    {
+        test_vector->X = 255;
+        test_vector->Y = 91;
+        test_vector->Z = 2;
+        return test_vector;
+    }else if(coord->X < 0 || coord->Y < 0)
+    {
+        test_vector->X = -200;
+        test_vector->Y = -200;
+        test_vector->Z = 200;
+        return test_vector;
+    }else
+    {
+        test_vector->X = 10;
+        test_vector->Y = 10;
+        test_vector->Z = 10;
+        return test_vector;
+    }
+    
+    
     int error = load_ppm(image, this->User_config->turbulence_map, coord->X, coord->Y);
     //printf("\nTarget Pixel: [%u, %u, %u]\n", image.pixel.r, image.pixel.g, image.pixel.b); //for testing purposes
     
-    
     if(error == 100)
     {
-        /*
-         vector* test_vector = createVector();
-         test_vector->X = 127;
-         test_vector->Y = 0;
-         test_vector->Z = 50;
-         */
+        
+        //vector* test_vector = createVector();
+        test_vector->X = 127;
+        test_vector->Y = 0;
+        test_vector->Z = 50;
          
-        //printf("File not loaded\n");
+        printf("File not loaded\n");
         
     }//error is 100 if file was NULL
     
     
-    test_vector->X = image.pixel.r * (int)ceil((1/pow(9, 2)));
-    test_vector->Y = image.pixel.g * (int)ceil((1/pow(9, 2)));
-    test_vector->Z = image.pixel.b * (int)ceil((1/pow(9, 2)));
-     
+    test_vector->X = image.pixel.r >> 24;
+    test_vector->Y = image.pixel.g >> 24;
+    test_vector->Z = image.pixel.b >> 24;
     
     return test_vector;
 }
@@ -188,3 +207,4 @@ int load_ppm(ImageRGB& img, const char* name, int rows, int cols)
     }
     return 0;
 }
+

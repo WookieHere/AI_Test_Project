@@ -36,7 +36,7 @@ struct Coordinate
     double X;
     double Y;
 };
-
+double getDistance(Coordinate*, Coordinate*); //outputs the distance between two coords
 unit_vector* toUnitVector(vector* A);
 Coordinate* subCoordinates(Coordinate* A, Coordinate* B);
 Coordinate* addCoordinates(Coordinate* A, Coordinate* B);
@@ -87,8 +87,7 @@ class Player
 {
     Agent_data* Player_data;
     double distance_to_destination;    //Instead of calculating it every time, this will be an easier lookup
-                                    //The rest of the analysis for cost will be done at each node
-                                    //With the results being calculated by the Output_handler
+    double dist_to_key;     //current distance to keyframe
     double* time_register;   //temporary time register to be added to time taken conditionally
     double time_taken;  //in seconds
     double* fuel_register;
@@ -104,7 +103,7 @@ public:
     ~Player();
     struct Player_data getPlayerData(); //This retrieves a copy of the current data
     void updateData();          //Uses the Input Handler to update position, vector, distance, etc.
-    double getDistance(Coordinate*, Coordinate*); //outputs the distance between two coords
+    
     //double getWork(Coordinate distance, vector* wind);
     void travel();
     void manGenetics(double*);
@@ -129,6 +128,8 @@ private:
     double interactGenetics(double*);
     mesh_node* costMeshAssign(Cost_mesh* mesh);
     void freeRoute();
+    void addToRoute(Coordinate);
+    double getKeyChanges(Coordinate);
 };
 
 
