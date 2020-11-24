@@ -3,7 +3,6 @@ import re
 temp = []
 x_coord = [0]
 y_coord = [0]
-z_coord = [0]
 with open("test.txt", "r") as f:
     for line in f:
         f_content = f.readline()
@@ -11,7 +10,6 @@ with open("test.txt", "r") as f:
             temp.append(p)
         x_coord.append(temp[0])
         y_coord.append(temp[1])
-        z_coord.append(temp[2])
         temp.clear()
 
 plt.plot(x_coord,y_coord)
